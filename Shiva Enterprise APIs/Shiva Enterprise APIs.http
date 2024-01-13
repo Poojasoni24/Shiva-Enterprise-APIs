@@ -1,0 +1,6 @@
+@Shiva_Enterprise_APIs_HostAddress = http://localhost:5216
+
+GET {{Shiva_Enterprise_APIs_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
