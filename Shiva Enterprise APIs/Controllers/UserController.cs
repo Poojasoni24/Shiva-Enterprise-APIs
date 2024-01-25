@@ -19,8 +19,8 @@ namespace Shiva_Enterprise_APIs.Controllers
         private ShivaEnterpriseContext _shivaEnterpriseContext;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly RoleManager<IdentityRole> roleManager;
-        public UserController(ShivaEnterpriseContext shivaEnterpriseContext, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager)
+        private readonly RoleManager<ApplicationRole> roleManager;
+        public UserController(ShivaEnterpriseContext shivaEnterpriseContext, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<ApplicationRole> roleManager)
         {
             _shivaEnterpriseContext = shivaEnterpriseContext;
             this.userManager = userManager;
@@ -130,15 +130,15 @@ namespace Shiva_Enterprise_APIs.Controllers
             if (!result.Succeeded)
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
 
-            if (!await roleManager.RoleExistsAsync(UserRoles.Admin))
-                await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
-            if (!await roleManager.RoleExistsAsync(UserRoles.User))
-                await roleManager.CreateAsync(new IdentityRole(UserRoles.User));
+            //if (!await roleManager.RoleExistsAsync(UserRoles.Admin))
+            //    await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
+            //if (!await roleManager.RoleExistsAsync(UserRoles.User))
+            //    await roleManager.CreateAsync(new IdentityRole(UserRoles.User));
 
-            if (await roleManager.RoleExistsAsync(UserRoles.Admin))
-            {
-                await userManager.AddToRoleAsync(user, UserRoles.Admin);
-            }
+            //if (await roleManager.RoleExistsAsync(UserRoles.Admin))
+            //{
+            //    await userManager.AddToRoleAsync(user, UserRoles.Admin);
+            //}
             return Ok(new Response { Status = "Success", Message = "User created successfully!" });
         }
 

@@ -8,33 +8,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Shiva_Enterprise_APIs.Entities;
 
-[Table("salesmanAgent")]
-public partial class salesmanAgent
+[Table("City")]
+public partial class City
 {
     [Key]
-    public Guid SalesmanAgentID { get; set; }
+    public Guid City_ID { get; set; }
+
+    public string CityCode { get; set; }
 
     [StringLength(200)]
     [Unicode(false)]
-    public string Salesman_Name { get; set; }
+    public string CityName { get; set; }
 
-    [StringLength(200)]
-    [Unicode(false)]
-    public string Salesman_email { get; set; }
-
-    [StringLength(10)]
-    [Unicode(false)]
-    public string Salesman_code { get; set; }
-
-    [StringLength(20)]
-    [Unicode(false)]
-    public string Status { get; set; }
-
-    [Required]
-    [StringLength(20)]
-    public string Salesmanphone { get; set; }
+    public Guid? State_id { get; set; }
     public string CreatedBy { get; set; }
     public DateTime CreatedDateTime { get; set; }
     public string? ModifiedBy { get; set; }
     public DateTime? ModifiedDateTime { get; set; }
+
+    [ForeignKey("State_id")]
+    [InverseProperty("Cities")]
+    public virtual state State { get; set; }
 }

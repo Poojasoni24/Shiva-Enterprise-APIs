@@ -17,10 +17,8 @@ public partial class location
     [StringLength(200)]
     [Unicode(false)]
     public string Location_name { get; set; }
-
-    [Column(TypeName = "datetime")]
-    public DateTime? ICreatedDateAndTime { get; set; }
-
-    [Column(TypeName = "datetime")]
-    public DateTime? UpdatedDateAndTime { get; set; }
+    public string CreatedBy { get; set; }
+    public DateTime CreatedDateTime { get; set; }
+    public string? ModifiedBy { get; set; }
+    public DateTime? ModifiedDateTime { get; set; }
 }

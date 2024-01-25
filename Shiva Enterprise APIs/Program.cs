@@ -20,7 +20,7 @@ public class Program
         builder.Services.AddSwaggerGen();
         // Add services to the container.
         builder.Services.AddSqlServer<ShivaEnterpriseContext>(builder.Configuration.GetConnectionString("DefaultConnection"));
-        builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+        builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
                .AddEntityFrameworkStores<ShivaEnterpriseContext>()
                .AddDefaultTokenProviders();
 

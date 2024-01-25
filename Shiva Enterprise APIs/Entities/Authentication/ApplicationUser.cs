@@ -29,7 +29,5 @@ namespace Shiva_Enterprise_APIs.Entities.Authentication
         [Column(TypeName = "datetime")]
         public DateTime? UpdatedDateAndTime { get; set; }
 
-        [InverseProperty("User")]
-        public virtual ICollection<RoleMembership> RoleMemberships { get; set; } = new List<RoleMembership>();
     }
 }

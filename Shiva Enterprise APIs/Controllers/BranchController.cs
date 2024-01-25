@@ -128,7 +128,7 @@ namespace Shiva_Enterprise_APIs.Controllers
                 Company_Id = branchModel.Company_Id,
                 IsActive = branchModel.IsActive,
                 CreatedDateTime = branchModel.CreatedDateTime,
-                UpdatedDateTime = branchModel.UpdatedDateTime,
+                ModifiedDateTime = branchModel.UpdatedDateTime,
             };
         }
         #endregion

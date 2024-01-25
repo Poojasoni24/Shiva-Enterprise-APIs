@@ -5,11 +5,13 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Shiva_Enterprise_APIs.Entities.Accounts;
 using Shiva_Enterprise_APIs.Entities.Authentication;
+using Shiva_Enterprise_APIs.Entities.Products;
 
 namespace Shiva_Enterprise_APIs.Entities;
 
-public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser>
+public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser, ApplicationRole,string>
 {
     public ShivaEnterpriseContext()
     {
@@ -28,17 +30,21 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser>
 
     public virtual DbSet<Country> Countries { get; set; }
 
-    public virtual DbSet<Role> Roles { get; set; }
-
-    public virtual DbSet<RoleMembership> RoleMemberships { get; set; }
-
     public virtual DbSet<location> locations { get; set; }
 
     public virtual DbSet<salesmanAgent> salesmanAgents { get; set; }
 
     public virtual DbSet<state> states { get; set; }
-
+    public virtual DbSet<AccountGroup> accountGroups { get; set; }
+    public virtual DbSet<AccountType> accountTypes { get; set; }
+    public virtual DbSet<AccountCategory> accountCategories { get; set; }
+    public virtual DbSet<Account> accounts  { get; set; }
+    public virtual DbSet<ProductGroup> productGroups { get; set; }
+    public virtual DbSet<ProductType> productTypes { get; set; }
+    public virtual DbSet<ProductCategory> productCategories { get; set; }
+    public virtual DbSet<Product> products { get; set; }
     public DbSet<ApplicationUser> applicationUsers { get; set; }
+    public DbSet<ApplicationRole> applicationRoles { get; set; }
     public DbSet<IdentityUserClaim<Guid>> IdentityUserClaims { get; set; }
     public DbSet<IdentityUserClaim<string>> IdentityUserClaim
     {
@@ -69,7 +75,7 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser>
             entity.HasKey(e => e.City_ID).HasName("PK__city__DE9DE0205736F02F");
 
             entity.Property(e => e.City_ID).HasDefaultValueSql("(newid())");
-            entity.Property(e => e.CreatedDateAndTime).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
 
             entity.HasOne(d => d.State).WithMany(p => p.Cities).HasConstraintName("FK_City_state");
         });
@@ -86,27 +92,7 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser>
             entity.HasKey(e => e.Country_ID).HasName("PK__country__8036CB4EB0037A51");
 
             entity.Property(e => e.Country_ID).HasDefaultValueSql("(newid())");
-            entity.Property(e => e.CreatedDateAndTime).HasDefaultValueSql("(getdate())");
-        });
-
-        modelBuilder.Entity<Role>(entity =>
-        {
-            entity.HasKey(e => e.RoleID).HasName("PK__Role__8AFACE3A83A362B5");
-
-            entity.Property(e => e.RoleID).HasDefaultValueSql("(newid())");
-            entity.Property(e => e.CreatedDateAndTime).HasDefaultValueSql("(getdate())");
-            entity.Property(e => e.IsActive).HasDefaultValue(false);
-        });
-
-        modelBuilder.Entity<RoleMembership>(entity =>
-        {
-            entity.HasKey(e => e.RoleMenmbershiID).HasName("PK__RoleMemb__37DF7DF41C67961E");
-
-            entity.Property(e => e.RoleMenmbershiID).HasDefaultValueSql("(newid())");
-
-            entity.HasOne(d => d.Role).WithMany(p => p.RoleMemberships).HasConstraintName("FK_RoleMembership_Role");
-
-            entity.HasOne(d => d.User).WithMany(p => p.RoleMemberships).HasConstraintName("FK_RoleMembership_user");
+            entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
         });
 
         modelBuilder.Entity<location>(entity =>
@@ -114,7 +100,7 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser>
             entity.HasKey(e => e.Location_ID).HasName("PK__location__D2BA00C2438AF258");
 
             entity.Property(e => e.Location_ID).HasDefaultValueSql("(newid())");
-            entity.Property(e => e.ICreatedDateAndTime).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
         });
 
         modelBuilder.Entity<salesmanAgent>(entity =>
@@ -122,7 +108,7 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser>
             entity.HasKey(e => e.SalesmanAgentID).HasName("PK__salesman__B94AD674532DF6E8");
 
             entity.Property(e => e.SalesmanAgentID).HasDefaultValueSql("(newid())");
-            entity.Property(e => e.CreatedDateAndTime).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
         });
 
         modelBuilder.Entity<state>(entity =>
@@ -130,9 +116,85 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser>
             entity.HasKey(e => e.State_ID).HasName("PK__state__AF9338D7D97D88B7");
 
             entity.Property(e => e.State_ID).HasDefaultValueSql("(newid())");
-            entity.Property(e => e.CreatedDateAndTime).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
 
             entity.HasOne(d => d.Country).WithMany(p => p.states).HasConstraintName("FK_state_Country");
+        });
+
+        modelBuilder.Entity<AccountGroup>(entity =>
+        {
+            entity.HasKey(e => e.AccountGroupId).HasName("PK__acgroup__B94AD674532DF6E8");
+
+            entity.Property(e => e.AccountGroupId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.ModifiedDateTime).HasDefaultValueSql("(getdate())");
+        });
+        modelBuilder.Entity<AccountType>(entity =>
+        {
+            entity.HasKey(e => e.AccountTypeId).HasName("PK__actype__B94AD674532DF6E8");
+
+            entity.Property(e => e.AccountTypeId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.ModifiedDateTime).HasDefaultValueSql("(getdate())");
+        });
+        modelBuilder.Entity<AccountCategory>(entity =>
+        {
+            entity.HasKey(e => e.AccountCategoryId).HasName("PK__accategory__B94AD674532DF6E8");
+
+            entity.Property(e => e.AccountCategoryId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.ModifiedDateTime).HasDefaultValueSql("(getdate())");
+
+    });
+        modelBuilder.Entity<Account>(entity =>
+        {
+            entity.HasKey(e => e.AccountId).HasName("PK__account__AF9338D7D97D88B7");
+
+            entity.Property(e => e.AccountId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.ModifiedDateTime).HasDefaultValueSql("(getdate())");
+
+            entity.HasOne(d => d.AccountGroup).WithMany(p => p.Account).HasConstraintName("FK_account_accountgroup");
+            entity.HasOne(d => d.AccountType).WithMany(p => p.Account).HasConstraintName("FK_account_accounttype");
+            entity.HasOne(d => d.AccountCategory).WithMany(p => p.Account).HasConstraintName("FK_account_accountcategory");
+        });
+
+        modelBuilder.Entity<ProductGroup>(entity =>
+        {
+            entity.HasKey(e => e.ProductGroupId).HasName("PK__productgroup__B94AD674532DF6E8");
+
+            entity.Property(e => e.ProductGroupId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.ModifiedDateTime).HasDefaultValueSql("(getdate())");
+        });
+        modelBuilder.Entity<ProductType>(entity =>
+        {
+            entity.HasKey(e => e.ProductTypeId).HasName("PK__producttype__B94AD674532DF6E8");
+
+            entity.Property(e => e.ProductTypeId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.ModifiedDateTime).HasDefaultValueSql("(getdate())");
+        });
+        modelBuilder.Entity<ProductCategory>(entity =>
+        {
+            entity.HasKey(e => e.ProductCategoryId).HasName("PK__productcategory__B94AD674532DF6E8");
+
+            entity.Property(e => e.ProductCategoryId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.ModifiedDateTime).HasDefaultValueSql("(getdate())");
+        });
+        modelBuilder.Entity<Product>(entity =>
+        {
+            entity.HasKey(e => e.ProductId).HasName("PK__product__AF9338D7D97D88B7");
+
+            entity.Property(e => e.ProductId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.ModifiedDateTime).HasDefaultValueSql("(getdate())");
+
+
+            entity.HasOne(d => d.ProductGroup).WithMany(p => p.Products).HasConstraintName("FK_product_productgroup");
+            entity.HasOne(d => d.ProductType).WithMany(p => p.Products).HasConstraintName("FK_product_producttype");
+            entity.HasOne(d => d.ProductCategory).WithMany(p => p.Products).HasConstraintName("FK_product_productcategory");
         });
 
         OnModelCreatingPartial(modelBuilder);

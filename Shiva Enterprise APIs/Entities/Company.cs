@@ -29,12 +29,10 @@ public partial class Company
 
     [Column(TypeName = "datetime")]
     public DateTime? Company_Endyear { get; set; }
-
-    [Column(TypeName = "datetime")]
-    public DateTime? CreatedDateTime { get; set; }
-
-    [Column(TypeName = "datetime")]
-    public DateTime? UpdatedDateTime { get; set; }
+    public string CreatedBy { get; set; }
+    public DateTime CreatedDateTime { get; set; }
+    public string? ModifiedBy { get; set; }
+    public DateTime? ModifiedDateTime { get; set; }
 
     public bool? IsActive { get; set; }
 

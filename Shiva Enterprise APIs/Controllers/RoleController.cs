@@ -1,30 +1,44 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Shiva_Enterprise_APIs.Entities;
+using Shiva_Enterprise_APIs.Entities.Authentication;
+using Microsoft.EntityFrameworkCore;
+using Shiva_Enterprise_APIs.Model;
 
 namespace Shiva_Enterprise_APIs.Controllers
 {
+    [Authorize]
+    [ApiController]
+    [Route("api/[Controller]")]
     public class RoleController : ControllerBase
     {
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private ShivaEnterpriseContext _shivaEnterpriseContext;
+        private readonly RoleManager<ApplicationRole> roleManager;
 
-        public RoleController(RoleManager<IdentityRole> roleManager)
+        public RoleController(ShivaEnterpriseContext shivaEnterpriseContext, RoleManager<ApplicationRole> roleManager)
         {
-            _roleManager = roleManager;
+            _shivaEnterpriseContext = shivaEnterpriseContext;
+            this.roleManager = roleManager;
         }
 
-        // GET api/role
+        [Route("GetRoles")]
         [HttpGet]
-        public IActionResult GetRoles()
+        public async Task<IActionResult> GetRoles()
         {
-            var roles = _roleManager.Roles;
+            var roles = await _shivaEnterpriseContext.applicationRoles.ToListAsync();
+            if (roles == null)
+            {
+                return NotFound();
+            }
             return Ok(roles);
         }
 
-        // GET api/role/{id}
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetRole(string id)
+        [Route("GetRoleById")]
+        [HttpGet]
+        public async Task<IActionResult> GetRoleById(string roleId)
         {
-            var role = await _roleManager.FindByIdAsync(id);
+            var role = await roleManager.FindByIdAsync(roleId);
 
             if (role == null)
             {
@@ -34,13 +48,21 @@ namespace Shiva_Enterprise_APIs.Controllers
             return Ok(role);
         }
 
-        // POST api/role
+        [Route("CreateRole")]
         [HttpPost]
-        public async Task<IActionResult> CreateRole(string roleName)
+        public async Task<IActionResult> CreateRole([FromBody] RoleModel role)
         {
-            var newRole = new IdentityRole(roleName);
+            //if (!await _roleManager.RoleExistsAsync(role.Name))
+            //{
+            var applicationRole = new ApplicationRole()
+            {
+                Name = role.Name,
+                NormalizedName = role.NormalizedName,
+                IsActive = role.IsActive,
+                CreatedDateTime = DateTime.Now
+            };
 
-            var result = await _roleManager.CreateAsync(newRole);
+            var result = await roleManager.CreateAsync(applicationRole);
 
             if (result.Succeeded)
             {
@@ -48,24 +70,30 @@ namespace Shiva_Enterprise_APIs.Controllers
             }
             else
             {
-                return BadRequest(new { Message = "Failed to create role", Errors = result.Errors });
+                return BadRequest(new { Message = "Failed to create role" });
             }
+
+            //}
+
         }
 
-        // PUT api/role/{id}
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateRole(string id, string newRoleName)
+        [Route("UpdateRole")]
+        [HttpPut]
+        public async Task<IActionResult> UpdateRole(string roleId, RoleModel roleObj)
         {
-            var role = await _roleManager.FindByIdAsync(id);
+            var role = await roleManager.FindByIdAsync(roleId);
 
             if (role == null)
             {
                 return NotFound(); // Role not found
             }
+            else
+            {
+                role.Name = roleObj.Name;
+                role.IsActive = roleObj.IsActive;
+            }
 
-            role.Name = newRoleName;
-
-            var result = await _roleManager.UpdateAsync(role);
+            var result = await roleManager.UpdateAsync(role);
 
             if (result.Succeeded)
             {
@@ -77,22 +105,22 @@ namespace Shiva_Enterprise_APIs.Controllers
             }
         }
 
-        // DELETE api/role/{id}
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRole(string id)
+        [Route("DeleteRole")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteRole(string roleId)
         {
-            var role = await _roleManager.FindByIdAsync(id);
+            var role = await roleManager.FindByIdAsync(roleId);
 
             if (role == null)
             {
                 return NotFound(); // Role not found
             }
 
-            var result = await _roleManager.DeleteAsync(role);
+            var result = await roleManager.DeleteAsync(role);
 
             if (result.Succeeded)
             {
-                return Ok(new { Message = "Role deleted successfully" });
+                return Ok("Role deleted successfully");
             }
             else
             {
