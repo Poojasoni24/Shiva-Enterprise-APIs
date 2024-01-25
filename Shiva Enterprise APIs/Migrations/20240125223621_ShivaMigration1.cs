@@ -6,16 +6,78 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Shiva_Enterprise_APIs.Migrations
 {
     /// <inheritdoc />
-    public partial class ShivaEnterpriseMigration : Migration
+    public partial class ShivaMigration1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "AccountCategory",
+                columns: table => new
+                {
+                    AccountCategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
+                    AccountCategoryCode = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
+                    AccountCategoryName = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
+                    AccountCategoryDescription = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
+                    AccountCategoryStatus = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
+                    CreatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "(getdate())"),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "(getdate())")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__accategory__B94AD674532DF6E8", x => x.AccountCategoryId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AccountGroup",
+                columns: table => new
+                {
+                    AccountGroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
+                    AccountGroupCode = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
+                    AccountGroupName = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
+                    AccountGroupDescription = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
+                    AccountGroupStatus = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "(getdate())"),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "(getdate())")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__acgroup__B94AD674532DF6E8", x => x.AccountGroupId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AccountType",
+                columns: table => new
+                {
+                    AccountTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
+                    AccountTypeCode = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
+                    AccountTypeName = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
+                    AccountTypeDescription = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
+                    AccountTypeStatus = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "(getdate())"),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "(getdate())")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__actype__B94AD674532DF6E8", x => x.AccountTypeId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -65,8 +127,10 @@ namespace Shiva_Enterprise_APIs.Migrations
                     Company_Name = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: false),
                     Company_Startyear = table.Column<DateTime>(type: "datetime", nullable: true),
                     Company_Endyear = table.Column<DateTime>(type: "datetime", nullable: true),
-                    CreatedDateTime = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())"),
-                    UpdatedDateTime = table.Column<DateTime>(type: "datetime", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "(getdate())"),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: true, defaultValue: false)
                 },
                 constraints: table =>
@@ -81,8 +145,10 @@ namespace Shiva_Enterprise_APIs.Migrations
                     Country_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
                     Country_Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     Country_Code = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
-                    CreatedDateAndTime = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())"),
-                    UpdatedDateAndTime = table.Column<DateTime>(type: "datetime", nullable: true)
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "(getdate())"),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -110,8 +176,10 @@ namespace Shiva_Enterprise_APIs.Migrations
                 {
                     Location_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
                     Location_name = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: true),
-                    ICreatedDateAndTime = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())"),
-                    UpdatedDateAndTime = table.Column<DateTime>(type: "datetime", nullable: true)
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "(getdate())"),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -119,18 +187,60 @@ namespace Shiva_Enterprise_APIs.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Role",
+                name: "ProductCategory",
                 columns: table => new
                 {
-                    RoleID = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
-                    Role_Name = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: true, defaultValue: false),
-                    CreatedDateAndTime = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())"),
-                    UpdatedDateAndTime = table.Column<DateTime>(type: "datetime", nullable: true)
+                    ProductCategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
+                    ProductCategoryCode = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
+                    ProductCategoryName = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
+                    ProductCategoryDescription = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
+                    ProductCategoryStatus = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "(getdate())"),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "(getdate())")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Role__8AFACE3A83A362B5", x => x.RoleID);
+                    table.PrimaryKey("PK__productcategory__B94AD674532DF6E8", x => x.ProductCategoryId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductGroup",
+                columns: table => new
+                {
+                    ProductGroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
+                    ProductGroupCode = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
+                    ProductGroupName = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
+                    ProductGroupDescription = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
+                    ProductGroupStatus = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
+                    CreatedDateTime = table.Column<DateTime>(type: "datetime2", unicode: false, maxLength: 100, nullable: false, defaultValueSql: "(getdate())"),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "(getdate())")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__productgroup__B94AD674532DF6E8", x => x.ProductGroupId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductType",
+                columns: table => new
+                {
+                    ProductTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
+                    ProductTypeCode = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
+                    ProductTypeName = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
+                    ProductTypeDescription = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
+                    ProductTypeStatus = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
+                    CreatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "(getdate())"),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "(getdate())")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__producttype__B94AD674532DF6E8", x => x.ProductTypeId);
                 });
 
             migrationBuilder.CreateTable(
@@ -143,12 +253,53 @@ namespace Shiva_Enterprise_APIs.Migrations
                     Salesman_code = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: true),
                     Status = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: true),
                     Salesmanphone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    CreatedDateAndTime = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())"),
-                    UpdatedDateAndTime = table.Column<DateTime>(type: "datetime", nullable: true)
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "(getdate())"),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK__salesman__B94AD674532DF6E8", x => x.SalesmanAgentID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Account",
+                columns: table => new
+                {
+                    AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
+                    AccountCode = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
+                    AccontName = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
+                    AccountDescription = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
+                    AccountStatus = table.Column<bool>(type: "bit", nullable: false),
+                    AccountGroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AccountTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AccountCategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CreatedBy = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
+                    CreatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "(getdate())"),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "(getdate())")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__account__AF9338D7D97D88B7", x => x.AccountId);
+                    table.ForeignKey(
+                        name: "FK_account_accountcategory",
+                        column: x => x.AccountCategoryId,
+                        principalTable: "AccountCategory",
+                        principalColumn: "AccountCategoryId");
+                    table.ForeignKey(
+                        name: "FK_account_accountgroup",
+                        column: x => x.AccountGroupId,
+                        principalTable: "AccountGroup",
+                        principalColumn: "AccountGroupId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_account_accounttype",
+                        column: x => x.AccountTypeId,
+                        principalTable: "AccountType",
+                        principalColumn: "AccountTypeId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -265,9 +416,11 @@ namespace Shiva_Enterprise_APIs.Migrations
                     Branch_Code = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
                     Branch_Name = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: false),
                     Company_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: true, defaultValue: false),
-                    CreatedDateTime = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())"),
-                    UpdatedDateTime = table.Column<DateTime>(type: "datetime", nullable: true)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "(getdate())"),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -285,9 +438,12 @@ namespace Shiva_Enterprise_APIs.Migrations
                 {
                     State_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
                     State_Name = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: true),
+                    StateCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Country_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    CreatedDateAndTime = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())"),
-                    UpdatedDateAndTime = table.Column<DateTime>(type: "datetime", nullable: true)
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "(getdate())"),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -300,26 +456,44 @@ namespace Shiva_Enterprise_APIs.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RoleMembership",
+                name: "Product",
                 columns: table => new
                 {
-                    RoleMenmbershiID = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
-                    RoleID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    UserID = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
+                    ProductCode = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
+                    ProductName = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
+                    ProductDescription = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
+                    ProductStatus = table.Column<bool>(type: "bit", nullable: false),
+                    ProductImage = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProductCategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductGroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedBy = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
+                    CreatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "(getdate())"),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "(getdate())")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__RoleMemb__37DF7DF41C67961E", x => x.RoleMenmbershiID);
+                    table.PrimaryKey("PK__product__AF9338D7D97D88B7", x => x.ProductId);
                     table.ForeignKey(
-                        name: "FK_RoleMembership_Role",
-                        column: x => x.RoleID,
-                        principalTable: "Role",
-                        principalColumn: "RoleID");
+                        name: "FK_product_productcategory",
+                        column: x => x.ProductCategoryId,
+                        principalTable: "ProductCategory",
+                        principalColumn: "ProductCategoryId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RoleMembership_user",
-                        column: x => x.UserID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        name: "FK_product_productgroup",
+                        column: x => x.ProductGroupId,
+                        principalTable: "ProductGroup",
+                        principalColumn: "ProductGroupId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_product_producttype",
+                        column: x => x.ProductTypeId,
+                        principalTable: "ProductType",
+                        principalColumn: "ProductTypeId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -327,10 +501,13 @@ namespace Shiva_Enterprise_APIs.Migrations
                 columns: table => new
                 {
                     City_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
+                    CityCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CityName = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: true),
                     State_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    CreatedDateAndTime = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())"),
-                    UpdatedDateAndTime = table.Column<DateTime>(type: "datetime", nullable: true)
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "(getdate())"),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -341,6 +518,21 @@ namespace Shiva_Enterprise_APIs.Migrations
                         principalTable: "state",
                         principalColumn: "State_ID");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Account_AccountCategoryId",
+                table: "Account",
+                column: "AccountCategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Account_AccountGroupId",
+                table: "Account",
+                column: "AccountGroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Account_AccountTypeId",
+                table: "Account",
+                column: "AccountTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -392,14 +584,19 @@ namespace Shiva_Enterprise_APIs.Migrations
                 column: "State_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RoleMembership_RoleID",
-                table: "RoleMembership",
-                column: "RoleID");
+                name: "IX_Product_ProductCategoryId",
+                table: "Product",
+                column: "ProductCategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RoleMembership_UserID",
-                table: "RoleMembership",
-                column: "UserID");
+                name: "IX_Product_ProductGroupId",
+                table: "Product",
+                column: "ProductGroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Product_ProductTypeId",
+                table: "Product",
+                column: "ProductTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_state_Country_ID",
@@ -410,6 +607,9 @@ namespace Shiva_Enterprise_APIs.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Account");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -438,13 +638,25 @@ namespace Shiva_Enterprise_APIs.Migrations
                 name: "location");
 
             migrationBuilder.DropTable(
-                name: "RoleMembership");
+                name: "Product");
 
             migrationBuilder.DropTable(
                 name: "salesmanAgent");
 
             migrationBuilder.DropTable(
+                name: "AccountCategory");
+
+            migrationBuilder.DropTable(
+                name: "AccountGroup");
+
+            migrationBuilder.DropTable(
+                name: "AccountType");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Company");
@@ -453,10 +665,13 @@ namespace Shiva_Enterprise_APIs.Migrations
                 name: "state");
 
             migrationBuilder.DropTable(
-                name: "Role");
+                name: "ProductCategory");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "ProductGroup");
+
+            migrationBuilder.DropTable(
+                name: "ProductType");
 
             migrationBuilder.DropTable(
                 name: "Country");

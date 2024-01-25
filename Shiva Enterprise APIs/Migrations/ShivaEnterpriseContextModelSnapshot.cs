@@ -378,11 +378,21 @@ namespace Shiva_Enterprise_APIs.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedDateTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)

@@ -11,7 +11,7 @@ using System.Security;
 
 namespace Shiva_Enterprise_APIs.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("api/[Controller]")]
     public class UserController : ControllerBase

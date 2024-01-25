@@ -12,8 +12,8 @@ using Shiva_Enterprise_APIs.Entities;
 namespace Shiva_Enterprise_APIs.Migrations
 {
     [DbContext(typeof(ShivaEnterpriseContext))]
-    [Migration("20240124174439_ShivaMigration3")]
-    partial class ShivaMigration3
+    [Migration("20240125223621_ShivaMigration1")]
+    partial class ShivaMigration1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -381,11 +381,21 @@ namespace Shiva_Enterprise_APIs.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedDateTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
