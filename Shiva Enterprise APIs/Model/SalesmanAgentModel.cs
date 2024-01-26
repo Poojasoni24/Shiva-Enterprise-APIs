@@ -2,7 +2,6 @@
 {
     public class SalesmanAgentModel
     {
-        public Guid SalesmanAgentID { get; set; }
         public string Salesman_Name { get; set; }
         public string Salesman_email { get; set; }
         public string Salesman_code { get; set; }
