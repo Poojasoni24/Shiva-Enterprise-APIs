@@ -2,28 +2,28 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Shiva_Enterprise_APIs.Entities.Products
+namespace Shiva_Enterprise_APIs.Entities
 {
-    [Table("ProductType")]
-    public class ProductType
+    [Table("Bank")]
+    public class Bank
     {
         [Key]
-        public Guid ProductTypeId { get; set; }
+        public Guid BankId { get; set; }
 
         [Required]
         [StringLength(10)]
         [Unicode(false)]
-        public string ProductTypeCode { get; set; }
+        public string BankCode { get; set; }
 
         [Required]
         [StringLength(100)]
         [Unicode(false)]
-        public string ProductTypeName { get; set; }
+        public string BankName { get; set; }
 
         [StringLength(100)]
         [Unicode(false)]
-        public string? ProductTypeDescription { get; set; }
-        public bool ProductTypeStatus { get; set; }
+        public string? BankDescription { get; set; }
+        public bool BankStatus { get; set; }       
 
         [Required]
         [StringLength(100)]
@@ -34,8 +34,5 @@ namespace Shiva_Enterprise_APIs.Entities.Products
         public DateTime CreatedDateTime { get; set; }
         public string? ModifiedBy { get; set; }
         public DateTime? ModifiedDateTime { get; set; }
-
-        [InverseProperty("ProductType")]
-        public virtual ICollection<Product> Products { get; set; } = new List<Product>();
     }
 }

@@ -12,11 +12,11 @@ namespace Shiva_Enterprise_APIs.Controllers
     [Authorize]
     [ApiController]
     [Route("api/[Controller]")]
-    public class SalesmanAgent : Controller
+    public class SalesmanAgentController : ControllerBase
     {
         private ShivaEnterpriseContext _shivaEnterpriseContext;
 
-        public SalesmanAgent(ShivaEnterpriseContext shivaEnterpriseContext)
+        public SalesmanAgentController(ShivaEnterpriseContext shivaEnterpriseContext)
         {
             _shivaEnterpriseContext = shivaEnterpriseContext;
         }

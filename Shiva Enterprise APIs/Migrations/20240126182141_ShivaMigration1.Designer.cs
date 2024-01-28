@@ -12,7 +12,7 @@ using Shiva_Enterprise_APIs.Entities;
 namespace Shiva_Enterprise_APIs.Migrations
 {
     [DbContext(typeof(ShivaEnterpriseContext))]
-    [Migration("20240125223621_ShivaMigration1")]
+    [Migration("20240126182141_ShivaMigration1")]
     partial class ShivaMigration1
     {
         /// <inheritdoc />
@@ -884,9 +884,9 @@ namespace Shiva_Enterprise_APIs.Migrations
 
                     b.Property<string>("ProductTypeCode")
                         .IsRequired()
-                        .HasMaxLength(100)
+                        .HasMaxLength(10)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(10)");
 
                     b.Property<string>("ProductTypeDescription")
                         .HasMaxLength(100)

@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities.Accounts;
 using Shiva_Enterprise_APIs.Entities.Authentication;
 using Shiva_Enterprise_APIs.Entities.Products;
+using Shiva_Enterprise_APIs.Entities.TaxEntities;
+using Shiva_Enterprise_APIs.Entities.TransportEntities;
 
 namespace Shiva_Enterprise_APIs.Entities;
 
@@ -43,6 +45,10 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
     public virtual DbSet<ProductType> productTypes { get; set; }
     public virtual DbSet<ProductCategory> productCategories { get; set; }
     public virtual DbSet<Product> products { get; set; }
+    public virtual DbSet<Bank> Banks { get; set; }
+    public virtual DbSet<ModeofPayment> ModeofPayments { get; set; }
+    public virtual DbSet<Tax> Taxes { get; set; }
+    public virtual DbSet<Transport> Transports { get; set; }
     public DbSet<ApplicationUser> applicationUsers { get; set; }
     public DbSet<ApplicationRole> applicationRoles { get; set; }
     public DbSet<IdentityUserClaim<Guid>> IdentityUserClaims { get; set; }
@@ -180,6 +186,38 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
             entity.HasKey(e => e.ProductCategoryId).HasName("PK__productcategory__B94AD674532DF6E8");
 
             entity.Property(e => e.ProductCategoryId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.ModifiedDateTime).HasDefaultValueSql("(getdate())");
+        });
+        modelBuilder.Entity<Bank>(entity =>
+        {
+            entity.HasKey(e => e.BankId).HasName("PK__bank__B94AD674532DF6E8");
+
+            entity.Property(e => e.BankId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.ModifiedDateTime).HasDefaultValueSql("(getdate())");
+        });
+        modelBuilder.Entity<ModeofPayment>(entity =>
+        {
+            entity.HasKey(e => e.MODId).HasName("PK__mod__B94AD674532DF6E8");
+
+            entity.Property(e => e.MODId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.ModifiedDateTime).HasDefaultValueSql("(getdate())");
+        });
+        modelBuilder.Entity<Tax>(entity =>
+        {
+            entity.HasKey(e => e.TaxId).HasName("PK__tax__B94AD674532DF6E8");
+
+            entity.Property(e => e.TaxId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.ModifiedDateTime).HasDefaultValueSql("(getdate())");
+        });
+        modelBuilder.Entity<Transport>(entity =>
+        {
+            entity.HasKey(e => e.TransportId).HasName("PK__transport__B94AD674532DF6E8");
+
+            entity.Property(e => e.TransportId).HasDefaultValueSql("(newid())");
             entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.ModifiedDateTime).HasDefaultValueSql("(getdate())");
         });

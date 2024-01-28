@@ -51,9 +51,5 @@ namespace Shiva_Enterprise_APIs.Entities.Accounts
         [InverseProperty("Account")]
 
         public virtual AccountCategory AccountCategory { get; set; }
-
-
-
-
     }
 }

@@ -1,29 +1,30 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+using Shiva_Enterprise_APIs.Entities.Products;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
-namespace Shiva_Enterprise_APIs.Entities.Products
+namespace Shiva_Enterprise_APIs.Entities.TransportEntities
 {
-    [Table("ProductType")]
-    public class ProductType
+    [Table("Transport")]
+    public class Transport
     {
         [Key]
-        public Guid ProductTypeId { get; set; }
+        public Guid TransportId { get; set; }
 
         [Required]
         [StringLength(10)]
         [Unicode(false)]
-        public string ProductTypeCode { get; set; }
+        public string TransportCode { get; set; }
 
         [Required]
         [StringLength(100)]
         [Unicode(false)]
-        public string ProductTypeName { get; set; }
+        public string TransportName { get; set; }
 
         [StringLength(100)]
         [Unicode(false)]
-        public string? ProductTypeDescription { get; set; }
-        public bool ProductTypeStatus { get; set; }
+        public string? TransportDescription { get; set; }
+        public bool TransportStatus { get; set; }
 
         [Required]
         [StringLength(100)]
@@ -34,8 +35,5 @@ namespace Shiva_Enterprise_APIs.Entities.Products
         public DateTime CreatedDateTime { get; set; }
         public string? ModifiedBy { get; set; }
         public DateTime? ModifiedDateTime { get; set; }
-
-        [InverseProperty("ProductType")]
-        public virtual ICollection<Product> Products { get; set; } = new List<Product>();
     }
 }

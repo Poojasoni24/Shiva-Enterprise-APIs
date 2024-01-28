@@ -229,7 +229,7 @@ namespace Shiva_Enterprise_APIs.Migrations
                 columns: table => new
                 {
                     ProductTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
-                    ProductTypeCode = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
+                    ProductTypeCode = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
                     ProductTypeName = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     ProductTypeDescription = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
                     ProductTypeStatus = table.Column<bool>(type: "bit", nullable: false),

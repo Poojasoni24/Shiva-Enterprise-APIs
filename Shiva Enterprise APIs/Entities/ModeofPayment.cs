@@ -2,31 +2,41 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Shiva_Enterprise_APIs.Entities.Products
+namespace Shiva_Enterprise_APIs.Entities
 {
-    [Table("ProductType")]
-    public class ProductType
+    [Table("ModeofPayment")]
+    public class ModeofPayment
     {
         [Key]
-        public Guid ProductTypeId { get; set; }
+        public Guid MODId { get; set; }
 
         [Required]
         [StringLength(10)]
         [Unicode(false)]
-        public string ProductTypeCode { get; set; }
+        public string MODCode { get; set; }
 
         [Required]
         [StringLength(100)]
         [Unicode(false)]
-        public string ProductTypeName { get; set; }
+        public string MODName { get; set; }
 
         [StringLength(100)]
         [Unicode(false)]
-        public string? ProductTypeDescription { get; set; }
-        public bool ProductTypeStatus { get; set; }
+        public string? MODDescription { get; set; }
+        public bool MODStatus { get; set; }
 
         [Required]
-        [StringLength(100)]
+        [StringLength(50)]
+        [Unicode(false)]
+        public string MODType { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        [Unicode(false)]
+        public string MODAccount { get; set; }
+
+        [Required]
+        [StringLength(50)]
         [Unicode(false)]
         public string CreatedBy { get; set; }
 
@@ -34,8 +44,5 @@ namespace Shiva_Enterprise_APIs.Entities.Products
         public DateTime CreatedDateTime { get; set; }
         public string? ModifiedBy { get; set; }
         public DateTime? ModifiedDateTime { get; set; }
-
-        [InverseProperty("ProductType")]
-        public virtual ICollection<Product> Products { get; set; } = new List<Product>();
     }
 }
