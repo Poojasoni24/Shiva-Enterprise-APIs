@@ -23,7 +23,7 @@ namespace Shiva_Enterprise_APIs.Entities.Accounts
         [StringLength(100)]
         [Unicode(false)]
         public string? AccountGroupDescription { get; set; }
-        public bool AccountGroupStatus { get; set; }
+        public bool IsActive { get; set; }
 
         [Required]
         public string CreatedBy { get; set; }

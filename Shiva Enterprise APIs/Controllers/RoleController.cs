@@ -59,7 +59,8 @@ namespace Shiva_Enterprise_APIs.Controllers
                 Name = role.Name,
                 NormalizedName = role.NormalizedName,
                 IsActive = role.IsActive,
-                CreatedDateTime = DateTime.Now
+                CreatedBy = role.CreatedBy,
+                CreatedDateTime = DateTime.Now  
             };
 
             var result = await roleManager.CreateAsync(applicationRole);

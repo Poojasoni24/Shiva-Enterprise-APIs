@@ -24,7 +24,7 @@ namespace Shiva_Enterprise_APIs.Entities.TransportEntities
         [StringLength(100)]
         [Unicode(false)]
         public string? TransportDescription { get; set; }
-        public bool TransportStatus { get; set; }
+        public bool IsActive { get; set; }
 
         [Required]
         [StringLength(100)]

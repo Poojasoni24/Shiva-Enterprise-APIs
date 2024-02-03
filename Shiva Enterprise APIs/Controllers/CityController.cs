@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities;
+using Shiva_Enterprise_APIs.Model;
 
 namespace Shiva_Enterprise_APIs.Controllers
 {
@@ -21,7 +22,7 @@ namespace Shiva_Enterprise_APIs.Controllers
         [Route("GetCity")]
         public async Task<ActionResult> GetAllCity()
         {
-           var citydetail = await _shivaEnterpriseContext.Cities.ToListAsync();
+            var citydetail = await _shivaEnterpriseContext.Cities.ToListAsync();
 
             if (citydetail == null)
                 return NotFound();
@@ -48,15 +49,24 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpPost]
         [Route("AddCity")]
-        public async Task<ActionResult<City>> AddCity(City cityObj)
-        {        
+        public async Task<ActionResult<CityModel>> AddCity(CityModel cityObj)
+        {
             try
             {
                 if (cityObj is null)
                 {
                     throw new ArgumentNullException(nameof(cityObj));
                 }
-                _shivaEnterpriseContext.Cities.Add(cityObj);
+                var cityDetail = new City()
+                {
+                    City_Code = cityObj.City_Code,
+                    City_Name = cityObj.City_Name,
+                    State_Id = cityObj.State_Id,
+                    IsActive = cityObj.IsActive,
+                    CreatedBy = cityObj.CreatedBy,
+                    CreatedDateTime = cityObj.CreatedDateTime
+                };
+                _shivaEnterpriseContext.Cities.Add(cityDetail);
                 await _shivaEnterpriseContext.SaveChangesAsync();
                 return Ok("Added Successfully");
             }
@@ -87,7 +97,7 @@ namespace Shiva_Enterprise_APIs.Controllers
         [Route("EditCity")]
         public async Task<IActionResult> EditCityDetail(Guid id, City city)
         {
-            if (id != city.City_ID)
+            if (id != city.City_Id)
             {
                 return BadRequest();
             }
@@ -100,7 +110,7 @@ namespace Shiva_Enterprise_APIs.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_shivaEnterpriseContext.Cities.Any(x => x.City_ID == id))
+                if (!_shivaEnterpriseContext.Cities.Any(x => x.City_Id == id))
                 {
                     return NotFound();
                 }

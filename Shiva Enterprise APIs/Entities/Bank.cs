@@ -23,7 +23,7 @@ namespace Shiva_Enterprise_APIs.Entities
         [StringLength(100)]
         [Unicode(false)]
         public string? BankDescription { get; set; }
-        public bool BankStatus { get; set; }       
+        public bool IsActive { get; set; }       
 
         [Required]
         [StringLength(100)]

@@ -23,7 +23,7 @@ public class Program
         builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
                .AddEntityFrameworkStores<ShivaEnterpriseContext>()
                .AddDefaultTokenProviders();
-
+        builder.Services.AddMvc();
         // Adding Authentication
         builder.Services.AddAuthentication(options =>
         {
@@ -63,7 +63,6 @@ public class Program
         app.UseAuthorization();
 
         app.MapControllers();
-
         app.Run();
 
     }

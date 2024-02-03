@@ -12,7 +12,7 @@ namespace Shiva_Enterprise_APIs.Entities;
 public partial class Country
 {
     [Key]
-    public Guid Country_ID { get; set; }
+    public Guid Country_Id { get; set; }
 
     [StringLength(200)]
     public string Country_Name { get; set; }
@@ -20,11 +20,13 @@ public partial class Country
     [StringLength(100)]
     [Unicode(false)]
     public string Country_Code { get; set; }
+
+    public bool IsActive { get; set; }
     public string CreatedBy { get; set; }
     public DateTime CreatedDateTime { get; set; }
     public string? ModifiedBy { get; set; }
     public DateTime? ModifiedDateTime { get; set; }
 
     [InverseProperty("Country")]
-    public virtual ICollection<state> states { get; set; } = new List<state>();
+    public virtual ICollection<State> states { get; set; } = new List<State>();
 }

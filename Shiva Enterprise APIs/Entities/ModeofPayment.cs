@@ -23,7 +23,7 @@ namespace Shiva_Enterprise_APIs.Entities
         [StringLength(100)]
         [Unicode(false)]
         public string? MODDescription { get; set; }
-        public bool MODStatus { get; set; }
+        public bool IsActive { get; set; }
 
         [Required]
         [StringLength(50)]

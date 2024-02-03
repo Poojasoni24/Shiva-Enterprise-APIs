@@ -133,7 +133,7 @@ namespace Shiva_Enterprise_APIs.Controllers
                 Salesman_Name = salesmanAgentModel.Salesman_Name,
                 Salesman_email = salesmanAgentModel.Salesman_email,
                 Salesman_code = salesmanAgentModel.Salesman_code,
-                Status = salesmanAgentModel.Status,
+                IsActive = salesmanAgentModel.Status,
                 Salesmanphone = salesmanAgentModel.Salesmanphone,
                 CreatedBy = salesmanAgentModel.CreatedBy,
                 ModifiedBy = salesmanAgentModel.ModifiedBy,

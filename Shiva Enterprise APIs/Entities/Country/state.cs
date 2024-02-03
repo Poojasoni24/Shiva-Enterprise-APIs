@@ -9,16 +9,17 @@ using Microsoft.EntityFrameworkCore;
 namespace Shiva_Enterprise_APIs.Entities;
 
 [Table("state")]
-public partial class state
+public partial class State
 {
     [Key]
-    public Guid State_ID { get; set; }
+    public Guid State_Id { get; set; }
 
     [StringLength(200)]
     [Unicode(false)]
     public string State_Name { get; set; }
-    public string StateCode { get; set; }
-    public Guid? Country_ID { get; set; }
+    public string State_Code { get; set; }
+    public Guid? Country_Id { get; set; }
+    public bool IsActive { get; set; }
     public string CreatedBy { get; set; }
     public DateTime CreatedDateTime { get; set; }
     public string? ModifiedBy { get; set; }
@@ -27,7 +28,7 @@ public partial class state
     [InverseProperty("State")]
     public virtual ICollection<City> Cities { get; set; } = new List<City>();
 
-    [ForeignKey("Country_ID")]
+    [ForeignKey("Country_Id")]
     [InverseProperty("states")]
     public virtual Country Country { get; set; }
 }

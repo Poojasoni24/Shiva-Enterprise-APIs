@@ -23,7 +23,7 @@ namespace Shiva_Enterprise_APIs.Entities.Products
         [StringLength(100)]
         [Unicode(false)]
         public string? ProductGroupDescription { get; set; }
-        public bool ProductGroupStatus { get; set; }
+        public bool IsActive { get; set; }
 
         [Required]
         [StringLength(100)]

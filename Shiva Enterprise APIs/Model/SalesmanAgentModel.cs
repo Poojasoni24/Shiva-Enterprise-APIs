@@ -5,7 +5,7 @@
         public string Salesman_Name { get; set; }
         public string Salesman_email { get; set; }
         public string Salesman_code { get; set; }
-        public string Status { get; set; }
+        public bool Status { get; set; }
         public string Salesmanphone { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDateTime { get; set; }

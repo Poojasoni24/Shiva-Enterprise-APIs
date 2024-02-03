@@ -28,7 +28,7 @@ public partial class salesmanAgent
 
     [StringLength(20)]
     [Unicode(false)]
-    public string Status { get; set; }
+    public bool IsActive { get; set; }
 
     [Required]
     [StringLength(20)]

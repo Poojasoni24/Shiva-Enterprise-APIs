@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities;
+using Shiva_Enterprise_APIs.Model;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -45,7 +46,7 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpPost]
         [Route("AddCompany")]
-        public async Task<ActionResult<Company>> AddCompany(Company company)
+        public async Task<ActionResult<Company>> AddCompany(CompanyModel company)
         {
             var companyDetail = new Company()
             {
@@ -54,6 +55,8 @@ namespace Shiva_Enterprise_APIs.Controllers
                 Company_Startyear = company.Company_Startyear,
                 Company_Endyear = company.Company_Endyear,
                 IsActive = company.IsActive,
+                CreatedBy = company.CreatedBy,
+                CreatedDateTime = company.CreatedDateTime,
             };
 
             _shivaEnterpriseContext.Companies.Add(companyDetail);

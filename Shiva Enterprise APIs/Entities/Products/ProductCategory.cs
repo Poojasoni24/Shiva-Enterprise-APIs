@@ -24,7 +24,7 @@ namespace Shiva_Enterprise_APIs.Entities.Products
         [StringLength(100)]
         [Unicode(false)]
         public string? ProductCategoryDescription { get; set; }
-        public bool ProductCategoryStatus { get; set; }
+        public bool IsActive { get; set; }
 
         [Required]
         public string CreatedBy { get; set; }

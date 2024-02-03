@@ -36,7 +36,7 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
 
     public virtual DbSet<salesmanAgent> salesmanAgents { get; set; }
 
-    public virtual DbSet<state> states { get; set; }
+    public virtual DbSet<State> states { get; set; }
     public virtual DbSet<AccountGroup> accountGroups { get; set; }
     public virtual DbSet<AccountType> accountTypes { get; set; }
     public virtual DbSet<AccountCategory> accountCategories { get; set; }
@@ -60,7 +60,7 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=DESKTOP-MQBBGG8\\MSSQLSERVER19;Initial Catalog=ShivaEnterprise;User Id=sa;Password=yash6006;Integrated Security=true;TrustServerCertificate=True");
+        => optionsBuilder.UseSqlServer("Data Source=LAPTOP-DRBPPARM\\MSSQLSERVER2;Initial Catalog=ShivaEnterprise;User Id=sa;Password=Ps@1234;Integrated Security=true;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -78,9 +78,9 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
 
         modelBuilder.Entity<City>(entity =>
         {
-            entity.HasKey(e => e.City_ID).HasName("PK__city__DE9DE0205736F02F");
+            entity.HasKey(e => e.City_Id).HasName("PK__city__DE9DE0205736F02F");
 
-            entity.Property(e => e.City_ID).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.City_Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
 
             entity.HasOne(d => d.State).WithMany(p => p.Cities).HasConstraintName("FK_City_state");
@@ -95,9 +95,9 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
 
         modelBuilder.Entity<Country>(entity =>
         {
-            entity.HasKey(e => e.Country_ID).HasName("PK__country__8036CB4EB0037A51");
+            entity.HasKey(e => e.Country_Id).HasName("PK__country__8036CB4EB0037A51");
 
-            entity.Property(e => e.Country_ID).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Country_Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
         });
 
@@ -117,11 +117,11 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
             entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
         });
 
-        modelBuilder.Entity<state>(entity =>
+        modelBuilder.Entity<State>(entity =>
         {
-            entity.HasKey(e => e.State_ID).HasName("PK__state__AF9338D7D97D88B7");
+            entity.HasKey(e => e.State_Id).HasName("PK__state__AF9338D7D97D88B7");
 
-            entity.Property(e => e.State_ID).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.State_Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
 
             entity.HasOne(d => d.Country).WithMany(p => p.states).HasConstraintName("FK_state_Country");

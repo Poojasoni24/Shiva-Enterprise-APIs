@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities;
+using Shiva_Enterprise_APIs.Model;
 
 namespace Shiva_Enterprise_APIs.Controllers
 {
@@ -15,7 +16,7 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         public StateController(ShivaEnterpriseContext shivaEnterpriseContext)
         {
-            _shivaEnterpriseContext = shivaEnterpriseContext;
+                _shivaEnterpriseContext = shivaEnterpriseContext;
         }
 
         [HttpGet]
@@ -32,9 +33,9 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpGet]
         [Route("GetStateById")]
-        public async Task<IActionResult> GetStateById(string stateId)
+        public async Task<IActionResult> GetStateById(Guid stateId)
         {
-            if (string.IsNullOrEmpty(stateId))
+            if (stateId == Guid.Empty)
             {
                 throw new ArgumentNullException(nameof(stateId));
             }
@@ -50,7 +51,7 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpPost]
         [Route("AddState")]
-        public async Task<ActionResult<state>> AddState(state stateObj)
+        public async Task<ActionResult<State>> AddState(StateModel stateObj)
         {
             try
             {
@@ -58,7 +59,16 @@ namespace Shiva_Enterprise_APIs.Controllers
                 {
                     throw new ArgumentNullException(nameof(stateObj));
                 }
-                _shivaEnterpriseContext.states.Add(stateObj);
+                var stateDetail = new State()
+                {
+                    State_Code = stateObj.State_Code,
+                    State_Name = stateObj.State_Name,
+                    Country_Id = stateObj.Country_Id,
+                    CreatedBy = stateObj.CreatedBy,
+                    IsActive = stateObj.IsActive,
+                    CreatedDateTime = stateObj.CreatedDateTime,
+                };
+                _shivaEnterpriseContext.states.Add(stateDetail);
                 await _shivaEnterpriseContext.SaveChangesAsync();
                 return Ok("Added Successfully");
             }
@@ -70,7 +80,7 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpPost]
         [Route("DeleteState")]
-        public async Task<ActionResult<ApiResponseFormat>> DeleteState(string stateId)
+        public async Task<ActionResult<ApiResponseFormat>> DeleteState(Guid stateId)
         {
             var stateDetail = _shivaEnterpriseContext.states.Find(stateId);
             if (stateDetail != null)
@@ -87,9 +97,9 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpPut]
         [Route("EditState")]
-        public async Task<IActionResult> EditStateDetail(Guid id, state state)
+        public async Task<IActionResult> EditStateDetail(Guid id, State state)
         {
-            if (id != state.State_ID)
+            if (id != state.State_Id)
             {
                 return BadRequest();
             }
@@ -102,7 +112,7 @@ namespace Shiva_Enterprise_APIs.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_shivaEnterpriseContext.states.Any(x => x.State_ID == id))
+                if (!_shivaEnterpriseContext.states.Any(x => x.State_Id == id))
                 {
                     return NotFound();
                 }

@@ -50,11 +50,19 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpPost]
         [Route("AddCountry")]
-        public async Task<ActionResult<Country>> AddCountry(Country country)
+        public async Task<ActionResult<Country>> AddCountry(CountryModel country)
         {
             try
-            {               
-                _shivaEnterpriseContext.Countries.Add(country);
+            {
+                var countrydata = new Country()
+                {
+                    Country_Code = country.Country_Code,
+                    Country_Name = country.Country_Name,
+                    IsActive = country.IsActive,
+                    CreatedBy = country.CreatedBy,
+                    CreatedDateTime = country.CreatedDateTime,
+                };
+                _shivaEnterpriseContext.Countries.Add(countrydata);
                 await _shivaEnterpriseContext.SaveChangesAsync();
                 return Ok("Added Successfully");
             }
@@ -85,7 +93,7 @@ namespace Shiva_Enterprise_APIs.Controllers
         [Route("EditCountry")]
         public async Task<IActionResult> EditCountryDetail(Guid id, Country country)
         {
-            if (id != country.Country_ID)
+            if (id != country.Country_Id)
             {
                 return BadRequest();
             }
@@ -98,7 +106,7 @@ namespace Shiva_Enterprise_APIs.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_shivaEnterpriseContext.Countries.Any(x => x.Country_ID == id))
+                if (!_shivaEnterpriseContext.Countries.Any(x => x.Country_Id == id))
                 {
                     return NotFound();
                 }
