@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities;
+using Shiva_Enterprise_APIs.Entities.Accounts;
 using Shiva_Enterprise_APIs.Entities.Authentication;
 using Shiva_Enterprise_APIs.Model;
 
@@ -53,30 +54,32 @@ namespace Shiva_Enterprise_APIs.Controllers
         [Route("AddsalesmanAgent")]
         public async Task<ActionResult<SalesmanAgentModel>> AddsalesmanAgent(SalesmanAgentModel salesmanAgent)
         {
-            try
+            try { 
+            if (salesmanAgent is null)
             {
-                var SalesmanAgentdetail = new SalesmanAgentModel()
-                {
-                    Salesman_Name = salesmanAgent.Salesman_Name,
-                    Salesman_email = salesmanAgent.Salesman_email,
-                    Salesman_code = salesmanAgent.Salesman_code,
-                    Status = salesmanAgent.Status,
-                    Salesmanphone = salesmanAgent.Salesmanphone,
-                    CreatedBy = salesmanAgent.CreatedBy,
-                    ModifiedBy = salesmanAgent.ModifiedBy,
-
-                    
-                };
-
-                _shivaEnterpriseContext.salesmanAgents.Add(ModelToEntity(SalesmanAgentdetail));
-                await _shivaEnterpriseContext.SaveChangesAsync();
-                return Ok("Added Successfully");
+                throw new ArgumentNullException(nameof(salesmanAgent));
             }
+            var SalesmanAgentdetail = new salesmanAgent()
+            {
+                Salesman_Name = salesmanAgent.Salesman_Name,
+                Salesman_email = salesmanAgent.Salesman_email,
+                Salesman_code = salesmanAgent.Salesman_code,
+                IsActive = salesmanAgent.IsActive,
+                Salesmanphone = salesmanAgent.Salesmanphone,
+                CreatedBy = salesmanAgent.CreatedBy,
+                CreatedDateTime = salesmanAgent.CreatedDateTime,
+            };
+
+            _shivaEnterpriseContext.salesmanAgents.Add(SalesmanAgentdetail);
+            await _shivaEnterpriseContext.SaveChangesAsync();
+            return Ok("Added Successfully");
+        }
             catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Something Went Wrong");
-            }
-        }
+    }
+}
+
 
         [HttpPost]
         [Route("DeleteSalesmanAgent")]
@@ -126,26 +129,26 @@ namespace Shiva_Enterprise_APIs.Controllers
         }
 
         #region Private Method
-        private salesmanAgent ModelToEntity(SalesmanAgentModel salesmanAgentModel)      
+        private salesmanAgent ModelToEntity(SalesmanAgentModel salesmanAgentModel)
         {
             return new salesmanAgent()
             {
                 Salesman_Name = salesmanAgentModel.Salesman_Name,
                 Salesman_email = salesmanAgentModel.Salesman_email,
                 Salesman_code = salesmanAgentModel.Salesman_code,
-                IsActive = salesmanAgentModel.Status,
+                IsActive = salesmanAgentModel.IsActive,
                 Salesmanphone = salesmanAgentModel.Salesmanphone,
                 CreatedBy = salesmanAgentModel.CreatedBy,
                 ModifiedBy = salesmanAgentModel.ModifiedBy,
                 CreatedDateTime = salesmanAgentModel.CreatedDateTime,
                 ModifiedDateTime = salesmanAgentModel.ModifiedDateTime,
 
-                
+
             };
         }
         #endregion
 
     }
-    
-    }
+
+}
 

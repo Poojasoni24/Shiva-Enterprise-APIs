@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities;
+using Shiva_Enterprise_APIs.Entities.TransportEntities;
+using Shiva_Enterprise_APIs.Model;
 
 namespace Shiva_Enterprise_APIs.Controllers
 {
@@ -48,15 +50,26 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpPost]
         [Route("AddModeofPayment")]
-        public async Task<ActionResult<ModeofPayment>> AddModeofPayment(ModeofPayment addModeofPaymentObj)
+        public async Task<ActionResult<ModeofPayment>> AddModeofPayment(ModeofPaymentModel modeofPayment)
         {
             try
             {
-                if (addModeofPaymentObj is null)
+                if (modeofPayment is null)
                 {
-                    throw new ArgumentNullException(nameof(addModeofPaymentObj));
+                    throw new ArgumentNullException(nameof(modeofPayment));
                 }
-                _shivaEnterpriseContext.ModeofPayments.Add(addModeofPaymentObj);
+                var ModeofPaymentDetail = new ModeofPayment()
+                {
+                    MODCode = modeofPayment.MODCode,
+                    MODName = modeofPayment.MODName,
+                    MODDescription = modeofPayment.MODDescription,
+                    IsActive = modeofPayment.IsActive,
+                    MODType= modeofPayment. MODType,
+                    MODAccount= modeofPayment.MODAccount,
+                    CreatedBy = modeofPayment.CreatedBy,
+                    CreatedDateTime = modeofPayment.CreatedDateTime,
+                };
+                _shivaEnterpriseContext.ModeofPayments.Add(ModeofPaymentDetail);
                 await _shivaEnterpriseContext.SaveChangesAsync();
                 return Ok("Added Successfully");
             }

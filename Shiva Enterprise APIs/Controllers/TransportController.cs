@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities;
 using Shiva_Enterprise_APIs.Entities.Accounts;
+using Shiva_Enterprise_APIs.Entities.TaxEntities;
 using Shiva_Enterprise_APIs.Entities.TransportEntities;
 using Shiva_Enterprise_APIs.Model.Transport;
 
@@ -52,15 +53,24 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpPost]
         [Route("AddTransport")]
-        public async Task<ActionResult<TransportModel>> AddTransport(Transport addTransportObj)
+        public async Task<ActionResult<TransportModel>> AddTransport(TransportModel transport)
         {
             try
             {
-                if (addTransportObj is null)
+                if (transport is null)
                 {
-                    throw new ArgumentNullException(nameof(addTransportObj));
+                    throw new ArgumentNullException(nameof(transport));
                 }
-                _shivaEnterpriseContext.Transports.Add(addTransportObj);
+                var TransportDetail = new Transport()
+                {
+                    TransportCode = transport.TransportCode,
+                    TransportName = transport.TransportName,
+                    TransportDescription = transport.TransportDescription,
+                    IsActive = transport.IsActive,
+                    CreatedBy = transport.CreatedBy,
+                    CreatedDateTime = transport.CreatedDateTime,
+                };
+                _shivaEnterpriseContext.Transports.Add(TransportDetail);
                 await _shivaEnterpriseContext.SaveChangesAsync();
                 return Ok("Added Successfully");
             }

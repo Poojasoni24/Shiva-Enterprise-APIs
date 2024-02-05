@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities;
 using Shiva_Enterprise_APIs.Entities.TaxEntities;
+using Shiva_Enterprise_APIs.Model.Tax;
 
 namespace Shiva_Enterprise_APIs.Controllers
 {
@@ -49,15 +50,26 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpPost]
         [Route("AddTax")]
-        public async Task<ActionResult<Tax>> AddTax(Tax addTaxObj)
+        public async Task<ActionResult<Tax>> AddTax(TaxModel tax)
         {
             try
             {
-                if (addTaxObj is null)
+                if (tax is null)
                 {
-                    throw new ArgumentNullException(nameof(addTaxObj));
+                    throw new ArgumentNullException(nameof(tax));
                 }
-                _shivaEnterpriseContext.Taxes.Add(addTaxObj);
+                var TaxDetail = new Tax()
+                {
+                    TaxCode = tax.TaxCode,
+                    TaxName = tax.TaxName,
+                    TaxDescription = tax.TaxDescription,
+                    IsActive = tax.IsActive,
+                    TaxType= tax.TaxType,
+                    TaxRate= tax.TaxRate,
+                    CreatedBy = tax.CreatedBy,
+                    CreatedDateTime = tax.CreatedDateTime,
+                };
+                _shivaEnterpriseContext.Taxes.Add(TaxDetail);
                 await _shivaEnterpriseContext.SaveChangesAsync();
                 return Ok("Added Successfully");
             }
@@ -71,7 +83,7 @@ namespace Shiva_Enterprise_APIs.Controllers
         [Route("DeleteTax")]
         public async Task<ActionResult<ApiResponseFormat>> DeleteTax(Guid taxId)
         {
-            var deleteTax = _shivaEnterpriseContext.Banks.Find(taxId);
+            var deleteTax = _shivaEnterpriseContext.Taxes.Find(taxId);
             if (deleteTax != null)
             {
                 _shivaEnterpriseContext.Entry(deleteTax).State = EntityState.Deleted;

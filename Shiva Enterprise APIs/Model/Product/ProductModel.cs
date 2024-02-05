@@ -9,7 +9,7 @@ namespace Shiva_Enterprise_APIs.Model.Product
         public string ProductCode { get; set; }
         public string ProductName { get; set; }
         public string? ProductDescription { get; set; }
-        public bool ProductStatus { get; set; }
+        public bool IsActive { get; set; }
         public string ProductImage { get; set; }
         public Guid ProductCategoryId { get; set; }
         public Guid ProductGroupId { get; set; }

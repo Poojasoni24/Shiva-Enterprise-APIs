@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities;
+
 using Shiva_Enterprise_APIs.Entities.Accounts;
+using Shiva_Enterprise_APIs.Model;
+using Shiva_Enterprise_APIs.Model.Account;
 
 namespace Shiva_Enterprise_APIs.Controllers
 {
@@ -47,24 +50,49 @@ namespace Shiva_Enterprise_APIs.Controllers
         }
 
 
+        //   [HttpPost]
+        //[Route("AddAccountType")]
+        //public async Task<ActionResult<AccountType>> AddAccountType(AccountType accounttype)
+        //{
+        //  var accounttypeDetail = new AccountType()
+        //{ }
+        //try
+        //{
+        //  if (addAccountTypeObj is null)
+        //{
+        //  throw new ArgumentNullException(nameof(addAccountTypeObj));
+        //}
+        //_shivaEnterpriseContext.accountTypes.Add(addAccountTypeObj);
+        //await _shivaEnterpriseContext.SaveChangesAsync();
+        //return Ok("Added Successfully");
+        //}
+        //catch (Exception)
+        //{
+        //    return StatusCode(StatusCodes.Status500InternalServerError, "Something Went Wrong");
+        //  }
+        //}
         [HttpPost]
         [Route("AddAccountType")]
-        public async Task<ActionResult<AccountType>> AddAccountType(AccountType addAccountTypeObj)
+        public async Task<ActionResult<AccountType>> AddAccountType(AccountTypeModel accountType)
         {
-            try
+            if (accountType is null)
             {
-                if (addAccountTypeObj is null)
-                {
-                    throw new ArgumentNullException(nameof(addAccountTypeObj));
-                }
-                _shivaEnterpriseContext.accountTypes.Add(addAccountTypeObj);
-                await _shivaEnterpriseContext.SaveChangesAsync();
-                return Ok("Added Successfully");
+                throw new ArgumentNullException(nameof(accountType));
             }
-            catch (Exception)
+            var AccountTypeDetail = new AccountType()
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Something Went Wrong");
-            }
+                AccountTypeCode = accountType.AccountTypeCode,
+                AccountTypeName = accountType.AccountTypeName,
+                AccountTypeDescription=accountType.AccountTypeDescription,
+                IsActive = accountType.IsActive,
+                CreatedBy = accountType.CreatedBy,
+                CreatedDateTime = accountType.CreatedDateTime,
+            };
+
+            _shivaEnterpriseContext.accountTypes.Add(AccountTypeDetail);
+            await _shivaEnterpriseContext.SaveChangesAsync();
+            
+            return Ok("Added Successfully");
         }
 
         [HttpPost]

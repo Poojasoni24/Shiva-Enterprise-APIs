@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities;
 using Shiva_Enterprise_APIs.Entities.Accounts;
+using Shiva_Enterprise_APIs.Model.Account;
 
 namespace Shiva_Enterprise_APIs.Controllers
 {
@@ -49,15 +50,27 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpPost]
         [Route("AddAccount")]
-        public async Task<ActionResult<Account>> AddAccount(Account addAccountObj)
+        public async Task<ActionResult<Account>> AddAccount(AccountModel account)
         {
             try
             {
-                if (addAccountObj is null)
+                if (account is null)
                 {
-                    throw new ArgumentNullException(nameof(addAccountObj));
+                    throw new ArgumentNullException(nameof(account));
                 }
-                _shivaEnterpriseContext.accounts.Add(addAccountObj);
+                var AccountDetail = new Account()
+                {
+                    AccountCode = account.AccountCode,
+                    AccontName = account.AccountName,
+                    AccountDescription = account.AccountDescription,
+                    IsActive = account.IsActive,
+                    AccountGroupId = account.AccountGroupId,
+                    AccountTypeId = account.AccountTypeId,
+                    AccountCategoryId = account.AccountCategoryId,
+                    CreatedBy = account.CreatedBy,
+                    CreatedDateTime = account.CreatedDateTime,
+                };
+                _shivaEnterpriseContext.accounts.Add(AccountDetail);
                 await _shivaEnterpriseContext.SaveChangesAsync();
                 return Ok("Added Successfully");
             }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities;
 using Shiva_Enterprise_APIs.Entities.Products;
+using Shiva_Enterprise_APIs.Model.Product;
 
 
 namespace Shiva_Enterprise_APIs.Controllers
@@ -50,15 +51,24 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpPost]
         [Route("AddProductGroup")]
-        public async Task<ActionResult<ProductGroup>> AddProductGroup(ProductGroup addProductGroupObj)
+        public async Task<ActionResult<ProductGroup>> AddProductGroup(ProductGroupModel productGroup)
         {
             try
             {
-                if (addProductGroupObj is null)
+                if (productGroup is null)
                 {
-                    throw new ArgumentNullException(nameof(addProductGroupObj));
+                    throw new ArgumentNullException(nameof(productGroup));
                 }
-                _shivaEnterpriseContext.productGroups.Add(addProductGroupObj);
+                var ProductGroupDetail = new ProductGroup()
+                {
+                    ProductGroupCode = productGroup.ProductGroupCode,
+                    ProductGroupName = productGroup.ProductGroupName,
+                    ProductGroupDescription = productGroup.ProductGroupDescription,
+                    IsActive = productGroup.IsActive,
+                    CreatedBy = productGroup.CreatedBy,
+                    CreatedDateTime = productGroup.CreatedDateTime,
+                };
+                _shivaEnterpriseContext.productGroups.Add(ProductGroupDetail);
                 await _shivaEnterpriseContext.SaveChangesAsync();
                 return Ok("Added Successfully");
             }

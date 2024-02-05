@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities;
+using Shiva_Enterprise_APIs.Entities.Accounts;
 using Shiva_Enterprise_APIs.Entities.Products;
+using Shiva_Enterprise_APIs.Model.Product;
 
 namespace Shiva_Enterprise_APIs.Controllers
 {
@@ -48,15 +50,24 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpPost]
         [Route("AddProductCategory")]
-        public async Task<ActionResult<ProductCategory>> AddProductCategory(ProductCategory addProductCategoryObj)
+        public async Task<ActionResult<ProductCategory>> AddProductCategory(ProductCategoryModel productCategory)
         {
             try
             {
-                if (addProductCategoryObj is null)
+                if (productCategory is null)
                 {
-                    throw new ArgumentNullException(nameof(addProductCategoryObj));
+                    throw new ArgumentNullException(nameof(productCategory));
                 }
-                _shivaEnterpriseContext.productCategories.Add(addProductCategoryObj);
+                var ProductCategoryDetail = new ProductCategory()
+                {
+                    ProductCategoryCode = productCategory.ProductCategoryCode,
+                    ProductCategoryName = productCategory.ProductCategoryName,
+                    ProductCategoryDescription = productCategory.ProductCategoryDescription,
+                    IsActive = productCategory.IsActive,
+                    CreatedBy = productCategory.CreatedBy,
+                    CreatedDateTime = productCategory.CreatedDateTime,
+                };
+                _shivaEnterpriseContext.productCategories.Add(ProductCategoryDetail);
                 await _shivaEnterpriseContext.SaveChangesAsync();
                 return Ok("Added Successfully");
             }

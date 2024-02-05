@@ -8,7 +8,7 @@ namespace Shiva_Enterprise_APIs.Model.Product
         public string ProductCategoryCode { get; set; }
         public string ProductCategoryName { get; set; }
         public string? ProductCategoryDescription { get; set; }
-        public bool ProductCategoryStatus { get; set; }
+        public bool IsActive { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDateTime { get; set; }
         public string? ModifiedBy { get; set; }

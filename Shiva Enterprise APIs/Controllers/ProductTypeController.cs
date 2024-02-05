@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities;
 using Shiva_Enterprise_APIs.Entities.Products;
+using Shiva_Enterprise_APIs.Model.Product;
 
 
 namespace Shiva_Enterprise_APIs.Controllers
@@ -50,15 +51,24 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpPost]
         [Route("AddProductType")]
-        public async Task<ActionResult<ProductType>> AddProductType(ProductType addProductTypeObj)
+        public async Task<ActionResult<ProductType>> AddProductType(ProductTypeModel productType)
         {
             try
             {
-                if (addProductTypeObj is null)
+                if (productType is null)
                 {
-                    throw new ArgumentNullException(nameof(addProductTypeObj));
+                    throw new ArgumentNullException(nameof(productType));
                 }
-                _shivaEnterpriseContext.productTypes.Add(addProductTypeObj);
+                var ProductTypeDetail = new ProductType()
+                {
+                    ProductTypeCode = productType.ProductTypeCode,
+                    ProductTypeName = productType.ProductTypeName,
+                    ProductTypeDescription = productType.ProductTypeDescription,
+                    IsActive = productType.IsActive,
+                    CreatedBy = productType.CreatedBy,
+                    CreatedDateTime = productType.CreatedDateTime,
+                };
+                _shivaEnterpriseContext.productTypes.Add(ProductTypeDetail);
                 await _shivaEnterpriseContext.SaveChangesAsync();
                 return Ok("Added Successfully");
             }

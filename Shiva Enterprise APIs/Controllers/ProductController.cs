@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities;
 using Shiva_Enterprise_APIs.Entities.Accounts;
 using Shiva_Enterprise_APIs.Entities.Products;
+using Shiva_Enterprise_APIs.Model.Product;
 
 namespace Shiva_Enterprise_APIs.Controllers
 {
@@ -50,15 +51,27 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpPost]
         [Route("AddProduct")]
-        public async Task<ActionResult<Product>> AddProduct(Product addProductObj)
+        public async Task<ActionResult<Product>> AddProduct(ProductModel product)
         {
             try
             {
-                if (addProductObj is null)
+                if (product is null)
                 {
-                    throw new ArgumentNullException(nameof(addProductObj));
+                    throw new ArgumentNullException(nameof(product));
                 }
-                _shivaEnterpriseContext.products.Add(addProductObj);
+                var ProductDetail = new Product()
+                {
+                    ProductCode = product.ProductCode,
+                    ProductName = product.ProductName,
+                    ProductDescription = product.ProductDescription,
+                    IsActive = product.IsActive,
+                    ProductCategoryId = product.ProductCategoryId,
+                    ProductGroupId = product.ProductGroupId,
+                    ProductTypeId = product.ProductTypeId,
+                    CreatedBy = product.CreatedBy,
+                    CreatedDateTime = product.CreatedDateTime,
+                };
+                _shivaEnterpriseContext.products.Add(ProductDetail);
                 await _shivaEnterpriseContext.SaveChangesAsync();
                 return Ok("Added Successfully");
             }

@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities;
 using Shiva_Enterprise_APIs.Entities.Accounts;
+using Shiva_Enterprise_APIs.Model;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace Shiva_Enterprise_APIs.Controllers
 {
     [Authorize]
@@ -48,15 +50,24 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpPost]
         [Route("AddBank")]
-        public async Task<ActionResult<Bank>> AddBank(Bank addBankObj)
+        public async Task<ActionResult<Bank>> AddBank(BankModel bank)
         {
             try
             {
-                if (addBankObj is null)
+                if (bank is null)
                 {
-                    throw new ArgumentNullException(nameof(addBankObj));
+                    throw new ArgumentNullException(nameof(bank));
                 }
-                _shivaEnterpriseContext.Banks.Add(addBankObj);
+                var BankDetail = new Bank()
+                {
+                    BankCode = bank.BankCode,
+                    BankName = bank.BankName,
+                    BankDescription = bank.BankDescription,
+                    IsActive = bank.IsActive,
+                    CreatedBy = bank.CreatedBy,
+                    CreatedDateTime = bank.CreatedDateTime,
+                };
+                _shivaEnterpriseContext.Banks.Add(BankDetail);
                 await _shivaEnterpriseContext.SaveChangesAsync();
                 return Ok("Added Successfully");
             }
