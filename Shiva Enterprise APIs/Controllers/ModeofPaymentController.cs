@@ -23,7 +23,7 @@ namespace Shiva_Enterprise_APIs.Controllers
         [Route("GetModeofPayment")]
         public async Task<ActionResult> GetAllModeofPayment()
         {
-            var mod = await _shivaEnterpriseContext.ModeofPayments.ToListAsync();
+             var mod = await _shivaEnterpriseContext.ModeofPayments.ToListAsync();
 
             if (mod == null)
                 return NotFound();
@@ -32,14 +32,14 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpGet]
         [Route("GetModById")]
-        public async Task<ActionResult> GetModById(Guid modId)
+        public async Task<ActionResult> GetModById(Guid modeofPaymentId)
         {
-            if (modId == Guid.Empty)
+            if (modeofPaymentId == Guid.Empty)
             {
-                throw new ArgumentNullException(nameof(modId));
+                throw new ArgumentNullException(nameof(modeofPaymentId));
             }
 
-            var modData = await _shivaEnterpriseContext.ModeofPayments.FindAsync(modId);
+            var modData = await _shivaEnterpriseContext.ModeofPayments.FindAsync(modeofPaymentId);
             if (modData == null)
             {
                 return BadRequest("No ModeofPayments data Find");
@@ -81,9 +81,9 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpPost]
         [Route("DeleteModeofPayment")]
-        public async Task<ActionResult<ApiResponseFormat>> DeleteModeofPayment(Guid modId)
+        public async Task<ActionResult<ApiResponseFormat>> DeleteModeofPayment(Guid modeofPaymentId)
         {
-            var deleteModeofPayment = _shivaEnterpriseContext.ModeofPayments.Find(modId);
+            var deleteModeofPayment = _shivaEnterpriseContext.ModeofPayments.Find(modeofPaymentId);
             if (deleteModeofPayment != null)
             {
                 _shivaEnterpriseContext.Entry(deleteModeofPayment).State = EntityState.Deleted;

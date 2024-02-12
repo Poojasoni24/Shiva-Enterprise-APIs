@@ -81,9 +81,9 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpPost]
         [Route("DeleteTax")]
-        public async Task<ActionResult<ApiResponseFormat>> DeleteTax(Guid taxId)
+        public async Task<ActionResult<ApiResponseFormat>> DeleteTax(Guid TaxId)
         {
-            var deleteTax = _shivaEnterpriseContext.Taxes.Find(taxId);
+            var deleteTax = _shivaEnterpriseContext.Taxes.Find(TaxId);
             if (deleteTax != null)
             {
                 _shivaEnterpriseContext.Entry(deleteTax).State = EntityState.Deleted;
