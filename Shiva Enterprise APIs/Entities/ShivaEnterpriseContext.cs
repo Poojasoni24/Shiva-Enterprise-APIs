@@ -48,6 +48,7 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
     public virtual DbSet<Bank> Banks { get; set; }
 
     public virtual DbSet<Brand> Brands { get; set; }
+    public virtual DbSet<Unit> Units { get; set; }
     public virtual DbSet<ModeofPayment> ModeofPayments { get; set; }
     public virtual DbSet<Tax> Taxes { get; set; }
     public virtual DbSet<Transport> Transports { get; set; }
@@ -205,6 +206,14 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
             entity.HasKey(e => e.BrandId).HasName("PK__brand__B94AD674532DF6E8");
 
             entity.Property(e => e.BrandId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.ModifiedDateTime).HasDefaultValueSql("(getdate())");
+        });
+        modelBuilder.Entity<Unit>(entity =>
+        {
+            entity.HasKey(e => e.UnitId).HasName("PK__brand__B94AD674532DF6E8");
+
+            entity.Property(e => e.UnitId).HasDefaultValueSql("(newid())");
             entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.ModifiedDateTime).HasDefaultValueSql("(getdate())");
         });
