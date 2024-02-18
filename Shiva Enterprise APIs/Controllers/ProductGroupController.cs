@@ -70,7 +70,7 @@ namespace Shiva_Enterprise_APIs.Controllers
                 };
                 _shivaEnterpriseContext.productGroups.Add(ProductGroupDetail);
                 await _shivaEnterpriseContext.SaveChangesAsync();
-                return Ok("Added Successfully");
+                return Ok("Added Successfully");    
             }
             catch (Exception)
             {

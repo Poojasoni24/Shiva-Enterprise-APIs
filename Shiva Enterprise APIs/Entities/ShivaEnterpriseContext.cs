@@ -48,6 +48,7 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
     public virtual DbSet<Bank> Banks { get; set; }
 
     public virtual DbSet<Brand> Brands { get; set; }
+    public virtual DbSet<Issue> Issues { get; set; }
     public virtual DbSet<Unit> Units { get; set; }
     public virtual DbSet<ModeofPayment> ModeofPayments { get; set; }
     public virtual DbSet<Tax> Taxes { get; set; }
