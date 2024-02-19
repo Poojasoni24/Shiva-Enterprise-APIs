@@ -40,7 +40,7 @@ namespace Shiva_Enterprise_APIs.Controllers
                 throw new ArgumentNullException(nameof(productId));
             }
 
-            var productData = await _shivaEnterpriseContext.accounts.FindAsync(productId);
+            var productData = await _shivaEnterpriseContext.products.FindAsync(productId);
             if (productData == null)
             {
                 return BadRequest("No Product Find");
@@ -64,6 +64,7 @@ namespace Shiva_Enterprise_APIs.Controllers
                     ProductCode = product.ProductCode,
                     ProductName = product.ProductName,
                     ProductDescription = product.ProductDescription,
+                    ProductImage = product.ProductImage,
                     IsActive = product.IsActive,
                     ProductCategoryId = product.ProductCategoryId,
                     ProductGroupId = product.ProductGroupId,
@@ -85,7 +86,7 @@ namespace Shiva_Enterprise_APIs.Controllers
         [Route("DeleteProduct")]
         public async Task<ActionResult<ApiResponseFormat>> DeleteProduct(Guid productId)
         {
-            var deleteProduct = _shivaEnterpriseContext.accounts.Find(productId);
+            var deleteProduct = _shivaEnterpriseContext.products.Find(productId);
             if (deleteProduct != null)
             {
                 _shivaEnterpriseContext.Entry(deleteProduct).State = EntityState.Deleted;

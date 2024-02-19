@@ -40,7 +40,7 @@ namespace Shiva_Enterprise_APIs.Controllers
                 throw new ArgumentNullException(nameof(productGroupId));
             }
 
-            var productGroupData = await _shivaEnterpriseContext.accountGroups.FindAsync(productGroupId);
+            var productGroupData = await _shivaEnterpriseContext.productGroups.FindAsync(productGroupId);
             if (productGroupData == null)
             {
                 return BadRequest("No ProductGroups Find");
