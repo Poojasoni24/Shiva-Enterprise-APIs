@@ -29,10 +29,6 @@ namespace Shiva_Enterprise_APIs.Entities.Products
         [StringLength(100)]
         [Unicode(false)]
         public string CreatedBy { get; set; }
-
-        [Required]
-        [StringLength(100)]
-        [Unicode(false)]
         public DateTime CreatedDateTime { get; set; }
         public string? ModifiedBy { get; set; }
         public DateTime? ModifiedDateTime { get; set; }
