@@ -51,6 +51,7 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
     public virtual DbSet<ModeofPayment> ModeofPayments { get; set; }
     public virtual DbSet<Tax> Taxes { get; set; }
     public virtual DbSet<Transport> Transports { get; set; }
+    public virtual DbSet<Vendor> Vendors { get; set; }
     public DbSet<ApplicationUser> applicationUsers { get; set; }
     public DbSet<ApplicationRole> applicationRoles { get; set; }
     public DbSet<IdentityUserClaim<Guid>> IdentityUserClaims { get; set; }
@@ -62,8 +63,8 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-      // => optionsBuilder.UseSqlServer("Data Source=LAPTOP-DRBPPARM\\MSSQLSERVER2;Initial Catalog=ShivaEnterprise;User Id=sa;Password=Ps@1234;Integrated Security=true;TrustServerCertificate=True");
-        => optionsBuilder.UseSqlServer("Data Source=DESKTOP-MQBBGG8\\MSSQLSERVER19;Initial Catalog=ShivaEnterprise;User Id=sa;Password=yash6006;Integrated Security=true;TrustServerCertificate=True");
+       => optionsBuilder.UseSqlServer("Data Source=LAPTOP-DRBPPARM\\MSSQLSERVER2;Initial Catalog=ShivaEnterprise;User Id=sa;Password=Ps@1234;Integrated Security=true;TrustServerCertificate=True");
+        //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-MQBBGG8\\MSSQLSERVER19;Initial Catalog=ShivaEnterprise;User Id=sa;Password=yash6006;Integrated Security=true;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -261,6 +262,17 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
             entity.HasOne(d => d.ProductType).WithMany(p => p.Products).HasConstraintName("FK_product_producttype");
             entity.HasOne(d => d.ProductCategory).WithMany(p => p.Products).HasConstraintName("FK_product_productcategory");
         });
+        modelBuilder.Entity<Vendor>(entity =>
+        {
+            entity.HasKey(e => e.VendorId).HasName("PK__vendor__B94AD674532DF6E8");
+
+            entity.Property(e => e.VendorId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.ModifiedDateTime).HasDefaultValueSql("(getdate())");
+            entity.HasOne(d => d.Bank).WithMany(p => p.Vendors).HasConstraintName("FK_vendor_bank");
+            entity.HasOne(d => d.Tax).WithMany(p => p.Vendors).HasConstraintName("FK_vendor_tax");
+        });
+        
 
         OnModelCreatingPartial(modelBuilder);
     }

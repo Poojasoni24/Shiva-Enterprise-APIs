@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Shiva_Enterprise_APIs.Entities.Products;
+using Shiva_Enterprise_APIs.Entities.TransportEntities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -34,5 +36,8 @@ namespace Shiva_Enterprise_APIs.Entities
         public DateTime CreatedDateTime { get; set; }
         public string? ModifiedBy { get; set; }
         public DateTime? ModifiedDateTime { get; set; }
+
+        [InverseProperty("Bank")]
+        public virtual ICollection<Vendor> Vendors { get; set; } = new List<Vendor>();
     }
 }
