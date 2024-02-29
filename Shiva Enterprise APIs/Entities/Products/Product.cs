@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities.Accounts;
+using Shiva_Enterprise_APIs.Entities.Purchase;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -51,6 +52,9 @@ namespace Shiva_Enterprise_APIs.Entities.Products
         [ForeignKey("ProductCategoryId")]
         [InverseProperty("Products")]
         public virtual ProductCategory ProductCategory { get; set; }
+
+        [InverseProperty("Product")]
+        public virtual ICollection<PurchaseOrderDetail> PurchaseOrderDetail { get; set; } = new List<PurchaseOrderDetail>();
 
     }
 }

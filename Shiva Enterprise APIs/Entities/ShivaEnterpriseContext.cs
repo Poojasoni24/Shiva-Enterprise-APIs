@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities.Accounts;
 using Shiva_Enterprise_APIs.Entities.Authentication;
 using Shiva_Enterprise_APIs.Entities.Products;
+using Shiva_Enterprise_APIs.Entities.Purchase;
 using Shiva_Enterprise_APIs.Entities.TaxEntities;
 using Shiva_Enterprise_APIs.Entities.TransportEntities;
 
@@ -52,6 +53,8 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
     public virtual DbSet<Tax> Taxes { get; set; }
     public virtual DbSet<Transport> Transports { get; set; }
     public virtual DbSet<Vendor> Vendors { get; set; }
+    public virtual DbSet<PurchaseOrder> PurchaseOrders { get; set; }
+    public virtual DbSet<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
     public DbSet<ApplicationUser> applicationUsers { get; set; }
     public DbSet<ApplicationRole> applicationRoles { get; set; }
     public DbSet<IdentityUserClaim<Guid>> IdentityUserClaims { get; set; }
@@ -272,7 +275,28 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
             entity.HasOne(d => d.Bank).WithMany(p => p.Vendors).HasConstraintName("FK_vendor_bank");
             entity.HasOne(d => d.Tax).WithMany(p => p.Vendors).HasConstraintName("FK_vendor_tax");
         });
-        
+        modelBuilder.Entity<PurchaseOrder>(entity =>
+        {
+            entity.HasKey(e => e.PurchaseOrderId).HasName("PK__purchaseorder__B94AD674532DF6E8");
+
+            entity.Property(e => e.PurchaseOrderId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.ModifiedDateTime).HasDefaultValueSql("(getdate())");
+            entity.HasOne(d => d.Vendor).WithMany(p => p.PurchaseOrder).HasConstraintName("FK_purchaseorder_vendor");
+        });
+        modelBuilder.Entity<PurchaseOrderDetail>(entity =>
+        {
+            entity.HasKey(e => e.PurchaseOrderId).HasName("PK__purchaseorderdetail__B94AD674532DF6E8");
+
+            entity.Property(e => e.PurchaseOrderId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.ModifiedDateTime).HasDefaultValueSql("(getdate())");
+            entity.HasOne(d => d.Brand).WithMany(p => p.PurchaseOrderDetail).HasConstraintName("FK_purchaseorderdetail_bank");
+            entity.HasOne(d => d.Unit).WithMany(p => p.PurchaseOrderDetail).HasConstraintName("FK_purchaseorderdetail_tax");
+            entity.HasOne(d => d.Product).WithMany(p => p.PurchaseOrderDetail).HasConstraintName("FK_purchaseorderdetail_product");
+            entity.HasOne(d => d.PurchaseOrder).WithMany(p => p.PurchaseOrderDetail).HasConstraintName("FK_purchaseorderdetail_purchaseorder");
+        });
+
 
         OnModelCreatingPartial(modelBuilder);
     }

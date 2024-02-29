@@ -3,6 +3,7 @@ using Shiva_Enterprise_APIs.Entities.Products;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Shiva_Enterprise_APIs.Entities.TaxEntities;
+using Shiva_Enterprise_APIs.Entities.Purchase;
 
 namespace Shiva_Enterprise_APIs.Entities.TransportEntities
 {
@@ -67,5 +68,8 @@ namespace Shiva_Enterprise_APIs.Entities.TransportEntities
         public DateTime CreatedDateTime { get; set; }
         public string? ModifiedBy { get; set; }
         public DateTime? ModifiedDateTime { get; set; }
+
+        [InverseProperty("Vendor")]
+        public virtual ICollection<PurchaseOrder> PurchaseOrder { get; set; } = new List<PurchaseOrder>();
     }
 }

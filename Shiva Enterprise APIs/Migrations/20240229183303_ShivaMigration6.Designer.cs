@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shiva_Enterprise_APIs.Entities;
 
@@ -11,9 +12,11 @@ using Shiva_Enterprise_APIs.Entities;
 namespace Shiva_Enterprise_APIs.Migrations
 {
     [DbContext(typeof(ShivaEnterpriseContext))]
-    partial class ShivaEnterpriseContextModelSnapshot : ModelSnapshot
+    [Migration("20240229183303_ShivaMigration6")]
+    partial class ShivaMigration6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,7 +69,7 @@ namespace Shiva_Enterprise_APIs.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("IdentityUserClaims", (string)null);
+                    b.ToTable("IdentityUserClaims");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -214,7 +217,7 @@ namespace Shiva_Enterprise_APIs.Migrations
 
                     b.HasIndex("AccountTypeId");
 
-                    b.ToTable("Account", (string)null);
+                    b.ToTable("Account");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Accounts.AccountCategory", b =>
@@ -266,7 +269,7 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.HasKey("AccountCategoryId")
                         .HasName("PK__accategory__B94AD674532DF6E8");
 
-                    b.ToTable("AccountCategory", (string)null);
+                    b.ToTable("AccountCategory");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Accounts.AccountGroup", b =>
@@ -316,7 +319,7 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.HasKey("AccountGroupId")
                         .HasName("PK__acgroup__B94AD674532DF6E8");
 
-                    b.ToTable("AccountGroup", (string)null);
+                    b.ToTable("AccountGroup");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Accounts.AccountType", b =>
@@ -366,7 +369,7 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.HasKey("AccountTypeId")
                         .HasName("PK__actype__B94AD674532DF6E8");
 
-                    b.ToTable("AccountType", (string)null);
+                    b.ToTable("AccountType");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Authentication.ApplicationRole", b =>
@@ -553,7 +556,7 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.HasKey("BankId")
                         .HasName("PK__bank__B94AD674532DF6E8");
 
-                    b.ToTable("Bank", (string)null);
+                    b.ToTable("Bank");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Branch", b =>
@@ -602,7 +605,7 @@ namespace Shiva_Enterprise_APIs.Migrations
 
                     b.HasIndex("Company_Id");
 
-                    b.ToTable("Branch", (string)null);
+                    b.ToTable("Branch");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Brand", b =>
@@ -654,7 +657,7 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.HasKey("BrandId")
                         .HasName("PK__brand__B94AD674532DF6E8");
 
-                    b.ToTable("Brand", (string)null);
+                    b.ToTable("Brand");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.City", b =>
@@ -697,7 +700,7 @@ namespace Shiva_Enterprise_APIs.Migrations
 
                     b.HasIndex("State_Id");
 
-                    b.ToTable("City", (string)null);
+                    b.ToTable("City");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Company", b =>
@@ -746,7 +749,7 @@ namespace Shiva_Enterprise_APIs.Migrations
 
                     b.HasKey("Company_Id");
 
-                    b.ToTable("Company", (string)null);
+                    b.ToTable("Company");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Country", b =>
@@ -785,7 +788,7 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.HasKey("Country_Id")
                         .HasName("PK__country__8036CB4EB0037A51");
 
-                    b.ToTable("Country", (string)null);
+                    b.ToTable("Country");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Issue", b =>
@@ -837,7 +840,7 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.HasKey("IssueId")
                         .HasName("PK__issue__B94AD674532DF6E8");
 
-                    b.ToTable("Issue", (string)null);
+                    b.ToTable("Issue");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.ModeofPayment", b =>
@@ -901,7 +904,7 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.HasKey("MODId")
                         .HasName("PK__mod__B94AD674532DF6E8");
 
-                    b.ToTable("ModeofPayment", (string)null);
+                    b.ToTable("ModeofPayment");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Products.Product", b =>
@@ -972,7 +975,7 @@ namespace Shiva_Enterprise_APIs.Migrations
 
                     b.HasIndex("ProductTypeId");
 
-                    b.ToTable("Product", (string)null);
+                    b.ToTable("Product");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Products.ProductCategory", b =>
@@ -1022,7 +1025,7 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.HasKey("ProductCategoryId")
                         .HasName("PK__productcategory__B94AD674532DF6E8");
 
-                    b.ToTable("ProductCategory", (string)null);
+                    b.ToTable("ProductCategory");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Products.ProductGroup", b =>
@@ -1074,7 +1077,7 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.HasKey("ProductGroupId")
                         .HasName("PK__productgroup__B94AD674532DF6E8");
 
-                    b.ToTable("ProductGroup", (string)null);
+                    b.ToTable("ProductGroup");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Products.ProductType", b =>
@@ -1126,7 +1129,7 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.HasKey("ProductTypeId")
                         .HasName("PK__producttype__B94AD674532DF6E8");
 
-                    b.ToTable("ProductType", (string)null);
+                    b.ToTable("ProductType");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.PurchaseOrders.PurchaseOrder", b =>
@@ -1178,7 +1181,7 @@ namespace Shiva_Enterprise_APIs.Migrations
 
                     b.HasIndex("VendorID");
 
-                    b.ToTable("PurchaseOrders", (string)null);
+                    b.ToTable("PurchaseOrders");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.PurchaseOrders.PurchaseOrderDetail", b =>
@@ -1244,7 +1247,7 @@ namespace Shiva_Enterprise_APIs.Migrations
 
                     b.HasIndex("UnitId");
 
-                    b.ToTable("PurchaseOrderDetails", (string)null);
+                    b.ToTable("PurchaseOrderDetails");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.State", b =>
@@ -1287,7 +1290,7 @@ namespace Shiva_Enterprise_APIs.Migrations
 
                     b.HasIndex("Country_Id");
 
-                    b.ToTable("state", (string)null);
+                    b.ToTable("state");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.TaxEntities.Tax", b =>
@@ -1351,7 +1354,7 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.HasKey("TaxId")
                         .HasName("PK__tax__B94AD674532DF6E8");
 
-                    b.ToTable("Tax", (string)null);
+                    b.ToTable("Tax");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.TransportEntities.Transport", b =>
@@ -1403,7 +1406,7 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.HasKey("TransportId")
                         .HasName("PK__transport__B94AD674532DF6E8");
 
-                    b.ToTable("Transport", (string)null);
+                    b.ToTable("Transport");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.TransportEntities.Vendor", b =>
@@ -1495,7 +1498,7 @@ namespace Shiva_Enterprise_APIs.Migrations
 
                     b.HasIndex("TaxId");
 
-                    b.ToTable("Vendor", (string)null);
+                    b.ToTable("Vendor");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Unit", b =>
@@ -1547,7 +1550,7 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.HasKey("UnitId")
                         .HasName("PK__unit__B94AD674532DF6E8");
 
-                    b.ToTable("Unit", (string)null);
+                    b.ToTable("Unit");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.location", b =>
@@ -1579,7 +1582,7 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.HasKey("Location_ID")
                         .HasName("PK__location__D2BA00C2438AF258");
 
-                    b.ToTable("location", (string)null);
+                    b.ToTable("location");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.salesmanAgent", b =>
@@ -1631,7 +1634,7 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.HasKey("SalesmanAgentID")
                         .HasName("PK__salesman__B94AD674532DF6E8");
 
-                    b.ToTable("salesmanAgent", (string)null);
+                    b.ToTable("salesmanAgent");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
