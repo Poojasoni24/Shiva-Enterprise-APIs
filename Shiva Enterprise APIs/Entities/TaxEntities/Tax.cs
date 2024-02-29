@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities.TransportEntities;
+using Shiva_Enterprise_APIs.Entities.VendorEntities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

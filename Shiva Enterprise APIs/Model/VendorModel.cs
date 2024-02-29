@@ -1,4 +1,4 @@
-﻿namespace Shiva_Enterprise_APIs.Model
+﻿namespace Shiva_Enterprise_APIs.Model.Vendor
 {
     public class VendorModel
     {
