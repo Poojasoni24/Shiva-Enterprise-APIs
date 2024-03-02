@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using Shiva_Enterprise_APIs.Entities.TaxEntities;
 using Shiva_Enterprise_APIs.Entities.Purchase;
 
-namespace Shiva_Enterprise_APIs.Entities.VendorEntities
+namespace Shiva_Enterprise_APIs.Entities
 {
     [Table("Vendor")]
     public class Vendor
