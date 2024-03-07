@@ -5,7 +5,7 @@ namespace Shiva_Enterprise_APIs.Model.Purchase
 {
     public class PurchaseOrderModel
     {
-        public Guid PurchaseOrderId { get; set; }
+        
         public Guid VendorID { get; set; }
         public DateTime OrderDate { get; set; }
         public DateTime DeliveryDate { get; set; }
