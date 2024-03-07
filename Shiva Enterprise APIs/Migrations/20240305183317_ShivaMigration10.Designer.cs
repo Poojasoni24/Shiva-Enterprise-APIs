@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shiva_Enterprise_APIs.Entities;
 
@@ -11,9 +12,11 @@ using Shiva_Enterprise_APIs.Entities;
 namespace Shiva_Enterprise_APIs.Migrations
 {
     [DbContext(typeof(ShivaEnterpriseContext))]
-    partial class ShivaEnterpriseContextModelSnapshot : ModelSnapshot
+    [Migration("20240305183317_ShivaMigration10")]
+    partial class ShivaMigration10
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1466,7 +1469,7 @@ namespace Shiva_Enterprise_APIs.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("(newid())");
 
-                    b.Property<Guid?>("BankId")
+                    b.Property<Guid>("BankId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ContractEndDate")
@@ -1514,7 +1517,7 @@ namespace Shiva_Enterprise_APIs.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<Guid?>("TaxId")
+                    b.Property<Guid>("TaxId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("VendorAddress")
@@ -1830,11 +1833,15 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.HasOne("Shiva_Enterprise_APIs.Entities.Bank", "Bank")
                         .WithMany("Vendors")
                         .HasForeignKey("BankId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("FK_vendor_bank");
 
                     b.HasOne("Shiva_Enterprise_APIs.Entities.TaxEntities.Tax", "Tax")
                         .WithMany("Vendors")
                         .HasForeignKey("TaxId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("FK_vendor_tax");
 
                     b.Navigation("Bank");

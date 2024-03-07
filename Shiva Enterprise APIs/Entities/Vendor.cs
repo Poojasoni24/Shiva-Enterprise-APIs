@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shiva_Enterprise_APIs.Entities.Products;
+using Shiva_Enterprise_APIs.Entities.Purchase;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Shiva_Enterprise_APIs.Entities.TaxEntities;
-using Shiva_Enterprise_APIs.Entities.Purchase;
 
 namespace Shiva_Enterprise_APIs.Entities
 {
@@ -11,7 +10,6 @@ namespace Shiva_Enterprise_APIs.Entities
     public class Vendor
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid VendorId { get; set; }
 
         [Required]
@@ -40,17 +38,8 @@ namespace Shiva_Enterprise_APIs.Entities
         [StringLength(255)]
         [Unicode(false)]
         public string Email { get; set; }
-        public Guid BankId { get; set; }
-        public Guid TaxId { get; set; }
-
-        [ForeignKey("BankId")]
-        [InverseProperty("Vendors")]
-        public virtual Bank Bank { get; set; }
-
-
-        [ForeignKey("TaxId")]
-        [InverseProperty("Vendors")]
-        public virtual Tax Tax { get; set; }
+        public Guid? BankId { get; set; }
+        public Guid? TaxId { get; set; }
         public DateTime ContractStartDate { get; set; }
         public DateTime ContractEndDate { get; set; }
 
@@ -68,6 +57,14 @@ namespace Shiva_Enterprise_APIs.Entities
         public DateTime CreatedDateTime { get; set; }
         public string? ModifiedBy { get; set; }
         public DateTime? ModifiedDateTime { get; set; }
+
+        [ForeignKey("BankId")]
+        [InverseProperty("Vendors")]
+        public virtual Bank Bank { get; set; }
+
+        [ForeignKey("TaxId")]
+        [InverseProperty("Vendors")]
+        public virtual Tax Tax { get; set; }
 
         [InverseProperty("Vendor")]
         public virtual ICollection<PurchaseOrder> PurchaseOrder { get; set; } = new List<PurchaseOrder>();

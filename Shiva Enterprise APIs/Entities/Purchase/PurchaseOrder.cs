@@ -5,7 +5,7 @@ using System.Net.NetworkInformation;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
-using Shiva_Enterprise_APIs.Entities.VendorEntities;
+using Shiva_Enterprise_APIs.Entities;
 
 namespace Shiva_Enterprise_APIs.Entities.Purchase
 {

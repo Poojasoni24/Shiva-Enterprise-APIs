@@ -272,8 +272,9 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
             entity.Property(e => e.VendorId).HasDefaultValueSql("(newid())");
             entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.ModifiedDateTime).HasDefaultValueSql("(getdate())");
-            entity.HasOne(d => d.Bank).WithMany(p => p.Vendors).HasConstraintName("FK_vendor_bank");
-            entity.HasOne(d => d.Tax).WithMany(p => p.Vendors).HasConstraintName("FK_vendor_tax");
+
+            entity.HasOne(d => d.Bank).WithMany(p => p.Vendors).HasConstraintName("FK_vendor_bank").IsRequired(false);
+            entity.HasOne(d => d.Tax).WithMany(p => p.Vendors).HasConstraintName("FK_vendor_tax").IsRequired(false);
         });
         modelBuilder.Entity<PurchaseOrder>(entity =>
         {

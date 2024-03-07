@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shiva_Enterprise_APIs.Entities;
 
@@ -11,9 +12,11 @@ using Shiva_Enterprise_APIs.Entities;
 namespace Shiva_Enterprise_APIs.Migrations
 {
     [DbContext(typeof(ShivaEnterpriseContext))]
-    partial class ShivaEnterpriseContextModelSnapshot : ModelSnapshot
+    [Migration("20240305192643_ShivaMigration14")]
+    partial class ShivaMigration14
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

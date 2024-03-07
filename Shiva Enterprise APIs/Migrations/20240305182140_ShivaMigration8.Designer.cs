@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shiva_Enterprise_APIs.Entities;
 
@@ -11,9 +12,11 @@ using Shiva_Enterprise_APIs.Entities;
 namespace Shiva_Enterprise_APIs.Migrations
 {
     [DbContext(typeof(ShivaEnterpriseContext))]
-    partial class ShivaEnterpriseContextModelSnapshot : ModelSnapshot
+    [Migration("20240305182140_ShivaMigration8")]
+    partial class ShivaMigration8
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1544,10 +1547,6 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.HasKey("VendorId")
                         .HasName("PK__vendor__B94AD674532DF6E8");
 
-                    b.HasIndex("BankId");
-
-                    b.HasIndex("TaxId");
-
                     b.ToTable("Vendor");
                 });
 
@@ -1825,23 +1824,6 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.Navigation("Country");
                 });
 
-            modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Vendor", b =>
-                {
-                    b.HasOne("Shiva_Enterprise_APIs.Entities.Bank", "Bank")
-                        .WithMany("Vendors")
-                        .HasForeignKey("BankId")
-                        .HasConstraintName("FK_vendor_bank");
-
-                    b.HasOne("Shiva_Enterprise_APIs.Entities.TaxEntities.Tax", "Tax")
-                        .WithMany("Vendors")
-                        .HasForeignKey("TaxId")
-                        .HasConstraintName("FK_vendor_tax");
-
-                    b.Navigation("Bank");
-
-                    b.Navigation("Tax");
-                });
-
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Accounts.AccountCategory", b =>
                 {
                     b.Navigation("Account");
@@ -1855,11 +1837,6 @@ namespace Shiva_Enterprise_APIs.Migrations
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Accounts.AccountType", b =>
                 {
                     b.Navigation("Account");
-                });
-
-            modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Bank", b =>
-                {
-                    b.Navigation("Vendors");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Brand", b =>
@@ -1905,11 +1882,6 @@ namespace Shiva_Enterprise_APIs.Migrations
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.State", b =>
                 {
                     b.Navigation("Cities");
-                });
-
-            modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.TaxEntities.Tax", b =>
-                {
-                    b.Navigation("Vendors");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Unit", b =>

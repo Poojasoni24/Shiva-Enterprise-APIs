@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shiva_Enterprise_APIs.Entities;
 
@@ -11,9 +12,11 @@ using Shiva_Enterprise_APIs.Entities;
 namespace Shiva_Enterprise_APIs.Migrations
 {
     [DbContext(typeof(ShivaEnterpriseContext))]
-    partial class ShivaEnterpriseContextModelSnapshot : ModelSnapshot
+    [Migration("20240306153021_ShivaMigration16")]
+    partial class ShivaMigration16
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1177,8 +1180,6 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.HasKey("PurchaseOrderId")
                         .HasName("PK__purchaseorder__B94AD674532DF6E8");
 
-                    b.HasIndex("VendorID");
-
                     b.ToTable("PurchaseOrders");
                 });
 
@@ -1459,98 +1460,6 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.ToTable("Unit");
                 });
 
-            modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Vendor", b =>
-                {
-                    b.Property<Guid>("VendorId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("(newid())");
-
-                    b.Property<Guid?>("BankId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ContractEndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ContractStartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<DateTime>("CreatedDateTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ModifiedDateTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<string>("Phoneno")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(20)");
-
-                    b.Property<string>("Remark")
-                        .HasMaxLength(100)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<Guid?>("TaxId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("VendorAddress")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("VendorCode")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("VendorName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("VendorType")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
-
-                    b.HasKey("VendorId")
-                        .HasName("PK__vendor__B94AD674532DF6E8");
-
-                    b.HasIndex("BankId");
-
-                    b.HasIndex("TaxId");
-
-                    b.ToTable("Vendor");
-                });
-
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.location", b =>
                 {
                     b.Property<Guid>("Location_ID")
@@ -1764,18 +1673,6 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.Navigation("ProductType");
                 });
 
-            modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Purchase.PurchaseOrder", b =>
-                {
-                    b.HasOne("Shiva_Enterprise_APIs.Entities.Vendor", "Vendor")
-                        .WithMany("PurchaseOrder")
-                        .HasForeignKey("VendorID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_purchaseorder_vendor");
-
-                    b.Navigation("Vendor");
-                });
-
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Purchase.PurchaseOrderDetail", b =>
                 {
                     b.HasOne("Shiva_Enterprise_APIs.Entities.Brand", "Brand")
@@ -1825,23 +1722,6 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.Navigation("Country");
                 });
 
-            modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Vendor", b =>
-                {
-                    b.HasOne("Shiva_Enterprise_APIs.Entities.Bank", "Bank")
-                        .WithMany("Vendors")
-                        .HasForeignKey("BankId")
-                        .HasConstraintName("FK_vendor_bank");
-
-                    b.HasOne("Shiva_Enterprise_APIs.Entities.TaxEntities.Tax", "Tax")
-                        .WithMany("Vendors")
-                        .HasForeignKey("TaxId")
-                        .HasConstraintName("FK_vendor_tax");
-
-                    b.Navigation("Bank");
-
-                    b.Navigation("Tax");
-                });
-
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Accounts.AccountCategory", b =>
                 {
                     b.Navigation("Account");
@@ -1855,11 +1735,6 @@ namespace Shiva_Enterprise_APIs.Migrations
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Accounts.AccountType", b =>
                 {
                     b.Navigation("Account");
-                });
-
-            modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Bank", b =>
-                {
-                    b.Navigation("Vendors");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Brand", b =>
@@ -1907,19 +1782,9 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.Navigation("Cities");
                 });
 
-            modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.TaxEntities.Tax", b =>
-                {
-                    b.Navigation("Vendors");
-                });
-
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Unit", b =>
                 {
                     b.Navigation("PurchaseOrderDetail");
-                });
-
-            modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Vendor", b =>
-                {
-                    b.Navigation("PurchaseOrder");
                 });
 #pragma warning restore 612, 618
         }
