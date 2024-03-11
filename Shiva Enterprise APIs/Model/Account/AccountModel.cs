@@ -6,7 +6,7 @@ namespace Shiva_Enterprise_APIs.Model.Account
     public class AccountModel
     {
         public string AccountCode { get; set; }
-        public string AccountName { get; set; }
+        public string AccontName { get; set; }
         public string? AccountDescription { get; set; }
         public bool IsActive { get; set; }
         public Guid AccountGroupId { get; set; }

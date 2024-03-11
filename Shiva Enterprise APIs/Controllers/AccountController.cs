@@ -61,7 +61,7 @@ namespace Shiva_Enterprise_APIs.Controllers
                 var AccountDetail = new Account()
                 {
                     AccountCode = account.AccountCode,
-                    AccontName = account.AccountName,
+                    AccontName = account.AccontName,
                     AccountDescription = account.AccountDescription,
                     IsActive = account.IsActive,
                     AccountGroupId = account.AccountGroupId,
