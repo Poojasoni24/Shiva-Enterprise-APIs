@@ -26,9 +26,9 @@ namespace Shiva_Enterprise_APIs.Entities.Products
         public string? ProductDescription { get; set; }
         public bool IsActive { get; set; }
         public string ProductImage { get; set; }
-        public Guid ProductCategoryId {  get; set; }
-        public Guid ProductGroupId {  get; set; }
-        public Guid ProductTypeId {  get; set; }
+        public string? ProductCategory {  get; set; }
+        public string? ProductGroup {  get; set; }
+        public string? ProductType {  get; set; }
 
         [Required]
         [StringLength(100)]
@@ -39,18 +39,5 @@ namespace Shiva_Enterprise_APIs.Entities.Products
         public DateTime CreatedDateTime { get; set; }
         public string? ModifiedBy { get; set; }
         public DateTime? ModifiedDateTime { get; set; }
-
-        [ForeignKey("ProductGroupId")]
-        [InverseProperty("Products")]
-        public virtual ProductGroup ProductGroup { get; set; }
-
-        [ForeignKey("ProductTypeId")]
-        [InverseProperty("Products")]
-        public virtual ProductType ProductType { get; set; }
-
-        [ForeignKey("ProductCategoryId")]
-        [InverseProperty("Products")]
-        public virtual ProductCategory ProductCategory { get; set; }
-
     }
 }

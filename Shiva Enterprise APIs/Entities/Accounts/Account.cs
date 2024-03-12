@@ -18,16 +18,15 @@ namespace Shiva_Enterprise_APIs.Entities.Accounts
         [Required]
         [StringLength(100)]
         [Unicode(false)]
-        public string AccontName { get; set; }
+        public string AccountName { get; set; }
 
         [StringLength(100)]
         [Unicode(false)]
         public string? AccountDescription { get; set; }
         public bool IsActive { get; set; }
-        public Guid AccountGroupId { get; set; }
-        public Guid AccountTypeId { get; set; }
-
-        public Guid? AccountCategoryId { get; set; }
+        public string? AccountGroup { get; set; }
+        public string? AccountType { get; set; }
+        public string? AccountCategory { get; set; }
 
         [Required]
         [StringLength(100)]
@@ -38,18 +37,5 @@ namespace Shiva_Enterprise_APIs.Entities.Accounts
         public DateTime CreatedDateTime { get; set; }
         public string? ModifiedBy { get; set; }
         public DateTime? ModifiedDateTime { get; set; }
-
-        [ForeignKey("AccountGroupId")]
-        [InverseProperty("Account")]
-        public virtual AccountGroup AccountGroup { get; set; }
-
-        [ForeignKey("AccountTypeId")]
-        [InverseProperty("Account")]
-        public virtual AccountType AccountType { get; set; }
-        
-        [ForeignKey("AccountCategoryId")]
-        [InverseProperty("Account")]
-
-        public virtual AccountCategory AccountCategory { get; set; }
     }
 }
