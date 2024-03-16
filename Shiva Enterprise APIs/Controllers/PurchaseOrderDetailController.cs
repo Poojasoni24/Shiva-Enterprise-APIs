@@ -63,7 +63,6 @@ namespace Shiva_Enterprise_APIs.Controllers
                     PurchaseOrderId = purchaseOrderDetail.PurchaseOrderId,
                     ProductId = purchaseOrderDetail.ProductId,
                     BrandId = purchaseOrderDetail.BrandId,
-                    UnitId = purchaseOrderDetail.UnitId,
                     Quantity = purchaseOrderDetail.Quantity,
                     Discount = purchaseOrderDetail.Discount,
                     UnitPrice = purchaseOrderDetail.UnitPrice,

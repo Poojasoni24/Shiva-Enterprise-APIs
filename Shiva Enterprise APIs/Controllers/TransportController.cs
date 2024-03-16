@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities;
-using Shiva_Enterprise_APIs.Entities.Accounts;
-using Shiva_Enterprise_APIs.Entities.TaxEntities;
 using Shiva_Enterprise_APIs.Entities.TransportEntities;
 using Shiva_Enterprise_APIs.Model.Transport;
 

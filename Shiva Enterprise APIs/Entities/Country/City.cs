@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Shiva_Enterprise_APIs.Entities.Purchase;
 
 namespace Shiva_Enterprise_APIs.Entities;
 
@@ -12,7 +13,7 @@ namespace Shiva_Enterprise_APIs.Entities;
 public partial class City
 {
     [Key]
-    public Guid City_Id { get; set; }
+    public Guid CityId { get; set; }
 
     public string City_Code { get; set; }
 
@@ -31,4 +32,11 @@ public partial class City
     [ForeignKey("State_Id")]
     [InverseProperty("Cities")]
     public virtual State State { get; set; }
+
+    [InverseProperty("City")]
+    public virtual ICollection<Vendor> VendorCity { get; set; } = new List<Vendor>();
+
+    [InverseProperty("City")]
+    public virtual ICollection<Customer> Customer { get; set; } = new List<Customer>();
+
 }

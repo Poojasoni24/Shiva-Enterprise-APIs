@@ -66,9 +66,9 @@ namespace Shiva_Enterprise_APIs.Controllers
                     ProductDescription = product.ProductDescription,
                     ProductImage = product.ProductImage,
                     IsActive = product.IsActive,
-                    ProductCategoryId = product.ProductCategoryId,
-                    ProductGroupId = product.ProductGroupId,
-                    ProductTypeId = product.ProductTypeId,
+                    ProductCategory = product.ProductCategory,
+                    ProductGroup = product.ProductGroup,
+                    ProductType = product.ProductType,
                     CreatedBy = product.CreatedBy,
                     CreatedDateTime = product.CreatedDateTime,
                 };

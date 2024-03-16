@@ -1,36 +1,35 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shiva_Enterprise_APIs.Entities.Products;
+using Shiva_Enterprise_APIs.Entities.Purchase;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using Shiva_Enterprise_APIs.Entities.Purchase;
 
 namespace Shiva_Enterprise_APIs.Entities
 {
-    [Table("Vendor")]
-    public class Vendor
+    [Table("Customer")]
+    public class Customer
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid VendorId { get; set; }
+        public Guid CustomerId { get; set; }
 
         [Required]
         [StringLength(100)]
         [Unicode(false)]
-        public string VendorCode { get; set; }
+        public string CustomerCode { get; set; }
 
         [Required]
         [StringLength(255)]
         [Unicode(false)]
-        public string VendorName { get; set; }
+        public string CustomerName { get; set; }
 
         [Required]
         [StringLength(50)]
         [Unicode(false)]
-        public string VendorType { get; set; }
+        public string CustomerType { get; set; }
 
         [StringLength(255)]
         [Unicode(false)]
-        public string? VendorAddress { get; set; }
+        public string? CustomerAddress { get; set; }
 
         [StringLength(20)]
         [Unicode(false)]
@@ -42,16 +41,18 @@ namespace Shiva_Enterprise_APIs.Entities
         public DateTime ContractStartDate { get; set; }
         public DateTime ContractEndDate { get; set; }
 
-        public Guid? cityId { get; set; }
+        public Guid? CityId { get; set; }
 
-        [ForeignKey("cityId")]
-        [InverseProperty("VendorCity")]
-        public virtual City City { get; set; }  
+        [ForeignKey("CityId")]
+        [InverseProperty("Customer")]
+        public virtual City City { get; set; }
 
         [StringLength(100)]
         [Unicode(false)]
         public string? Remark { get; set; }
         public bool IsActive { get; set; }
+
+        public decimal? CustomerDiscount { get; set; }   
 
         [Required]
         [StringLength(100)]
@@ -63,7 +64,7 @@ namespace Shiva_Enterprise_APIs.Entities
         public string? ModifiedBy { get; set; }
         public DateTime? ModifiedDateTime { get; set; }
 
-        [InverseProperty("Vendor")]
-        public virtual ICollection<PurchaseOrder> PurchaseOrder { get; set; } = new List<PurchaseOrder>();
+        [InverseProperty("Customer")]
+        public virtual ICollection<SalesOrder> SalesOrder { get; set; } = new List<SalesOrder>();
     }
 }

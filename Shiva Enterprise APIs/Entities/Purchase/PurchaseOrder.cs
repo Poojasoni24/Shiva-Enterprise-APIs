@@ -9,6 +9,7 @@ using Shiva_Enterprise_APIs.Entities;
 
 namespace Shiva_Enterprise_APIs.Entities.Purchase
 {
+    [Table("PurchaseOrder")]
     public class PurchaseOrder
     {
         [Key]
@@ -19,7 +20,7 @@ namespace Shiva_Enterprise_APIs.Entities.Purchase
         public DateTime DeliveryDate { get; set; }
         public decimal TotalAmount { get; set; }
         public string PurchaseOrderStatus { get; set; }
-        public bool IsActive { get; set; }
+        public string Doc_No { get; set;}
 
         [Required]
         [StringLength(100)]

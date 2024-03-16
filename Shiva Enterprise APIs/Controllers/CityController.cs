@@ -97,7 +97,7 @@ namespace Shiva_Enterprise_APIs.Controllers
         [Route("EditCity")]
         public async Task<IActionResult> EditCityDetail(Guid id, City city)
         {
-            if (id != city.City_Id)
+            if (id != city.CityId)
             {
                 return BadRequest();
             }
@@ -110,7 +110,7 @@ namespace Shiva_Enterprise_APIs.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_shivaEnterpriseContext.Cities.Any(x => x.City_Id == id))
+                if (!_shivaEnterpriseContext.Cities.Any(x => x.CityId == id))
                 {
                     return NotFound();
                 }

@@ -1,18 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Shiva_Enterprise_APIs.Entities.Products;
-using System.ComponentModel.DataAnnotations;
+using Shiva_Enterprise_APIs.Entities.Purchase;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
-namespace Shiva_Enterprise_APIs.Entities.Purchase
+namespace Shiva_Enterprise_APIs.Entities
 {
-    [Table("PurchaseOrderDetail")]
-    public class PurchaseOrderDetail
+    [Table("SalesOrderDetail")]
+    public class SalesOrderDetail
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid PurchaseOrderDetailId { get; set; }
-        public Guid PurchaseOrderId { get; set; }
+        public Guid SalesOrderDetailId { get; set; }
+        public Guid SalesOrderId { get; set; }
         public Guid ProductId { get; set; }
         public Guid BrandId { get; set; }
         public decimal Quantity { get; set; }
@@ -20,7 +20,7 @@ namespace Shiva_Enterprise_APIs.Entities.Purchase
         public decimal UnitPrice { get; set; }
         public decimal NetTotal { get; set; }
         public string Tax_Percentage { get; set; }
-        public bool IsActive { get; set; }  
+        public bool IsActive { get; set; }
 
         [Required]
         [StringLength(100)]
@@ -34,16 +34,15 @@ namespace Shiva_Enterprise_APIs.Entities.Purchase
 
 
         [ForeignKey("BrandId")]
-        [InverseProperty("PurchaseOrderDetail")]
+        [InverseProperty("SalesOrderDetail")]
         public virtual Brand Brand { get; set; }
 
         [ForeignKey("ProductId")]
-        [InverseProperty("PurchaseOrderDetail")]
+        [InverseProperty("SalesOrderDetail")]
         public virtual Product Product { get; set; }
 
-        [ForeignKey("PurchaseOrderId")]
-        [InverseProperty("PurchaseOrderDetail")]
-        public virtual PurchaseOrder PurchaseOrder { get; set; }
-
+        [ForeignKey("SalesOrderId")]
+        [InverseProperty("SalesOrderDetail")]
+        public virtual SalesOrder SalesOrder { get; set; }       
     }
 }
