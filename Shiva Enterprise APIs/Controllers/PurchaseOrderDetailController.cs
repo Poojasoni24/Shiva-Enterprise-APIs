@@ -67,6 +67,7 @@ namespace Shiva_Enterprise_APIs.Controllers
                     Discount = purchaseOrderDetail.Discount,
                     UnitPrice = purchaseOrderDetail.UnitPrice,
                     NetTotal = purchaseOrderDetail.NetTotal,
+                    Tax_Percentage = purchaseOrderDetail.Tax_Percentage,
                     IsActive = purchaseOrderDetail.IsActive,
                     CreatedBy = purchaseOrderDetail.CreatedBy,
                     CreatedDateTime = purchaseOrderDetail.CreatedDateTime,

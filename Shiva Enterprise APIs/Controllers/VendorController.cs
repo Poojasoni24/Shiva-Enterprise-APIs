@@ -64,6 +64,7 @@ namespace Shiva_Enterprise_APIs.Controllers
                     VendorName = vendor.VendorName,
                     VendorType = vendor.VendorType,
                     VendorAddress = vendor.VendorAddress,
+                    cityId = vendor.cityId,
                     Phoneno = vendor.Phoneno,
                     Email = vendor.Email,
                     ContractStartDate = vendor.ContractStartDate,

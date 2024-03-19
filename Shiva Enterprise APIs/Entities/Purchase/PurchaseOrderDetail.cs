@@ -19,7 +19,7 @@ namespace Shiva_Enterprise_APIs.Entities.Purchase
         public decimal Discount { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal NetTotal { get; set; }
-        public string Tax_Percentage { get; set; }
+        public decimal Tax_Percentage { get; set; }
         public bool IsActive { get; set; }  
 
         [Required]

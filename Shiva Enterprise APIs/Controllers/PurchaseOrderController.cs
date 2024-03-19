@@ -65,6 +65,7 @@ namespace Shiva_Enterprise_APIs.Controllers
                     DeliveryDate = purchaseorder.DeliveryDate,
                     TotalAmount = purchaseorder.TotalAmount,
                     PurchaseOrderStatus = purchaseorder.PurchaseOrderStatus,
+                    Doc_No = purchaseorder.Doc_No,
                     CreatedBy = purchaseorder.CreatedBy,
                     CreatedDateTime = purchaseorder.CreatedDateTime,
                 };
