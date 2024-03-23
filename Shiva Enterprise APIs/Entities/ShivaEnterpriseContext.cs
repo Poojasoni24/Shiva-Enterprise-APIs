@@ -180,9 +180,9 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
         });
         modelBuilder.Entity<PurchaseOrderDetail>(entity =>
         {
-            entity.HasKey(e => e.PurchaseOrderId).HasName("PK__purchaseorderdetail__B94AD674532DF6E8");
+            entity.HasKey(e => e.PurchaseOrderDetailId).HasName("PK__purchaseorderdetail__B94AD674532DF6E8");
 
-            entity.Property(e => e.PurchaseOrderId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.PurchaseOrderDetailId).HasDefaultValueSql("(newid())");
             entity.Property(e => e.CreatedDateTime).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.ModifiedDateTime).HasDefaultValueSql("(getdate())");
             entity.HasOne(d => d.Brand).WithMany(p => p.PurchaseOrderDetail).HasConstraintName("FK_purchaseorderdetail_bank");

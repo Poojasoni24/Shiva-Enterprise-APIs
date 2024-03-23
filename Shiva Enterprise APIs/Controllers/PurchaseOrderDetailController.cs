@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities;
 using Shiva_Enterprise_APIs.Entities.Purchase;
+using Shiva_Enterprise_APIs.Helper;
 using Shiva_Enterprise_APIs.Model.Purchase;
 
 namespace Shiva_Enterprise_APIs.Controllers
@@ -52,34 +53,39 @@ namespace Shiva_Enterprise_APIs.Controllers
         [Route("AddPurchaseOrderDetail")]
         public async Task<ActionResult<PurchaseOrderDetail>> AddPurchaseOrderDetail(PurchaseOrderDetailModel purchaseOrderDetail)
         {
-            try
+            using (var transaction = _shivaEnterpriseContext.Database.BeginTransaction())
             {
-                if (purchaseOrderDetail is null)
+                try
                 {
-                    throw new ArgumentNullException(nameof(purchaseOrderDetail));
+                    if (purchaseOrderDetail is null)
+                    {
+                        throw new ArgumentNullException(nameof(purchaseOrderDetail));
+                    }
+                    var purchaseOrderDetailDetail = new PurchaseOrderDetail()
+                    {
+                        PurchaseOrderId = purchaseOrderDetail.PurchaseOrderId,
+                        ProductId = purchaseOrderDetail.ProductId,
+                        BrandId = purchaseOrderDetail.BrandId,
+                        Quantity = purchaseOrderDetail.Quantity,
+                        Discount = purchaseOrderDetail.Discount,
+                        UnitPrice = purchaseOrderDetail.UnitPrice,
+                        NetTotal = purchaseOrderDetail.NetTotal,
+                        Tax_Percentage = purchaseOrderDetail.Tax_Percentage,
+                        IsActive = purchaseOrderDetail.IsActive,
+                        CreatedBy = purchaseOrderDetail.CreatedBy,
+                        CreatedDateTime = purchaseOrderDetail.CreatedDateTime,
+                    };
+                    _shivaEnterpriseContext.PurchaseOrderDetails.Add(purchaseOrderDetailDetail);
+                    await _shivaEnterpriseContext.SaveChangesAsync();
+                    return Ok("Added Successfully");
                 }
-                var purchaseOrderDetailDetail = new PurchaseOrderDetail()
+                catch (Exception)
                 {
-                    PurchaseOrderId = purchaseOrderDetail.PurchaseOrderId,
-                    ProductId = purchaseOrderDetail.ProductId,
-                    BrandId = purchaseOrderDetail.BrandId,
-                    Quantity = purchaseOrderDetail.Quantity,
-                    Discount = purchaseOrderDetail.Discount,
-                    UnitPrice = purchaseOrderDetail.UnitPrice,
-                    NetTotal = purchaseOrderDetail.NetTotal,
-                    Tax_Percentage = purchaseOrderDetail.Tax_Percentage,
-                    IsActive = purchaseOrderDetail.IsActive,
-                    CreatedBy = purchaseOrderDetail.CreatedBy,
-                    CreatedDateTime = purchaseOrderDetail.CreatedDateTime,
-                };
-                _shivaEnterpriseContext.PurchaseOrderDetails.Add(purchaseOrderDetailDetail);
-                await _shivaEnterpriseContext.SaveChangesAsync();
-                return Ok("Added Successfully");
+                    transaction.Rollback();
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Something Went Wrong");
+                }
             }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Something Went Wrong");
-            }
+            
         }
 
         [HttpPost]

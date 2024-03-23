@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities;
 using Shiva_Enterprise_APIs.Entities.Purchase;
+using Shiva_Enterprise_APIs.Helper;
 using Shiva_Enterprise_APIs.Model.Purchase;
 
 namespace Shiva_Enterprise_APIs.Controllers
@@ -71,7 +72,10 @@ namespace Shiva_Enterprise_APIs.Controllers
                 };
                 _shivaEnterpriseContext.PurchaseOrders.Add(PurchaseOrderDetail);
                 await _shivaEnterpriseContext.SaveChangesAsync();
-                return Ok("Added Successfully");
+
+                Guid recentlyInsertedId = PurchaseOrderDetail.PurchaseOrderId;
+
+                return Ok(recentlyInsertedId);
             }
             catch (Exception)
             {
