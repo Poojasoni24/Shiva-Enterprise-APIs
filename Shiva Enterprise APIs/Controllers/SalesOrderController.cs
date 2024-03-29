@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities;
+using Shiva_Enterprise_APIs.Entities.Purchase;
 using Shiva_Enterprise_APIs.Model;
 
 
@@ -61,6 +62,7 @@ namespace Shiva_Enterprise_APIs.Controllers
                 }
                 var SalesOrderDetail = new SalesOrder()
                 {
+                    CustomerId=salesorder.CustomerId,
                     OrderDate = salesorder.OrderDate,
                     DeliveryDate = salesorder.DeliveryDate,
                     TotalAmount = salesorder.TotalAmount,
@@ -71,7 +73,9 @@ namespace Shiva_Enterprise_APIs.Controllers
                 };
                 _shivaEnterpriseContext.SalesOrders.Add(SalesOrderDetail);
                 await _shivaEnterpriseContext.SaveChangesAsync();
-                return Ok("Added Successfully");
+
+                Guid recentlyInsertedId = SalesOrderDetail.SalesOrderId;
+                return Ok(recentlyInsertedId);
             }
             catch (Exception)
             {

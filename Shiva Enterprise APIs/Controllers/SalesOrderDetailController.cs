@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities;
+using Shiva_Enterprise_APIs.Entities.Purchase;
 using Shiva_Enterprise_APIs.Model;
+using Shiva_Enterprise_APIs.Model.Purchase;
 
 
 namespace Shiva_Enterprise_APIs.Controllers
@@ -50,33 +52,72 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpPost]
         [Route("AddSalesOrderDetail")]
-        public async Task<ActionResult<SalesOrderDetail>> AddSalesOrderDetail(SalesOrderDetailModel salesorderdetail)
+        public async Task<ActionResult<SalesOrderDetail>> AddSalesOrderDetail(List<SalesOrderDetailModel> salesOrderDetail)
         {
-            try
+            using (var transaction = _shivaEnterpriseContext.Database.BeginTransaction())
             {
-                if (salesorderdetail is null)
+                try
                 {
-                    throw new ArgumentNullException(nameof(salesorderdetail));
+                    List<SalesOrderDetail> salesOrderDetailEntity = new List<SalesOrderDetail>();
+                    if (salesOrderDetail is null)
+                    {
+                        throw new ArgumentNullException(nameof(salesOrderDetail));
+                    }
+                    foreach (var soDetail in salesOrderDetail)
+                    {
+                        var soDetailEntity = new SalesOrderDetail()
+                        {
+                            SalesOrderId = soDetail.SalesOrderId,
+                            ProductId = soDetail.ProductId,
+                            BrandId = soDetail.BrandId,
+                            Quantity = soDetail.Quantity,
+                            Discount = soDetail.Discount,
+                            UnitPrice = soDetail.UnitPrice,
+                            NetTotal = soDetail.NetTotal,
+                            Tax_Percentage = soDetail.Tax_Percentage,
+                            IsActive = soDetail.IsActive,
+                            CreatedBy = soDetail.CreatedBy,
+                            CreatedDateTime = soDetail.CreatedDateTime,
+                        };
+                        salesOrderDetailEntity.Add(soDetailEntity);
+                    }
+
+                    _shivaEnterpriseContext.SalesOrderDetails.AddRange(salesOrderDetailEntity);
+                    await _shivaEnterpriseContext.SaveChangesAsync();
+                    transaction.Commit();
+                    return Ok("Added Successfully");
                 }
-                var SalesOrderDetail = new SalesOrderDetail()
+                catch (Exception)
                 {
-                    Quantity = salesorderdetail.Quantity,
-                    Discount = salesorderdetail.Discount,
-                    UnitPrice = salesorderdetail.UnitPrice,
-                    NetTotal = salesorderdetail.NetTotal,
-                    Tax_Percentage = salesorderdetail.Tax_Percentage,
-                    IsActive=salesorderdetail.IsActive,
-                    CreatedBy = salesorderdetail.CreatedBy,
-                    CreatedDateTime = salesorderdetail.CreatedDateTime,
-                };
-                _shivaEnterpriseContext.SalesOrderDetails.Add(SalesOrderDetail);
-                await _shivaEnterpriseContext.SaveChangesAsync();
-                return Ok("Added Successfully");
+                    transaction.Rollback();
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Something Went Wrong");
+                }
             }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Something Went Wrong");
-            }
+            //try
+            //{
+            //    if (salesorderdetail is null)
+            //    {
+            //        throw new ArgumentNullException(nameof(salesorderdetail));
+            //    }
+            //    var SalesOrderDetail = new SalesOrderDetail()
+            //    {
+            //        Quantity = salesorderdetail.Quantity,
+            //        Discount = salesorderdetail.Discount,
+            //        UnitPrice = salesorderdetail.UnitPrice,
+            //        NetTotal = salesorderdetail.NetTotal,
+            //        Tax_Percentage = salesorderdetail.Tax_Percentage,
+            //        IsActive=salesorderdetail.IsActive,
+            //        CreatedBy = salesorderdetail.CreatedBy,
+            //        CreatedDateTime = salesorderdetail.CreatedDateTime,
+            //    };
+            //    _shivaEnterpriseContext.SalesOrderDetails.Add(SalesOrderDetail);
+            //    await _shivaEnterpriseContext.SaveChangesAsync();
+            //    return Ok("Added Successfully");
+            //}
+            //catch (Exception)
+            //{
+            //    return StatusCode(StatusCodes.Status500InternalServerError, "Something Went Wrong");
+            //}
         }
 
         [HttpPost]
