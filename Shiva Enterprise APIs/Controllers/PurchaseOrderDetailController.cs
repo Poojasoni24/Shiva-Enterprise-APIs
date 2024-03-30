@@ -115,9 +115,9 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpPut]
         [Route("EditProductType")]
-        public async Task<IActionResult> EditProductTypeDetail(Guid id, PurchaseOrderDetail purchaseOrderDetail)
+        public async Task<IActionResult> EditProductTypeDetail(Guid id, List<PurchaseOrderDetail> purchaseOrderDetail)
         {
-            if (id != purchaseOrderDetail.PurchaseOrderDetailId)
+            if ( purchaseOrderDetail.Any(x => x.PurchaseOrderId == id))
             {
                 return BadRequest();
             }
