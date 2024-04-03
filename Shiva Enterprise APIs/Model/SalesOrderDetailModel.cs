@@ -7,6 +7,7 @@ namespace Shiva_Enterprise_APIs.Model
 {
     public class SalesOrderDetailModel
     {
+        public Guid? SalesOrderDetailId { get; set; }
         public Guid SalesOrderId { get; set; }
         public Guid ProductId { get; set; }
         public Guid BrandId { get; set; }

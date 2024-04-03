@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities;
 using Shiva_Enterprise_APIs.Entities.Purchase;
+using Shiva_Enterprise_APIs.Helper;
 using Shiva_Enterprise_APIs.Model;
 using Shiva_Enterprise_APIs.Model.Purchase;
 
@@ -139,18 +140,38 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpPut]
         [Route("EditSalesOrderDetail")]
-        public async Task<IActionResult> EditSalesOrderDetail(Guid id, SalesOrderDetail salesorderdetail)
+        public async Task<IActionResult> EditSalesOrderDetail(Guid id, List<SalesOrderDetailModel> salesOrderDetail)
         {
-            if (id != salesorderdetail.SalesOrderDetailId)
-            {
-                return BadRequest();
-            }
-
-            _shivaEnterpriseContext.Entry(salesorderdetail).State = EntityState.Modified;
-
             try
             {
+                foreach (var model in salesOrderDetail)
+                {
+                    var existingItem = _shivaEnterpriseContext.SalesOrderDetails.FirstOrDefault(i => i.SalesOrderDetailId == model.SalesOrderDetailId.Value);
+                    if (existingItem == null)
+                    {
+                        return NotFound();
+                    }
+                    var entityToUpdate = SalesOrderDetailMappingHelper.MapToEntity(model);
+                    existingItem.SalesOrderId = entityToUpdate.SalesOrderId;
+                    existingItem.ProductId = entityToUpdate.ProductId;
+                    existingItem.BrandId = entityToUpdate.BrandId;
+                    existingItem.Quantity = entityToUpdate.Quantity;
+                    existingItem.Discount = entityToUpdate.Discount;
+                    existingItem.UnitPrice = entityToUpdate.UnitPrice;
+                    existingItem.NetTotal = entityToUpdate.NetTotal;
+                    existingItem.Tax_Percentage = entityToUpdate.Tax_Percentage;
+                    existingItem.IsActive = entityToUpdate.IsActive;
+                    existingItem.CreatedBy = entityToUpdate.CreatedBy;
+                    existingItem.CreatedDateTime = entityToUpdate.CreatedDateTime;
+                    existingItem.ModifiedBy = entityToUpdate.ModifiedBy;
+                    existingItem.ModifiedDateTime = entityToUpdate.ModifiedDateTime;
+
+                    _shivaEnterpriseContext.Entry(existingItem).State = EntityState.Modified;
+
+                }
                 await _shivaEnterpriseContext.SaveChangesAsync();
+                return Ok("Updated Successfully");
+
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -164,7 +185,6 @@ namespace Shiva_Enterprise_APIs.Controllers
                 }
             }
 
-            return Ok();
         }
     }
 }
