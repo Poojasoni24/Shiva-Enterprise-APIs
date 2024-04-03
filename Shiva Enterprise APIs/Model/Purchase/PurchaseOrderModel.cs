@@ -17,4 +17,5 @@ namespace Shiva_Enterprise_APIs.Model.Purchase
         public DateTime? ModifiedDateTime { get; set; }
 
     }
+
 }

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities;
 using Shiva_Enterprise_APIs.Entities.Products;
 using Shiva_Enterprise_APIs.Entities.Purchase;
+using Shiva_Enterprise_APIs.Helper;
 using Shiva_Enterprise_APIs.Model.Purchase;
 
 namespace Shiva_Enterprise_APIs.Controllers
@@ -114,19 +115,39 @@ namespace Shiva_Enterprise_APIs.Controllers
         }
 
         [HttpPut]
-        [Route("EditProductType")]
-        public async Task<IActionResult> EditProductTypeDetail(Guid id, List<PurchaseOrderDetail> purchaseOrderDetail)
+        [Route("EditProductOrderDetail")]
+        public async Task<IActionResult> EditProductOrderDetail(Guid id, List<PurchaseOrderDetailModel> purchaseOrderDetail)
         {
-            if ( purchaseOrderDetail.Any(x => x.PurchaseOrderId == id))
-            {
-                return BadRequest();
-            }
-
-            _shivaEnterpriseContext.Entry(purchaseOrderDetail).State = EntityState.Modified;
-
             try
             {
+                foreach (var model in purchaseOrderDetail)
+                {
+                    var existingItem = _shivaEnterpriseContext.PurchaseOrderDetails.FirstOrDefault(i => i.PurchaseOrderDetailId == model.PurchaseOrderDetailId.Value);
+                    if (existingItem == null)
+                    {
+                        return NotFound();
+                    }
+                    var entityToUpdate = PurchaseOrderDetailMappingHelper.MapToEntity(model);
+                    existingItem.PurchaseOrderId = entityToUpdate.PurchaseOrderId;
+                    existingItem.ProductId = entityToUpdate.ProductId;
+                    existingItem.BrandId = entityToUpdate.BrandId;
+                    existingItem.Quantity = entityToUpdate.Quantity;
+                    existingItem.Discount = entityToUpdate.Discount;
+                    existingItem.UnitPrice = entityToUpdate.UnitPrice;
+                    existingItem.NetTotal = entityToUpdate.NetTotal;
+                    existingItem.Tax_Percentage = entityToUpdate.Tax_Percentage;
+                    existingItem.IsActive = entityToUpdate.IsActive;
+                    existingItem.CreatedBy = entityToUpdate.CreatedBy;
+                    existingItem.CreatedDateTime = entityToUpdate.CreatedDateTime;
+                    existingItem.ModifiedBy = entityToUpdate.ModifiedBy;
+                    existingItem.ModifiedDateTime = entityToUpdate.ModifiedDateTime;
+
+                    _shivaEnterpriseContext.Entry(existingItem).State = EntityState.Modified;
+
+                }
                 await _shivaEnterpriseContext.SaveChangesAsync();
+                return Ok("Updated Successfully");
+
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -140,7 +161,6 @@ namespace Shiva_Enterprise_APIs.Controllers
                 }
             }
 
-            return Ok();
         }
     }
 }

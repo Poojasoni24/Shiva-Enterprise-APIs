@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
@@ -101,18 +102,32 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpPut]
         [Route("EditPurchaseOrder")]
-        public async Task<IActionResult> EditVendorDetail(Guid id, PurchaseOrder purchaseorder)
+        public async Task<IActionResult> EditpurchaseOrder(Guid id, PurchaseOrderModel purchaseorder)
         {
-            if (id != purchaseorder.PurchaseOrderId)
-            {
-                return BadRequest();
-            }
-
-            _shivaEnterpriseContext.Entry(purchaseorder).State = EntityState.Modified;
-
             try
             {
+                var existingItem = _shivaEnterpriseContext.PurchaseOrders.FirstOrDefault(i => i.PurchaseOrderId == id);
+                if (existingItem == null)
+                {
+                    return NotFound();
+                }
+                var entityToUpdate = MappingHelper.MapToEntity(purchaseorder);
+
+
+                existingItem.VendorID = entityToUpdate.VendorID;
+                existingItem.OrderDate = entityToUpdate.OrderDate;
+                existingItem.DeliveryDate = entityToUpdate.DeliveryDate;
+                existingItem.TotalAmount = entityToUpdate.TotalAmount;
+                existingItem.PurchaseOrderStatus = entityToUpdate.PurchaseOrderStatus;
+                existingItem.Doc_No = entityToUpdate.Doc_No;
+                existingItem.CreatedBy = entityToUpdate.CreatedBy;
+                existingItem.CreatedDateTime = entityToUpdate.CreatedDateTime;
+                existingItem.ModifiedBy = entityToUpdate.ModifiedBy;
+                existingItem.ModifiedDateTime = entityToUpdate.ModifiedDateTime;
+                //_shivaEnterpriseContext.Entry(purchaseorder).State = EntityState.Modified;
+                _shivaEnterpriseContext.Entry(existingItem).State = EntityState.Modified;
                 await _shivaEnterpriseContext.SaveChangesAsync();
+                return Ok(existingItem);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -126,7 +141,7 @@ namespace Shiva_Enterprise_APIs.Controllers
                 }
             }
 
-            return Ok();
+          
         }
     }
 }

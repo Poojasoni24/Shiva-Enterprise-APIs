@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities;
+using Shiva_Enterprise_APIs.Model.Purchase;
 
 namespace Shiva_Enterprise_APIs.Entities.Purchase
 {
@@ -39,5 +40,26 @@ namespace Shiva_Enterprise_APIs.Entities.Purchase
         [InverseProperty("PurchaseOrder")]
         public virtual ICollection<PurchaseOrderDetail> PurchaseOrderDetail { get; set; } = new List<PurchaseOrderDetail>();
 
+    }
+
+
+    public static class MappingHelper
+    {
+        public static PurchaseOrder MapToEntity(PurchaseOrderModel model)
+        {
+            return new PurchaseOrder
+            {
+                VendorID = model.VendorID,
+                OrderDate = model.OrderDate,
+                DeliveryDate = model.DeliveryDate,
+                TotalAmount = model.TotalAmount,
+                PurchaseOrderStatus = model.PurchaseOrderStatus,
+                Doc_No = model.Doc_No,
+                CreatedBy = model.CreatedBy,
+                CreatedDateTime = model.CreatedDateTime,
+                ModifiedBy = model.ModifiedBy,
+                ModifiedDateTime = model.ModifiedDateTime,
+            };
+        }
     }
 }
