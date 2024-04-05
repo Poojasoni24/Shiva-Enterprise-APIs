@@ -69,7 +69,8 @@ namespace Shiva_Enterprise_APIs.Controllers
                     ContractEndDate=customer.ContractEndDate,
                     Remark=customer.Remark,
                     IsActive=customer.IsActive,
-                    CustomerDiscount=customer.CustomerDiscount,
+                    cityId=customer.cityId,
+                    CustomerDiscount =customer.CustomerDiscount,
                     CreatedBy = customer.CreatedBy,
                     CreatedDateTime = customer.CreatedDateTime,
                 };

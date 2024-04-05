@@ -41,9 +41,9 @@ namespace Shiva_Enterprise_APIs.Entities
         public DateTime ContractStartDate { get; set; }
         public DateTime ContractEndDate { get; set; }
 
-        public Guid? CityId { get; set; }
+        public Guid? cityId { get; set; }
 
-        [ForeignKey("CityId")]
+        [ForeignKey("cityId")]
         [InverseProperty("Customer")]
         public virtual City City { get; set; }
 
