@@ -26,10 +26,18 @@ namespace Shiva_Enterprise_APIs.Controllers
         [Route("GetCompanies")]
         public async Task<IActionResult> GetCompanies()
         {
-            var companies = await _shivaEnterpriseContext.Companies.ToListAsync();
-            if (companies == null) { return NotFound(); }
+            try
+            {
+                var companies = await _shivaEnterpriseContext.Companies.ToListAsync();
+                if (companies == null) { return NotFound(); }
 
-            return Ok(companies);
+                return Ok(companies);
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex); 
+            }
+        
         }
 
         [HttpGet]
