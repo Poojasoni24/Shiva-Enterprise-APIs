@@ -40,6 +40,9 @@ namespace Shiva_Enterprise_APIs.Entities.Purchase
         [InverseProperty("PurchaseOrder")]
         public virtual ICollection<PurchaseOrderDetail> PurchaseOrderDetail { get; set; } = new List<PurchaseOrderDetail>();
 
+        [InverseProperty("PurchaseOrder")]
+        public virtual ICollection<Inwards> Inwards { get; set; } = new List<Inwards>();
+
     }
 
 

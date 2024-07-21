@@ -41,6 +41,8 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
     public virtual DbSet<Customer> Customers { get; set; }
     public virtual DbSet<SalesOrder> SalesOrders { get; set; }
     public virtual DbSet<SalesOrderDetail>SalesOrderDetails { get; set; }
+    public virtual DbSet<Inwards>Inwards { get; set; }
+    public virtual DbSet<Outwards>Outwards { get; set; }
     public DbSet<ApplicationUser> applicationUsers { get; set; }
     public DbSet<ApplicationRole> applicationRoles { get; set; }
     public DbSet<IdentityUserClaim<Guid>> IdentityUserClaims { get; set; }
@@ -52,8 +54,8 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-     => optionsBuilder.UseSqlServer("Data Source=p3nwplsk12sql-v18.shr.prod.phx3.secureserver.net;Initial Catalog=ShivaERP;User Id=ShivaEnterprise;Password=Shiva@2023;Integrated Security=false;TrustServerCertificate=True");
-     //=> optionsBuilder.UseSqlServer("Data Source=LAPTOP-DRBPPARM\\MSSQLSERVER2;Initial Catalog=ShivaEnterprise;User Id=sa;Password=Ps@1234;Integrated Security=true;TrustServerCertificate=True");
+     //=> optionsBuilder.UseSqlServer("Data Source=p3nwplsk12sql-v18.shr.prod.phx3.secureserver.net;Initial Catalog=ShivaERP;User Id=ShivaEnterprise;Password=Shiva@2023;Integrated Security=false;TrustServerCertificate=True");
+     => optionsBuilder.UseSqlServer("Data Source=LAPTOP-DRBPPARM\\MSSQLSERVER2;Initial Catalog=ShivaEnterprise;User Id=sa;Password=Ps@1234;Integrated Security=true;TrustServerCertificate=True");
     //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-MQBBGG8\\MSSQLSERVER19;Initial Catalog=ShivaEnterprise;User Id=sa;Password=yash6006;Integrated Security=true;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -209,6 +211,30 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
             entity.HasOne(d => d.Brand).WithMany(p => p.SalesOrderDetail).HasConstraintName("FK_salesorderdetail_bank");
             entity.HasOne(d => d.Product).WithMany(p => p.SalesOrderDetail).HasConstraintName("FK_salesorderdetail_product");
             entity.HasOne(d => d.SalesOrder).WithMany(p => p.SalesOrderDetail).HasConstraintName("FK_salesorderdetail_purchaseorder");
+        });
+
+        modelBuilder.Entity<Inwards>(entity =>
+        {
+            entity.HasKey(e => e.InwardId).HasName("PK__Inwards__B94AD674532DF6E8");
+
+            entity.Property(e => e.InwardId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.ModifiedDate).HasDefaultValueSql("(getdate())");
+            entity.HasOne(d => d.Product).WithMany(p => p.Inwards).HasConstraintName("FK_Inwards_product");
+            entity.HasOne(d => d.PurchaseOrder).WithMany(p => p.Inwards).HasConstraintName("FK_Inwards_PurchaseOrder");
+            entity.HasOne(d => d.Vendor).WithMany(p => p.Inwards).HasConstraintName("FK_Inwards_Vendor").OnDelete(DeleteBehavior.NoAction);
+        });
+
+        modelBuilder.Entity<Outwards>(entity =>
+        {
+            entity.HasKey(e => e.OutwardId).HasName("PK__Outwards__B94AD674532DF6E8");
+
+            entity.Property(e => e.OutwardId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.ModifiedDate).HasDefaultValueSql("(getdate())");
+            entity.HasOne(d => d.Customer).WithMany(p => p.Outwards).HasConstraintName("FK_Outwards_customer").OnDelete(DeleteBehavior.NoAction);
+            entity.HasOne(d => d.SalesOrder).WithMany(p => p.Outwards).HasConstraintName("FK_Outwards_salesorder");
+            entity.HasOne(d => d.Product).WithMany(p => p.Outwards).HasConstraintName("FK_Outwards_product");
         });
         OnModelCreatingPartial(modelBuilder);
     }

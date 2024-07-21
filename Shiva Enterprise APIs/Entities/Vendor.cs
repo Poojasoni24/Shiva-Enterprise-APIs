@@ -65,5 +65,8 @@ namespace Shiva_Enterprise_APIs.Entities
 
         [InverseProperty("Vendor")]
         public virtual ICollection<PurchaseOrder> PurchaseOrder { get; set; } = new List<PurchaseOrder>();
+
+        [InverseProperty("Vendor")]
+        public virtual ICollection<Inwards> Inwards { get; set; } = new List<Inwards>();
     }
 }
