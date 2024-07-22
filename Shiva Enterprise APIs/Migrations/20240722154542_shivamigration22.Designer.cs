@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shiva_Enterprise_APIs.Entities;
 
@@ -11,9 +12,11 @@ using Shiva_Enterprise_APIs.Entities;
 namespace Shiva_Enterprise_APIs.Migrations
 {
     [DbContext(typeof(ShivaEnterpriseContext))]
-    partial class ShivaEnterpriseContextModelSnapshot : ModelSnapshot
+    [Migration("20240722154542_shivamigration22")]
+    partial class shivamigration22
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -667,103 +670,6 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.ToTable("Customer");
                 });
 
-            modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Inwards", b =>
-                {
-                    b.Property<Guid>("InwardId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("(newid())");
-
-                    b.Property<string>("BatchNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("CostPerUnit")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<DateTime>("InvoiceDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("InvoiceNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ModifiedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ProductName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("PurchaseOrderId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("QualityCheckRemarks")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("QualityCheckStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("QuantityReceived")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("ReceiptDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ReceivedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Remarks")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("TotalCost")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("UnitOfMeasure")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("VendorId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("VendorName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("InwardId")
-                        .HasName("PK__Inwards__B94AD674532DF6E8");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("PurchaseOrderId");
-
-                    b.HasIndex("VendorId");
-
-                    b.ToTable("Inwards");
-                });
-
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.ModeofPayment", b =>
                 {
                     b.Property<Guid>("MODId")
@@ -826,119 +732,6 @@ namespace Shiva_Enterprise_APIs.Migrations
                         .HasName("PK__mod__B94AD674532DF6E8");
 
                     b.ToTable("ModeofPayment");
-                });
-
-            modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Outwards", b =>
-                {
-                    b.Property<Guid>("OutwardId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("(newid())");
-
-                    b.Property<string>("BatchNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CarrierId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CarrierName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("CostPerUnit")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<string>("Currency")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CustomerName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(200)");
-
-                    b.Property<string>("DeliveryAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DeliveryDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("InvoiceDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModifiedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ProductName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("QuantityShipped")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Remarks")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("SalesOrderId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ShipmentDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ShippedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ShippingMethod")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("TotalCost")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("TrackingNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UnitOfMeasure")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("OutwardId")
-                        .HasName("PK__Outwards__B94AD674532DF6E8");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("SalesOrderId");
-
-                    b.ToTable("Outwards");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Products.Product", b =>
@@ -1541,66 +1334,6 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.Navigation("City");
                 });
 
-            modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Inwards", b =>
-                {
-                    b.HasOne("Shiva_Enterprise_APIs.Entities.Products.Product", "Product")
-                        .WithMany("Inwards")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Inwards_product");
-
-                    b.HasOne("Shiva_Enterprise_APIs.Entities.Purchase.PurchaseOrder", "PurchaseOrder")
-                        .WithMany("Inwards")
-                        .HasForeignKey("PurchaseOrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Inwards_PurchaseOrder");
-
-                    b.HasOne("Shiva_Enterprise_APIs.Entities.Vendor", "Vendor")
-                        .WithMany("Inwards")
-                        .HasForeignKey("VendorId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired()
-                        .HasConstraintName("FK_Inwards_Vendor");
-
-                    b.Navigation("Product");
-
-                    b.Navigation("PurchaseOrder");
-
-                    b.Navigation("Vendor");
-                });
-
-            modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Outwards", b =>
-                {
-                    b.HasOne("Shiva_Enterprise_APIs.Entities.Customer", "Customer")
-                        .WithMany("Outwards")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired()
-                        .HasConstraintName("FK_Outwards_customer");
-
-                    b.HasOne("Shiva_Enterprise_APIs.Entities.Products.Product", "Product")
-                        .WithMany("Outwards")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Outwards_product");
-
-                    b.HasOne("Shiva_Enterprise_APIs.Entities.SalesOrder", "SalesOrder")
-                        .WithMany("Outwards")
-                        .HasForeignKey("SalesOrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Outwards_salesorder");
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("Product");
-
-                    b.Navigation("SalesOrder");
-                });
-
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Purchase.PurchaseOrder", b =>
                 {
                     b.HasOne("Shiva_Enterprise_APIs.Entities.Vendor", "Vendor")
@@ -1742,17 +1475,11 @@ namespace Shiva_Enterprise_APIs.Migrations
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Customer", b =>
                 {
-                    b.Navigation("Outwards");
-
                     b.Navigation("SalesOrder");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Products.Product", b =>
                 {
-                    b.Navigation("Inwards");
-
-                    b.Navigation("Outwards");
-
                     b.Navigation("PurchaseOrderDetail");
 
                     b.Navigation("SalesOrderDetail");
@@ -1760,15 +1487,11 @@ namespace Shiva_Enterprise_APIs.Migrations
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Purchase.PurchaseOrder", b =>
                 {
-                    b.Navigation("Inwards");
-
                     b.Navigation("PurchaseOrderDetail");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.SalesOrder", b =>
                 {
-                    b.Navigation("Outwards");
-
                     b.Navigation("SalesOrderDetail");
 
                     b.Navigation("SalesReturns");
@@ -1781,8 +1504,6 @@ namespace Shiva_Enterprise_APIs.Migrations
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Vendor", b =>
                 {
-                    b.Navigation("Inwards");
-
                     b.Navigation("PurchaseOrder");
                 });
 #pragma warning restore 612, 618

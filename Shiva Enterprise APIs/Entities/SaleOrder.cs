@@ -33,6 +33,9 @@ namespace Shiva_Enterprise_APIs.Entities
 
         [InverseProperty("SalesOrder")]
         public virtual ICollection<SalesOrderDetail> SalesOrderDetail { get; set; } = new List<SalesOrderDetail>();
+       
+        [InverseProperty("SalesOrder")]
+        public virtual ICollection<SalesReturn> SalesReturns { get; set; }
 
         [InverseProperty("SalesOrder")]
         public virtual ICollection<Outwards> Outwards { get; set; } = new List<Outwards>();

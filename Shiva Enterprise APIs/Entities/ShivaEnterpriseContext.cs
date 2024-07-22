@@ -41,6 +41,8 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
     public virtual DbSet<Customer> Customers { get; set; }
     public virtual DbSet<SalesOrder> SalesOrders { get; set; }
     public virtual DbSet<SalesOrderDetail>SalesOrderDetails { get; set; }
+
+    public virtual DbSet<SalesReturn> SalesReturns { get; set; }
     public virtual DbSet<Inwards>Inwards { get; set; }
     public virtual DbSet<Outwards>Outwards { get; set; }
     public DbSet<ApplicationUser> applicationUsers { get; set; }
@@ -54,8 +56,9 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-     //=> optionsBuilder.UseSqlServer("Data Source=p3nwplsk12sql-v18.shr.prod.phx3.secureserver.net;Initial Catalog=ShivaERP;User Id=ShivaEnterprise;Password=Shiva@2023;Integrated Security=false;TrustServerCertificate=True");
-     => optionsBuilder.UseSqlServer("Data Source=LAPTOP-DRBPPARM\\MSSQLSERVER2;Initial Catalog=ShivaEnterprise;User Id=sa;Password=Ps@1234;Integrated Security=true;TrustServerCertificate=True");
+    => optionsBuilder.UseSqlServer("Data Source=p3nwplsk12sql-v18.shr.prod.phx3.secureserver.net;Initial Catalog=ShivaERP;User Id=ShivaEnterprise;Password=Shiva@2023;Integrated Security=false;TrustServerCertificate=True");
+    //=> optionsBuilder.UseSqlServer("Data Source=YASH-PC\\SQLEXPRESS;Initial Catalog=ShivaEnterprise;User Id=Yash;Password=Yash04;Integrated Security=true;TrustServerCertificate=True");     //=> optionsBuilder.UseSqlServer("Data Source=p3nwplsk12sql-v18.shr.prod.phx3.secureserver.net;Initial Catalog=ShivaERP;User Id=ShivaEnterprise;Password=Shiva@2023;Integrated Security=false;TrustServerCertificate=True");
+    //=> optionsBuilder.UseSqlServer("Data Source=LAPTOP-DRBPPARM\\MSSQLSERVER2;Initial Catalog=ShivaEnterprise;User Id=sa;Password=Ps@1234;Integrated Security=true;TrustServerCertificate=True");
     //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-MQBBGG8\\MSSQLSERVER19;Initial Catalog=ShivaEnterprise;User Id=sa;Password=yash6006;Integrated Security=true;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -211,6 +214,17 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
             entity.HasOne(d => d.Brand).WithMany(p => p.SalesOrderDetail).HasConstraintName("FK_salesorderdetail_bank");
             entity.HasOne(d => d.Product).WithMany(p => p.SalesOrderDetail).HasConstraintName("FK_salesorderdetail_product");
             entity.HasOne(d => d.SalesOrder).WithMany(p => p.SalesOrderDetail).HasConstraintName("FK_salesorderdetail_purchaseorder");
+        });
+        modelBuilder.Entity<SalesReturn>(entity =>
+        {
+            entity.HasKey(e => e.SalesReturnID);
+            entity.Property(e => e.ReturnDate).IsRequired();
+            entity.Property(e => e.ReasonForReturn).IsRequired().HasMaxLength(255);
+            entity.Property(e => e.ReturnedQuantity).IsRequired();
+            entity.Property(e => e.RestockingFee).HasColumnType("decimal(10,2)");
+            entity.HasOne(e => e.SalesOrder)
+                  .WithMany(o => o.SalesReturns)
+                  .HasForeignKey(e => e.SalesOrderID);
         });
 
         modelBuilder.Entity<Inwards>(entity =>
