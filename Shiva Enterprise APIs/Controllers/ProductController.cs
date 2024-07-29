@@ -6,6 +6,7 @@ using Shiva_Enterprise_APIs.Entities;
 using Shiva_Enterprise_APIs.Entities.Accounts;
 using Shiva_Enterprise_APIs.Entities.Products;
 using Shiva_Enterprise_APIs.Model.Product;
+using System.Linq;
 
 namespace Shiva_Enterprise_APIs.Controllers
 {
@@ -128,6 +129,26 @@ namespace Shiva_Enterprise_APIs.Controllers
 
             return Ok();
         }
+
+        [HttpGet]
+        [Route("GetProductFromSaleOrderId")]
+        public async Task<ActionResult> GetProductFromSaleOrderId(Guid saleOrderId)
+        {
+            if (saleOrderId == Guid.Empty)
+            {
+                throw new ArgumentNullException(nameof(saleOrderId));
+            }
+
+            var productIds = await _shivaEnterpriseContext.SalesOrderDetails.Where(p => p.SalesOrderId == saleOrderId).Select(p => p.ProductId).ToListAsync();
+            var products = await _shivaEnterpriseContext.products.Where(p => productIds.Contains(p.ProductId)).ToListAsync();
+
+            if (products == null)
+            {
+                return BadRequest("No Product Find");
+            }
+            return Ok(products);
+        }
+
     }
 }
 

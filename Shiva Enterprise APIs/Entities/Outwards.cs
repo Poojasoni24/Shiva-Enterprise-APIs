@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities.Products;
 using Shiva_Enterprise_APIs.Entities.Purchase;
+using Shiva_Enterprise_APIs.Model;
+using Shiva_Enterprise_APIs.Model.Purchase;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -63,5 +65,40 @@ namespace Shiva_Enterprise_APIs.Entities
         [ForeignKey("ProductId")]
         [InverseProperty("Outwards")]
         public virtual Product Product { get; set; }
+
+        public static class MappingHelper
+        {
+            public static Outwards MapToEntity(OutwardModel outwardDetails)
+            {
+                return new Outwards
+                {
+                    SalesOrderId = outwardDetails.SalesOrderId,
+                    CustomerId = outwardDetails.CustomerId,
+                    CustomerName = outwardDetails.CustomerName,
+                    ShipmentDate = outwardDetails.ShipmentDate,
+                    ShippedBy = outwardDetails.ShippedBy,
+                    ProductId = outwardDetails.ProductId,
+                    ProductName = outwardDetails.ProductName,
+                    QuantityShipped = outwardDetails.QuantityShipped,
+                    UnitOfMeasure = outwardDetails.UnitOfMeasure,
+                    BatchNumber = outwardDetails.BatchNumber,
+                    CarrierId = outwardDetails.CarrierId,
+                    CarrierName = outwardDetails.CarrierName,
+                    TrackingNumber = outwardDetails.TrackingNumber,
+                    ShippingMethod = outwardDetails.ShippingMethod,
+                    DeliveryDate = outwardDetails.DeliveryDate,
+                    DeliveryAddress = outwardDetails.DeliveryAddress,
+                    InvoiceDate = outwardDetails.InvoiceDate,
+                    CostPerUnit = outwardDetails.CostPerUnit,
+                    TotalCost = outwardDetails.TotalCost,
+                    Remarks = outwardDetails.Remarks,
+                    CreatedBy = outwardDetails.CreatedBy,
+                    CreatedDate = outwardDetails.CreatedDate,
+                    ModifiedBy = outwardDetails.ModifiedBy,
+                    Currency = outwardDetails.Currency
+                };
+            }
+        }
+
     }
 }
