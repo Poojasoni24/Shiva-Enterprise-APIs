@@ -38,7 +38,7 @@ namespace Shiva_Enterprise_APIs.Controllers
                 throw new ArgumentNullException(nameof(inwardId));
             }
 
-            var inwardDetails = await _shivaEnterpriseContext.SalesOrders.FindAsync(inwardId);
+            var inwardDetails = await _shivaEnterpriseContext.Inwards.FindAsync(inwardId);
             if (inwardDetails == null)
             {
                 return BadRequest("No Inwards Found");
@@ -98,7 +98,7 @@ namespace Shiva_Enterprise_APIs.Controllers
         [Route("DeleteInwards")]
         public async Task<ActionResult<ApiResponseFormat>> DeleteInwards(Guid inwardsId)
         {
-            var deleteInwards = _shivaEnterpriseContext.SalesOrders.Find(inwardsId);
+            var deleteInwards = _shivaEnterpriseContext.Inwards.Find(inwardsId);
             if (DeleteInwards != null)
             {
                 _shivaEnterpriseContext.Entry(deleteInwards).State = EntityState.Deleted;
@@ -128,7 +128,7 @@ namespace Shiva_Enterprise_APIs.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_shivaEnterpriseContext.SalesOrders.Any(x => x.SalesOrderId == id))
+                if (!_shivaEnterpriseContext.Inwards.Any(x => x.InwardId == id))
                 {
                     return NotFound();
                 }
