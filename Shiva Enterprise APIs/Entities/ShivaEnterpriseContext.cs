@@ -43,6 +43,7 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
     public virtual DbSet<SalesOrderDetail>SalesOrderDetails { get; set; }
 
     public virtual DbSet<SalesReturn> SalesReturns { get; set; }
+    public virtual DbSet<PurchaseReturn> PurchaseReturns { get; set; }
     public virtual DbSet<Inwards>Inwards { get; set; }
     public virtual DbSet<Outwards>Outwards { get; set; }
     public DbSet<ApplicationUser> applicationUsers { get; set; }
@@ -249,6 +250,24 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
             entity.HasOne(d => d.Customer).WithMany(p => p.Outwards).HasConstraintName("FK_Outwards_customer").OnDelete(DeleteBehavior.NoAction);
             entity.HasOne(d => d.SalesOrder).WithMany(p => p.Outwards).HasConstraintName("FK_Outwards_salesorder");
             entity.HasOne(d => d.Product).WithMany(p => p.Outwards).HasConstraintName("FK_Outwards_product");
+        });
+        modelBuilder.Entity<PurchaseReturn>(entity =>
+        {
+            entity.ToTable("PurchaseReturns"); // Set the table name explicitly if needed
+
+            entity.HasKey(e => e.PurchaseReturnId); // Primary key
+            entity.Property(e => e.PurchaseReturnId).HasColumnName("PurchaseReturnId").IsRequired();
+            entity.Property(e => e.PurchaseId).HasColumnName("PurchaseId").IsRequired();
+            entity.Property(e => e.VendorId).HasColumnName("VendorId").IsRequired();
+            entity.Property(e => e.ReturnDate).HasColumnName("ReturnDate").IsRequired();
+            entity.Property(e => e.TotalAmount).HasColumnName("TotalAmount").HasColumnType("decimal(18,2)").IsRequired();
+            entity.Property(e => e.ReturnReason).HasColumnName("ReturnReason").HasMaxLength(255).IsRequired();
+            entity.Property(e => e.Status).HasColumnName("Status").HasMaxLength(50).IsRequired().HasDefaultValue("Pending");
+            entity.Property(e => e.CreatedBy).HasColumnName("CreatedBy").HasMaxLength(100).IsRequired();
+            entity.Property(e => e.CreatedDate).HasColumnName("CreatedDate").IsRequired().HasDefaultValueSql("GETDATE()");
+            entity.Property(e => e.UpdatedBy).HasColumnName("UpdatedBy").HasMaxLength(100);
+            entity.Property(e => e.UpdatedDate).HasColumnName("UpdatedDate").HasDefaultValueSql("GETDATE()");
+
         });
         OnModelCreatingPartial(modelBuilder);
     }
