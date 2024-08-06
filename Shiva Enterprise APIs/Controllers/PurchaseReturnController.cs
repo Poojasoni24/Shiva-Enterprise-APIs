@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities;
 using Shiva_Enterprise_APIs.Entities.Purchase;
@@ -6,6 +7,10 @@ using Shiva_Enterprise_APIs.Model.Purchase;
 
 namespace Shiva_Enterprise_APIs.Controllers
 {
+
+    [Authorize]
+    [ApiController]
+    [Route("api/[Controller]")]
     public class PurchaseReturnController : Controller
     {
         private ShivaEnterpriseContext _shivaEnterpriseContext;
@@ -15,31 +20,36 @@ namespace Shiva_Enterprise_APIs.Controllers
             _shivaEnterpriseContext = shivaEnterpriseContext;
         }
 
-        // GET: api/PurchaseReturn
         [HttpGet]
+        [Route("GetPurchaseReturns")]
         public async Task<ActionResult> GetPurchaseReturns()
         {
             var purchaseReturns = await _shivaEnterpriseContext.PurchaseReturns.ToListAsync();
+            if (purchaseReturns == null)
+                return NotFound();
             return Ok(purchaseReturns);
         }
 
-        // GET: api/PurchaseReturn/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult> GetPurchaseReturn(int id)
+        [HttpGet]
+        [Route("GetPurchaseReturnById")]
+        public async Task<ActionResult> GetPurchaseReturnById(int PurchasereturnId)
         {
-            var purchaseReturn = await _shivaEnterpriseContext.PurchaseReturns.FindAsync(id);
-
-            if (purchaseReturn == null)
+            if (PurchasereturnId == null)
             {
-                return NotFound();
+                throw new ArgumentNullException(nameof(PurchasereturnId));
             }
 
+            var purchaseReturn = await _shivaEnterpriseContext.PurchaseReturns.FindAsync(PurchasereturnId);
+            if (purchaseReturn == null)
+            {
+                return BadRequest("No Purchase Return Find");
+            }
             return Ok(purchaseReturn);
         }
 
-        // POST: api/PurchaseReturn
         [HttpPost]
-        public async Task<ActionResult> AddPurchaseReturn(PurchaseReturn purchaseReturn)
+        [Route("AddPurchaseReturn")]
+        public async Task<ActionResult<PurchaseReturn>> AddPurchaseReturn(PurchaseReturn purchaseReturn)
         {
             if (!ModelState.IsValid)
             {
@@ -52,8 +62,24 @@ namespace Shiva_Enterprise_APIs.Controllers
             return Ok(purchaseReturn.PurchaseReturnId);
         }
 
-        // PUT: api/PurchaseReturn/5
-        [HttpPut("{id}")]
+        [HttpPost]
+        [Route("DeletePurchaseReturn")]
+        public async Task<ActionResult> DeletePurchaseReturn(int id)
+        {
+            var purchaseReturn = await _shivaEnterpriseContext.PurchaseReturns.FindAsync(id);
+            if (purchaseReturn == null)
+            {
+                return NotFound();
+            }
+
+            _shivaEnterpriseContext.Entry(purchaseReturn).State = EntityState.Deleted;
+            await _shivaEnterpriseContext.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("EditPurchaseReturn")]
         public async Task<IActionResult> EditPurchaseReturn(int id, PurchaseReturn purchaseReturn)
         {
             if (id != purchaseReturn.PurchaseReturnId)
@@ -78,22 +104,6 @@ namespace Shiva_Enterprise_APIs.Controllers
                     throw;
                 }
             }
-
-            return Ok();
-        }
-
-        // DELETE: api/PurchaseReturn/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeletePurchaseReturn(int id)
-        {
-            var purchaseReturn = await _shivaEnterpriseContext.PurchaseReturns.FindAsync(id);
-            if (purchaseReturn == null)
-            {
-                return NotFound();
-            }
-
-            _shivaEnterpriseContext.PurchaseReturns.Remove(purchaseReturn);
-            await _shivaEnterpriseContext.SaveChangesAsync();
 
             return Ok();
         }
