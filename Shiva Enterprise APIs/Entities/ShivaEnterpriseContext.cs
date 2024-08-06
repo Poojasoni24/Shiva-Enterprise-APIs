@@ -213,7 +213,7 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
             entity.Property(e => e.ModifiedDateTime).HasDefaultValueSql("(getdate())");
             entity.HasOne(d => d.Brand).WithMany(p => p.SalesOrderDetail).HasConstraintName("FK_salesorderdetail_bank");
             entity.HasOne(d => d.Product).WithMany(p => p.SalesOrderDetail).HasConstraintName("FK_salesorderdetail_product");
-            entity.HasOne(d => d.SalesOrder).WithMany(p => p.SalesOrderDetail).HasConstraintName("FK_salesorderdetail_purchaseorder");
+            entity.HasOne(d => d.SalesOrder).WithMany(p => p.SalesOrderDetail).HasConstraintName("FK_salesorderdetail_Salesorder");
         });
         modelBuilder.Entity<SalesReturn>(entity =>
         {
