@@ -46,6 +46,7 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
     public virtual DbSet<PurchaseReturn> PurchaseReturns { get; set; }
     public virtual DbSet<Inwards>Inwards { get; set; }
     public virtual DbSet<Outwards>Outwards { get; set; }
+    public virtual DbSet<Stock> Stock { get; set; }
     public DbSet<ApplicationUser> applicationUsers { get; set; }
     public DbSet<ApplicationRole> applicationRoles { get; set; }
     public DbSet<IdentityUserClaim<Guid>> IdentityUserClaims { get; set; }
