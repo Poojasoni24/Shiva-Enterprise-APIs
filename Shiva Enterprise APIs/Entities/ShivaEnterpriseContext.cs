@@ -273,6 +273,21 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
              .HasForeignKey(e => e.VendorId);
 
         });
+
+        modelBuilder.Entity<Stock>(entity =>
+        {
+            entity.HasKey(e => e.StockId).HasName("PK__Stock__B94AD674532DF6E8");
+
+            entity.Property(e => e.StockId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.StockCode).HasColumnName("StockCode").IsRequired();
+            entity.Property(e => e.ProductId).HasColumnName("ProductId").IsRequired();
+            entity.Property(e => e.QuantityOnHand).HasColumnName("QuantityOnHand").IsRequired();
+            entity.Property(e => e.ReorderLevel).HasColumnName("ReorderLevel").IsRequired();
+            entity.Property(e => e.ModifiedBy).HasColumnName("ModifiedBy").IsRequired();
+            entity.Property(e => e.ModifiedDate).HasColumnName("ModifiedDate").HasDefaultValueSql("(getdate())");
+            entity.HasOne(d => d.Product).WithMany(p => p.StockDetails).HasConstraintName("FK_Stock_product");
+        });
+
         OnModelCreatingPartial(modelBuilder);
     }
 
