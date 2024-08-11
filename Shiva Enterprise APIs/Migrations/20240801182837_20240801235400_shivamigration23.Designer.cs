@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shiva_Enterprise_APIs.Entities;
 
@@ -11,9 +12,11 @@ using Shiva_Enterprise_APIs.Entities;
 namespace Shiva_Enterprise_APIs.Migrations
 {
     [DbContext(typeof(ShivaEnterpriseContext))]
-    partial class ShivaEnterpriseContextModelSnapshot : ModelSnapshot
+    [Migration("20240801182837_20240801235400_shivamigration23")]
+    partial class _20240801235400_shivamigration23
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1125,76 +1128,6 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.ToTable("PurchaseOrderDetail");
                 });
 
-            modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Purchase.PurchaseReturn", b =>
-                {
-                    b.Property<Guid>("PurchaseReturnId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("PurchaseReturnId");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("CreatedBy");
-
-                    b.Property<DateTime>("CreatedDateTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CreatedDate")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<string>("ModifiedBy")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("UpdatedBy");
-
-                    b.Property<DateTime>("ModifiedDateTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasColumnName("UpdatedDate")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<Guid>("PurchaseOrderId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("PurchaseId");
-
-                    b.Property<DateTime>("ReturnDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("ReturnDate");
-
-                    b.Property<string>("ReturnReason")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
-                        .HasColumnName("ReturnReason");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasDefaultValue("Pending")
-                        .HasColumnName("Status");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)")
-                        .HasColumnName("TotalAmount");
-
-                    b.Property<Guid>("VendorId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("VendorId");
-
-                    b.HasKey("PurchaseReturnId");
-
-                    b.HasIndex("PurchaseOrderId");
-
-                    b.HasIndex("VendorId");
-
-                    b.ToTable("PurchaseReturns", (string)null);
-                });
-
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.SalesOrder", b =>
                 {
                     b.Property<Guid>("SalesOrderId")
@@ -1750,25 +1683,6 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.Navigation("PurchaseOrder");
                 });
 
-            modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Purchase.PurchaseReturn", b =>
-                {
-                    b.HasOne("Shiva_Enterprise_APIs.Entities.Purchase.PurchaseOrder", "PurchaseOrder")
-                        .WithMany("PurchaseReturns")
-                        .HasForeignKey("PurchaseOrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Shiva_Enterprise_APIs.Entities.Vendor", "Vendor")
-                        .WithMany("PurchaseReturns")
-                        .HasForeignKey("VendorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PurchaseOrder");
-
-                    b.Navigation("Vendor");
-                });
-
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.SalesOrder", b =>
                 {
                     b.HasOne("Shiva_Enterprise_APIs.Entities.Customer", "Customer")
@@ -1802,7 +1716,7 @@ namespace Shiva_Enterprise_APIs.Migrations
                         .HasForeignKey("SalesOrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("FK_salesorderdetail_salesOrder");
+                        .HasConstraintName("FK_salesorderdetail_purchaseorder");
 
                     b.Navigation("Brand");
 
@@ -1903,8 +1817,6 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.Navigation("Inwards");
 
                     b.Navigation("PurchaseOrderDetail");
-
-                    b.Navigation("PurchaseReturns");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.SalesOrder", b =>
@@ -1926,8 +1838,6 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.Navigation("Inwards");
 
                     b.Navigation("PurchaseOrder");
-
-                    b.Navigation("PurchaseReturns");
                 });
 #pragma warning restore 612, 618
         }
