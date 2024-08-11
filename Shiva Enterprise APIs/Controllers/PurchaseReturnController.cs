@@ -80,7 +80,7 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpPut]
         [Route("EditPurchaseReturn")]
-        public async Task<IActionResult> EditPurchaseReturn(int id, PurchaseReturn purchaseReturn)
+        public async Task<IActionResult> EditPurchaseReturn(Guid id, PurchaseReturn purchaseReturn)
         {
             if (id != purchaseReturn.PurchaseReturnId)
             {

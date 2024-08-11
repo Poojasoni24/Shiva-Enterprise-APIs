@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Shiva_Enterprise_APIs.Entities.Products;
+﻿using Shiva_Enterprise_APIs.Entities.Products;
 using Shiva_Enterprise_APIs.Entities.Purchase;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Shiva_Enterprise_APIs.Entities
 {

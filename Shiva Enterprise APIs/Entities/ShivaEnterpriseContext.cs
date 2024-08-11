@@ -23,11 +23,8 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
     }
 
     public virtual DbSet<Branch> Branches { get; set; }
-
     public virtual DbSet<City> Cities { get; set; }
-
     public virtual DbSet<Company> Companies { get; set; }
-
     public virtual DbSet<Country> Countries { get; set; }
     public virtual DbSet<State> states { get; set; }
     public virtual DbSet<Account> accounts { get; set; }
@@ -57,9 +54,9 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-    => optionsBuilder.UseSqlServer("Data Source=p3nwplsk12sql-v18.shr.prod.phx3.secureserver.net;Initial Catalog=ShivaERP;User Id=ShivaEnterprise;Password=Shiva@2023;Integrated Security=false;TrustServerCertificate=True");
+    //=> optionsBuilder.UseSqlServer("Data Source=p3nwplsk12sql-v18.shr.prod.phx3.secureserver.net;Initial Catalog=ShivaERP;User Id=ShivaEnterprise;Password=Shiva@2023;Integrated Security=false;TrustServerCertificate=True");
     //=> optionsBuilder.UseSqlServer("Data Source=YASH-PC\\SQLEXPRESS;Initial Catalog=ShivaEnterprise;User Id=Yash;Password=Yash04;Integrated Security=true;TrustServerCertificate=True");     //=> optionsBuilder.UseSqlServer("Data Source=p3nwplsk12sql-v18.shr.prod.phx3.secureserver.net;Initial Catalog=ShivaERP;User Id=ShivaEnterprise;Password=Shiva@2023;Integrated Security=false;TrustServerCertificate=True");
-    //=> optionsBuilder.UseSqlServer("Data Source=LAPTOP-DRBPPARM\\MSSQLSERVER2;Initial Catalog=ShivaEnterprise;User Id=sa;Password=Ps@1234;Integrated Security=true;TrustServerCertificate=True");
+    => optionsBuilder.UseSqlServer("Data Source=LAPTOP-DRBPPARM\\MSSQLSERVER2;Initial Catalog=ShivaEnterprise;User Id=sa;Password=Ps@1234;Integrated Security=true;TrustServerCertificate=True");
     //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-MQBBGG8\\MSSQLSERVER19;Initial Catalog=ShivaEnterprise;User Id=sa;Password=yash6006;Integrated Security=true;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -185,6 +182,7 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
             entity.Property(e => e.ModifiedDateTime).HasDefaultValueSql("(getdate())");
             entity.HasOne(d => d.Vendor).WithMany(p => p.PurchaseOrder).HasConstraintName("FK_purchaseorder_vendor");
         });
+
         modelBuilder.Entity<PurchaseOrderDetail>(entity =>
         {
             entity.HasKey(e => e.PurchaseOrderDetailId).HasName("PK__purchaseorderdetail__B94AD674532DF6E8");
@@ -196,6 +194,7 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
             entity.HasOne(d => d.Product).WithMany(p => p.PurchaseOrderDetail).HasConstraintName("FK_purchaseorderdetail_product");
             entity.HasOne(d => d.PurchaseOrder).WithMany(p => p.PurchaseOrderDetail).HasConstraintName("FK_purchaseorderdetail_purchaseorder");
         });
+
         modelBuilder.Entity<SalesOrder>(entity =>
         {
             entity.HasKey(e => e.SalesOrderId).HasName("PK__salesorder__B94AD674532DF6E8");
@@ -214,7 +213,7 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
             entity.Property(e => e.ModifiedDateTime).HasDefaultValueSql("(getdate())");
             entity.HasOne(d => d.Brand).WithMany(p => p.SalesOrderDetail).HasConstraintName("FK_salesorderdetail_bank");
             entity.HasOne(d => d.Product).WithMany(p => p.SalesOrderDetail).HasConstraintName("FK_salesorderdetail_product");
-            entity.HasOne(d => d.SalesOrder).WithMany(p => p.SalesOrderDetail).HasConstraintName("FK_salesorderdetail_Salesorder");
+            entity.HasOne(d => d.SalesOrder).WithMany(p => p.SalesOrderDetail).HasConstraintName("FK_salesorderdetail_salesOrder");
         });
         modelBuilder.Entity<SalesReturn>(entity =>
         {
@@ -257,16 +256,20 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
 
             entity.HasKey(e => e.PurchaseReturnId); // Primary key
             entity.Property(e => e.PurchaseReturnId).HasColumnName("PurchaseReturnId").IsRequired();
-            entity.Property(e => e.PurchaseId).HasColumnName("PurchaseId").IsRequired();
+            entity.Property(e => e.PurchaseOrderId).HasColumnName("PurchaseId").IsRequired();
             entity.Property(e => e.VendorId).HasColumnName("VendorId").IsRequired();
             entity.Property(e => e.ReturnDate).HasColumnName("ReturnDate").IsRequired();
             entity.Property(e => e.TotalAmount).HasColumnName("TotalAmount").HasColumnType("decimal(18,2)").IsRequired();
             entity.Property(e => e.ReturnReason).HasColumnName("ReturnReason").HasMaxLength(255).IsRequired();
             entity.Property(e => e.Status).HasColumnName("Status").HasMaxLength(50).IsRequired().HasDefaultValue("Pending");
             entity.Property(e => e.CreatedBy).HasColumnName("CreatedBy").HasMaxLength(100).IsRequired();
-            entity.Property(e => e.CreatedDate).HasColumnName("CreatedDate").IsRequired().HasDefaultValueSql("GETDATE()");
-            entity.Property(e => e.UpdatedBy).HasColumnName("UpdatedBy").HasMaxLength(100);
-            entity.Property(e => e.UpdatedDate).HasColumnName("UpdatedDate").HasDefaultValueSql("GETDATE()");
+            entity.Property(e => e.CreatedDateTime).HasColumnName("CreatedDate").IsRequired().HasDefaultValueSql("GETDATE()");
+            entity.Property(e => e.ModifiedBy).HasColumnName("UpdatedBy").HasMaxLength(100);
+            entity.Property(e => e.ModifiedDateTime).HasColumnName("UpdatedDate").HasDefaultValueSql("GETDATE()");
+            entity.HasOne(e => e.PurchaseOrder).WithMany(o => o.PurchaseReturns)
+              .HasForeignKey(e => e.PurchaseOrderId);
+            entity.HasOne(e => e.Vendor).WithMany(o => o.PurchaseReturns)
+             .HasForeignKey(e => e.VendorId);
 
         });
         OnModelCreatingPartial(modelBuilder);
