@@ -50,6 +50,26 @@ namespace Shiva_Enterprise_APIs.Controllers
             return Ok(salesorderdetailData);
         }
 
+        [HttpGet]
+        [Route("GetSalesOrderDetailBySalesOrderId")]
+        public async Task<ActionResult> GetSalesOrderDetailBySalesOrderId(Guid salesorderId)
+        {
+            if (salesorderId == Guid.Empty)
+            {
+                throw new ArgumentNullException(nameof(salesorderId));
+            }
+
+            var salesOrderDetails = await _shivaEnterpriseContext.SalesOrderDetails
+    .Where(s => s.SalesOrderId == salesorderId)
+    .FirstOrDefaultAsync();
+
+            if (salesOrderDetails == null)
+            {
+                return BadRequest("No SalesOrderDetail Find");
+            }
+            return Ok(salesOrderDetails);
+        }
+
 
         [HttpPost]
         [Route("AddSalesOrderDetail")]

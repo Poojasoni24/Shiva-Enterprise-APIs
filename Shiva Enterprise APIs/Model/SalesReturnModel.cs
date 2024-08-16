@@ -10,6 +10,9 @@
         public decimal? RestockingFee { get; set; }
         public string Comments { get; set; }
 
+        public int Quantity { get; set; }
         public virtual SalesOrderModel SalesOrder { get; set; }
+        public Guid ProductId { get; set; }  // Added
+        public Guid BrandId { get; set; }
     }
 }

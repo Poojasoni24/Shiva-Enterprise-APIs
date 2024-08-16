@@ -59,9 +59,30 @@ namespace Shiva_Enterprise_APIs.Controllers
                 {
                     throw new ArgumentNullException(nameof(salesReturnModel));
                 }
+                var salesOrderDetail = await _shivaEnterpriseContext.SalesOrderDetails
+            .FirstOrDefaultAsync(s => s.SalesOrderId == salesReturnModel.SalesOrderID && s.ProductId == salesReturnModel.ProductId);
+                
+                if (salesOrderDetail == null)
+                {
+                    return NotFound("Sales Order Detail not found.");
+                }
+
+                salesOrderDetail.Quantity -= salesReturnModel.ReturnedQuantity;
+
+                if (salesOrderDetail.Quantity < 0)
+                {
+                    return BadRequest("Returned quantity exceeds available quantity.");
+                }
+
+                // Save the updated SalesOrderDetail record
+                _shivaEnterpriseContext.SalesOrderDetails.Update(salesOrderDetail);
+                await _shivaEnterpriseContext.SaveChangesAsync();
+
+
                 var SalesReturnDetail = new SalesReturn()
                 {
                     SalesReturnID = salesReturnModel.SalesReturnID,
+                    SalesOrderID = salesReturnModel.SalesOrderID,
                     ReturnDate = salesReturnModel.ReturnDate,
                     ReasonForReturn = salesReturnModel.ReasonForReturn,
                     ReturnedQuantity = salesReturnModel.ReturnedQuantity,
@@ -71,6 +92,7 @@ namespace Shiva_Enterprise_APIs.Controllers
                 _shivaEnterpriseContext.SalesReturns.Add(SalesReturnDetail);
                 await _shivaEnterpriseContext.SaveChangesAsync();
 
+               
                 Guid recentlyInsertedId = SalesReturnDetail.SalesReturnID;
                 return Ok(recentlyInsertedId);
             }
@@ -99,14 +121,30 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpPut]
         [Route("EditSalesReturn")]
-        public async Task<IActionResult> EditSalesReturnDetail(Guid id, SalesReturn SalesReturn)
+        public async Task<IActionResult> EditSalesReturnDetail(Guid id, SalesReturnModel SalesReturn)
         {
             if (id != SalesReturn.SalesReturnID)
             {
                 return BadRequest();
             }
 
-            _shivaEnterpriseContext.Entry(SalesReturn).State = EntityState.Modified;
+            // Retrieve the existing entity from the database
+            var existingSalesReturn = await _shivaEnterpriseContext.SalesReturns.FindAsync(id);
+
+            if (existingSalesReturn == null)
+            {
+                return NotFound();
+            }
+
+            existingSalesReturn.SalesOrderID = SalesReturn.SalesOrderID;
+            existingSalesReturn.ReturnDate = SalesReturn.ReturnDate;
+            existingSalesReturn.ReasonForReturn = SalesReturn.ReasonForReturn;
+            existingSalesReturn.ReturnedQuantity = SalesReturn.ReturnedQuantity;
+            existingSalesReturn.RestockingFee = SalesReturn.RestockingFee;
+            existingSalesReturn.Comments = SalesReturn.Comments;
+
+            // Mark the entity as modified
+            _shivaEnterpriseContext.Entry(existingSalesReturn).State = EntityState.Modified;
 
             try
             {
