@@ -102,14 +102,32 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpPut]
         [Route("EditSalesOrder")]
-        public async Task<IActionResult> EditSalesOrderDetail(Guid id, SalesOrder salesorder)
+        public async Task<IActionResult> EditSalesOrderDetail(Guid id, SalesOrderModel salesorder)
         {
             if (id != salesorder.SalesOrderId)
             {
                 return BadRequest();
             }
 
-            _shivaEnterpriseContext.Entry(salesorder).State = EntityState.Modified;
+            // Retrieve the existing SalesOrder from the database
+            var existingSalesOrder = await _shivaEnterpriseContext.SalesOrders.FindAsync(id);
+
+            if (existingSalesOrder == null)
+            {
+                return NotFound();
+            }
+
+            // Update the existing SalesOrder with new values
+            existingSalesOrder.CustomerId = salesorder.CustomerId;
+            existingSalesOrder.OrderDate = salesorder.OrderDate;
+            existingSalesOrder.DeliveryDate = salesorder.DeliveryDate;
+            existingSalesOrder.TotalAmount = salesorder.TotalAmount;
+            existingSalesOrder.SaleOrderStatus = salesorder.SaleOrderStatus;
+            existingSalesOrder.Doc_No = salesorder.Doc_No;
+            existingSalesOrder.CreatedBy = salesorder.CreatedBy;
+            existingSalesOrder.CreatedDateTime = salesorder.CreatedDateTime;
+
+            _shivaEnterpriseContext.Entry(existingSalesOrder).State = EntityState.Modified;
 
             try
             {
