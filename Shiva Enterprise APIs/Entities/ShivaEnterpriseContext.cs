@@ -260,7 +260,6 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
             entity.HasKey(e => e.PurchaseReturnId); // Primary key
             entity.Property(e => e.PurchaseReturnId).HasColumnName("PurchaseReturnId").IsRequired();
             entity.Property(e => e.PurchaseOrderId).HasColumnName("PurchaseId").IsRequired();
-            entity.Property(e => e.VendorId).HasColumnName("VendorId").IsRequired();
             entity.Property(e => e.ReturnDate).HasColumnName("ReturnDate").IsRequired();
             entity.Property(e => e.TotalAmount).HasColumnName("TotalAmount").HasColumnType("decimal(18,2)").IsRequired();
             entity.Property(e => e.ReturnReason).HasColumnName("ReturnReason").HasMaxLength(255).IsRequired();
@@ -271,8 +270,6 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
             entity.Property(e => e.ModifiedDateTime).HasColumnName("UpdatedDate").HasDefaultValueSql("GETDATE()");
             entity.HasOne(e => e.PurchaseOrder).WithMany(o => o.PurchaseReturns)
               .HasForeignKey(e => e.PurchaseOrderId);
-            entity.HasOne(e => e.Vendor).WithMany(o => o.PurchaseReturns)
-             .HasForeignKey(e => e.VendorId);
 
         });
 

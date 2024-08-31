@@ -1243,15 +1243,9 @@ namespace Shiva_Enterprise_APIs.Migrations
                         .HasColumnType("decimal(18,2)")
                         .HasColumnName("TotalAmount");
 
-                    b.Property<Guid>("VendorId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("VendorId");
-
                     b.HasKey("PurchaseReturnId");
 
                     b.HasIndex("PurchaseOrderId");
-
-                    b.HasIndex("VendorId");
 
                     b.ToTable("PurchaseReturns", (string)null);
                 });
@@ -1457,8 +1451,7 @@ namespace Shiva_Enterprise_APIs.Migrations
                 {
                     b.Property<Guid>("StockId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("(newid())");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ModifiedBy")
                         .IsRequired()
@@ -1466,10 +1459,7 @@ namespace Shiva_Enterprise_APIs.Migrations
                         .HasColumnName("ModifiedBy");
 
                     b.Property<DateTime>("ModifiedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasColumnName("ModifiedDate")
-                        .HasDefaultValueSql("(getdate())");
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier")
@@ -1489,8 +1479,7 @@ namespace Shiva_Enterprise_APIs.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("StockCode");
 
-                    b.HasKey("StockId")
-                        .HasName("PK__Stock__B94AD674532DF6E8");
+                    b.HasKey("StockId");
 
                     b.HasIndex("ProductId");
 
@@ -1838,15 +1827,7 @@ namespace Shiva_Enterprise_APIs.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Shiva_Enterprise_APIs.Entities.Vendor", "Vendor")
-                        .WithMany("PurchaseReturns")
-                        .HasForeignKey("VendorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("PurchaseOrder");
-
-                    b.Navigation("Vendor");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.SalesOrder", b =>
@@ -1918,8 +1899,7 @@ namespace Shiva_Enterprise_APIs.Migrations
                         .WithMany("StockDetails")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Stock_product");
+                        .IsRequired();
 
                     b.Navigation("Product");
                 });
@@ -2008,8 +1988,6 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.Navigation("Inwards");
 
                     b.Navigation("PurchaseOrder");
-
-                    b.Navigation("PurchaseReturns");
                 });
 #pragma warning restore 612, 618
         }
