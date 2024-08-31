@@ -104,10 +104,10 @@ namespace Shiva_Enterprise_APIs.Controllers
         [Route("EditSalesOrder")]
         public async Task<IActionResult> EditSalesOrderDetail(Guid id, SalesOrderModel salesorder)
         {
-            if (id != salesorder.SalesOrderId)
-            {
-                return BadRequest();
-            }
+            //if (id != salesorder.SalesOrderId)
+            //{
+            //    return BadRequest();
+            //}
 
             // Retrieve the existing SalesOrder from the database
             var existingSalesOrder = await _shivaEnterpriseContext.SalesOrders.FindAsync(id);

@@ -1451,7 +1451,8 @@ namespace Shiva_Enterprise_APIs.Migrations
                 {
                     b.Property<Guid>("StockId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("(newid())");
 
                     b.Property<string>("ModifiedBy")
                         .IsRequired()
@@ -1459,7 +1460,10 @@ namespace Shiva_Enterprise_APIs.Migrations
                         .HasColumnName("ModifiedBy");
 
                     b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ModifiedDate")
+                        .HasDefaultValueSql("(getdate())");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier")
@@ -1479,7 +1483,8 @@ namespace Shiva_Enterprise_APIs.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("StockCode");
 
-                    b.HasKey("StockId");
+                    b.HasKey("StockId")
+                        .HasName("PK__Stock__B94AD674532DF6E8");
 
                     b.HasIndex("ProductId");
 
@@ -1899,7 +1904,8 @@ namespace Shiva_Enterprise_APIs.Migrations
                         .WithMany("StockDetails")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_Stock_product");
 
                     b.Navigation("Product");
                 });
