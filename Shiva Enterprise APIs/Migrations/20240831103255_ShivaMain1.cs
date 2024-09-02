@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Shiva_Enterprise_APIs.Migrations
 {
     /// <inheritdoc />
-    public partial class shivaEnterprise25 : Migration
+    public partial class ShivaMain1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -373,6 +373,56 @@ namespace Shiva_Enterprise_APIs.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Inventory",
+                columns: table => new
+                {
+                    InventoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    InventoryCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
+                    OpeningQty = table.Column<int>(type: "int", nullable: false),
+                    ClosingQty = table.Column<int>(type: "int", nullable: false),
+                    InQuantity = table.Column<int>(type: "int", nullable: false),
+                    OutQuantity = table.Column<int>(type: "int", nullable: false),
+                    InventoryCost = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "(getdate())"),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "(getdate())")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__Inventory__B94AD674532DF6E8", x => x.InventoryId);
+                    table.ForeignKey(
+                        name: "FK_Inventory_product",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "ProductId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Stock",
+                columns: table => new
+                {
+                    StockId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
+                    StockCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    QuantityOnHand = table.Column<int>(type: "int", nullable: false),
+                    ReorderLevel = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "(getdate())")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__Stock__B94AD674532DF6E8", x => x.StockId);
+                    table.ForeignKey(
+                        name: "FK_Stock_product",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "ProductId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "City",
                 columns: table => new
                 {
@@ -728,7 +778,6 @@ namespace Shiva_Enterprise_APIs.Migrations
                 {
                     PurchaseReturnId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PurchaseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    VendorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ReturnDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ReturnReason = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
@@ -746,12 +795,6 @@ namespace Shiva_Enterprise_APIs.Migrations
                         column: x => x.PurchaseId,
                         principalTable: "PurchaseOrder",
                         principalColumn: "PurchaseOrderId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PurchaseReturns_Vendor_VendorId",
-                        column: x => x.VendorId,
-                        principalTable: "Vendor",
-                        principalColumn: "VendorId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -810,6 +853,11 @@ namespace Shiva_Enterprise_APIs.Migrations
                 column: "cityId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Inventory_ProductId",
+                table: "Inventory",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Inwards_ProductId",
                 table: "Inwards",
                 column: "ProductId");
@@ -865,11 +913,6 @@ namespace Shiva_Enterprise_APIs.Migrations
                 column: "PurchaseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PurchaseReturns_VendorId",
-                table: "PurchaseReturns",
-                column: "VendorId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_SalesOrder_CustomerId",
                 table: "SalesOrder",
                 column: "CustomerId");
@@ -898,6 +941,11 @@ namespace Shiva_Enterprise_APIs.Migrations
                 name: "IX_state_Country_Id",
                 table: "state",
                 column: "Country_Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Stock_ProductId",
+                table: "Stock",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vendor_cityId",
@@ -933,6 +981,9 @@ namespace Shiva_Enterprise_APIs.Migrations
                 name: "IdentityUserClaims");
 
             migrationBuilder.DropTable(
+                name: "Inventory");
+
+            migrationBuilder.DropTable(
                 name: "Inwards");
 
             migrationBuilder.DropTable(
@@ -954,6 +1005,9 @@ namespace Shiva_Enterprise_APIs.Migrations
                 name: "SalesReturn");
 
             migrationBuilder.DropTable(
+                name: "Stock");
+
+            migrationBuilder.DropTable(
                 name: "Transport");
 
             migrationBuilder.DropTable(
@@ -972,10 +1026,10 @@ namespace Shiva_Enterprise_APIs.Migrations
                 name: "Brand");
 
             migrationBuilder.DropTable(
-                name: "Product");
+                name: "SalesOrder");
 
             migrationBuilder.DropTable(
-                name: "SalesOrder");
+                name: "Product");
 
             migrationBuilder.DropTable(
                 name: "Vendor");

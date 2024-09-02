@@ -12,10 +12,6 @@ namespace Shiva_Enterprise_APIs.Entities.Purchase
         [Required]
         [ForeignKey("PurchaseOrderId")]
         public Guid PurchaseOrderId { get; set; }
-
-        [Required]
-        [ForeignKey("VendorId")]
-        public Guid VendorId { get; set; }
         public DateTime ReturnDate { get; set; }
         public decimal TotalAmount { get; set; }
         public string ReturnReason { get; set; }
@@ -24,9 +20,6 @@ namespace Shiva_Enterprise_APIs.Entities.Purchase
         public DateTime CreatedDateTime { get; set; } = DateTime.Now;
         public string ModifiedBy { get; set; }
         public DateTime ModifiedDateTime { get; set; } = DateTime.Now;
-
-        public virtual Vendor Vendor { get; set; }
-
         public virtual PurchaseOrder PurchaseOrder { get; set; }
 
     }

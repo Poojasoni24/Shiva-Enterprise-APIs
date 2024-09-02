@@ -667,6 +667,67 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.ToTable("Customer");
                 });
 
+            modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Inventory", b =>
+                {
+                    b.Property<Guid>("InventoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ClosingQty")
+                        .HasColumnType("int")
+                        .HasColumnName("ClosingQty");
+
+                    b.Property<int>("InQuantity")
+                        .HasColumnType("int")
+                        .HasColumnName("InQuantity");
+
+                    b.Property<string>("InventoryCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("InventoryCode");
+
+                    b.Property<decimal>("InventoryCost")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("InventoryCost");
+
+                    b.Property<string>("ModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ModifiedBy");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ModifiedDate")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<int>("OpeningQty")
+                        .HasColumnType("int")
+                        .HasColumnName("OpeningQty");
+
+                    b.Property<int>("OutQuantity")
+                        .HasColumnType("int")
+                        .HasColumnName("OutQuantity");
+
+                    b.Property<Guid>("ProductId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("(newid())");
+
+                    b.Property<DateTime>("TransactionDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasColumnName("TransactionDate")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.HasKey("InventoryId")
+                        .HasName("PK__Inventory__B94AD674532DF6E8");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Inventory");
+                });
+
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Inwards", b =>
                 {
                     b.Property<Guid>("InwardId")
@@ -1182,15 +1243,9 @@ namespace Shiva_Enterprise_APIs.Migrations
                         .HasColumnType("decimal(18,2)")
                         .HasColumnName("TotalAmount");
 
-                    b.Property<Guid>("VendorId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("VendorId");
-
                     b.HasKey("PurchaseReturnId");
 
                     b.HasIndex("PurchaseOrderId");
-
-                    b.HasIndex("VendorId");
 
                     b.ToTable("PurchaseReturns", (string)null);
                 });
@@ -1401,25 +1456,32 @@ namespace Shiva_Enterprise_APIs.Migrations
 
                     b.Property<string>("ModifiedBy")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ModifiedBy");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
+                        .HasColumnName("ModifiedDate")
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("ProductId");
 
                     b.Property<int>("QuantityOnHand")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("QuantityOnHand");
 
                     b.Property<string>("ReorderLevel")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ReorderLevel");
 
                     b.Property<string>("StockCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("StockCode");
 
                     b.HasKey("StockId")
                         .HasName("PK__Stock__B94AD674532DF6E8");
@@ -1648,6 +1710,18 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.Navigation("City");
                 });
 
+            modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Inventory", b =>
+                {
+                    b.HasOne("Shiva_Enterprise_APIs.Entities.Products.Product", "Product")
+                        .WithMany("Inventory")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_Inventory_product");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Inwards", b =>
                 {
                     b.HasOne("Shiva_Enterprise_APIs.Entities.Products.Product", "Product")
@@ -1758,15 +1832,7 @@ namespace Shiva_Enterprise_APIs.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Shiva_Enterprise_APIs.Entities.Vendor", "Vendor")
-                        .WithMany("PurchaseReturns")
-                        .HasForeignKey("VendorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("PurchaseOrder");
-
-                    b.Navigation("Vendor");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.SalesOrder", b =>
@@ -1887,6 +1953,8 @@ namespace Shiva_Enterprise_APIs.Migrations
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Products.Product", b =>
                 {
+                    b.Navigation("Inventory");
+
                     b.Navigation("Inwards");
 
                     b.Navigation("Outwards");
@@ -1926,8 +1994,6 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.Navigation("Inwards");
 
                     b.Navigation("PurchaseOrder");
-
-                    b.Navigation("PurchaseReturns");
                 });
 #pragma warning restore 612, 618
         }

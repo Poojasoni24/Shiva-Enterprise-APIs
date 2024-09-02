@@ -54,5 +54,6 @@ namespace Shiva_Enterprise_APIs.Entities.Products
         public virtual ICollection<Outwards> Outwards { get; set; } = new List<Outwards>();
 
         public virtual ICollection<Stock> StockDetails { get; set; } = new List<Stock>();
+        public virtual ICollection<Inventory> Inventory { get; set; } = new List<Inventory>();
     }
 }

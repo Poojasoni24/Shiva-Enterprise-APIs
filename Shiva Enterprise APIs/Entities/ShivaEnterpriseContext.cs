@@ -44,6 +44,8 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
     public virtual DbSet<Inwards>Inwards { get; set; }
     public virtual DbSet<Outwards>Outwards { get; set; }
     public virtual DbSet<Stock> Stock { get; set; }
+    public virtual DbSet<Inventory> Inventory { get; set; }
+
     public DbSet<ApplicationUser> applicationUsers { get; set; }
     public DbSet<ApplicationRole> applicationRoles { get; set; }
     public DbSet<IdentityUserClaim<Guid>> IdentityUserClaims { get; set; }
@@ -55,10 +57,10 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-    //=> optionsBuilder.UseSqlServer("Data Source=p3nwplsk12sql-v18.shr.prod.phx3.secureserver.net;Initial Catalog=ShivaERP;User Id=ShivaEnterprise;Password=Shiva@2023;Integrated Security=false;TrustServerCertificate=True");
-    //=> optionsBuilder.UseSqlServer("Data Source=YASH-PC\\SQLEXPRESS;Initial Catalog=ShivaEnterprise;User Id=Yash;Password=Yash04;Integrated Security=true;TrustServerCertificate=True");     //=> optionsBuilder.UseSqlServer("Data Source=p3nwplsk12sql-v18.shr.prod.phx3.secureserver.net;Initial Catalog=ShivaERP;User Id=ShivaEnterprise;Password=Shiva@2023;Integrated Security=false;TrustServerCertificate=True");
-    => optionsBuilder.UseSqlServer("Data Source=LAPTOP-DRBPPARM\\MSSQLSERVER2;Initial Catalog=ShivaEnterprise1108;User Id=sa;Password=Ps@1234;Integrated Security=true;TrustServerCertificate=True");
-    //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-MQBBGG8\\MSSQLSERVER19;Initial Catalog=ShivaEnterprise;User Id=sa;Password=yash6006;Integrated Security=true;TrustServerCertificate=True");
+//=> optionsBuilder.UseSqlServer("Data Source=p3nwplsk12sql-v18.shr.prod.phx3.secureserver.net;Initial Catalog=ShivaERP;User Id=ShivaEnterprise;Password=Shiva@2023;Integrated Security=false;TrustServerCertificate=True");
+//=> optionsBuilder.UseSqlServer("Data Source=YASH-PC\\SQLEXPRESS;Initial Catalog=ShivaEnterprise;User Id=Yash;Password=Yash04;Integrated Security=true;TrustServerCertificate=True");     //=> optionsBuilder.UseSqlServer("Data Source=p3nwplsk12sql-v18.shr.prod.phx3.secureserver.net;Initial Catalog=ShivaERP;User Id=ShivaEnterprise;Password=Shiva@2023;Integrated Security=false;TrustServerCertificate=True");
+=> optionsBuilder.UseSqlServer("Data Source=LAPTOP-DRBPPARM\\MSSQLSERVER2;Initial Catalog=ShivaEnterpriseMain;User Id=sa;Password=Ps@1234;Integrated Security=true;TrustServerCertificate=True");
+//=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-MQBBGG8\\MSSQLSERVER19;Initial Catalog=ShivaEnterprise;User Id=sa;Password=yash6006;Integrated Security=true;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -258,7 +260,6 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
             entity.HasKey(e => e.PurchaseReturnId); // Primary key
             entity.Property(e => e.PurchaseReturnId).HasColumnName("PurchaseReturnId").IsRequired();
             entity.Property(e => e.PurchaseOrderId).HasColumnName("PurchaseId").IsRequired();
-            entity.Property(e => e.VendorId).HasColumnName("VendorId").IsRequired();
             entity.Property(e => e.ReturnDate).HasColumnName("ReturnDate").IsRequired();
             entity.Property(e => e.TotalAmount).HasColumnName("TotalAmount").HasColumnType("decimal(18,2)").IsRequired();
             entity.Property(e => e.ReturnReason).HasColumnName("ReturnReason").HasMaxLength(255).IsRequired();
@@ -269,8 +270,6 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
             entity.Property(e => e.ModifiedDateTime).HasColumnName("UpdatedDate").HasDefaultValueSql("GETDATE()");
             entity.HasOne(e => e.PurchaseOrder).WithMany(o => o.PurchaseReturns)
               .HasForeignKey(e => e.PurchaseOrderId);
-            entity.HasOne(e => e.Vendor).WithMany(o => o.PurchaseReturns)
-             .HasForeignKey(e => e.VendorId);
 
         });
 
@@ -286,6 +285,23 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
             entity.Property(e => e.ModifiedBy).HasColumnName("ModifiedBy").IsRequired();
             entity.Property(e => e.ModifiedDate).HasColumnName("ModifiedDate").HasDefaultValueSql("(getdate())");
             entity.HasOne(d => d.Product).WithMany(p => p.StockDetails).HasConstraintName("FK_Stock_product");
+        });
+
+        modelBuilder.Entity<Inventory>(entity =>
+        {
+            entity.HasKey(e => e.InventoryId).HasName("PK__Inventory__B94AD674532DF6E8");
+
+            entity.Property(e => e.ProductId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.InventoryCode).HasColumnName("InventoryCode").IsRequired();
+            entity.Property(e => e.OpeningQty).HasColumnName("OpeningQty").IsRequired();
+            entity.Property(e => e.ClosingQty).HasColumnName("ClosingQty").IsRequired();
+            entity.Property(e => e.InQuantity).HasColumnName("InQuantity").IsRequired();
+            entity.Property(e => e.OutQuantity).HasColumnName("OutQuantity").IsRequired();
+            entity.Property(e => e.ModifiedBy).HasColumnName("ModifiedBy").IsRequired();
+            entity.Property(e => e.ModifiedDate).HasColumnName("ModifiedDate").HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.InventoryCost).HasColumnName("InventoryCost").HasColumnType("decimal(18,2)").IsRequired();
+            entity.Property(e => e.TransactionDate).HasColumnName("TransactionDate").HasDefaultValueSql("(getdate())").IsRequired();
+            entity.HasOne(d => d.Product).WithMany(p => p.Inventory).HasConstraintName("FK_Inventory_product");
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -12,8 +12,8 @@ using Shiva_Enterprise_APIs.Entities;
 namespace Shiva_Enterprise_APIs.Migrations
 {
     [DbContext(typeof(ShivaEnterpriseContext))]
-    [Migration("20240801182837_20240801235400_shivamigration23")]
-    partial class _20240801235400_shivamigration23
+    [Migration("20240831103255_ShivaMain1")]
+    partial class ShivaMain1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -670,6 +670,67 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.ToTable("Customer");
                 });
 
+            modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Inventory", b =>
+                {
+                    b.Property<Guid>("InventoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ClosingQty")
+                        .HasColumnType("int")
+                        .HasColumnName("ClosingQty");
+
+                    b.Property<int>("InQuantity")
+                        .HasColumnType("int")
+                        .HasColumnName("InQuantity");
+
+                    b.Property<string>("InventoryCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("InventoryCode");
+
+                    b.Property<decimal>("InventoryCost")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("InventoryCost");
+
+                    b.Property<string>("ModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ModifiedBy");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ModifiedDate")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<int>("OpeningQty")
+                        .HasColumnType("int")
+                        .HasColumnName("OpeningQty");
+
+                    b.Property<int>("OutQuantity")
+                        .HasColumnType("int")
+                        .HasColumnName("OutQuantity");
+
+                    b.Property<Guid>("ProductId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("(newid())");
+
+                    b.Property<DateTime>("TransactionDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasColumnName("TransactionDate")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.HasKey("InventoryId")
+                        .HasName("PK__Inventory__B94AD674532DF6E8");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Inventory");
+                });
+
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Inwards", b =>
                 {
                     b.Property<Guid>("InwardId")
@@ -1128,6 +1189,70 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.ToTable("PurchaseOrderDetail");
                 });
 
+            modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Purchase.PurchaseReturn", b =>
+                {
+                    b.Property<Guid>("PurchaseReturnId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("PurchaseReturnId");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("CreatedBy");
+
+                    b.Property<DateTime>("CreatedDateTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreatedDate")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("ModifiedBy")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("UpdatedBy");
+
+                    b.Property<DateTime>("ModifiedDateTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasColumnName("UpdatedDate")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<Guid>("PurchaseOrderId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("PurchaseId");
+
+                    b.Property<DateTime>("ReturnDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ReturnDate");
+
+                    b.Property<string>("ReturnReason")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("ReturnReason");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasDefaultValue("Pending")
+                        .HasColumnName("Status");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("TotalAmount");
+
+                    b.HasKey("PurchaseReturnId");
+
+                    b.HasIndex("PurchaseOrderId");
+
+                    b.ToTable("PurchaseReturns", (string)null);
+                });
+
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.SalesOrder", b =>
                 {
                     b.Property<Guid>("SalesOrderId")
@@ -1334,25 +1459,32 @@ namespace Shiva_Enterprise_APIs.Migrations
 
                     b.Property<string>("ModifiedBy")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ModifiedBy");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
+                        .HasColumnName("ModifiedDate")
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("ProductId");
 
                     b.Property<int>("QuantityOnHand")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("QuantityOnHand");
 
                     b.Property<string>("ReorderLevel")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ReorderLevel");
 
                     b.Property<string>("StockCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("StockCode");
 
                     b.HasKey("StockId")
                         .HasName("PK__Stock__B94AD674532DF6E8");
@@ -1581,6 +1713,18 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.Navigation("City");
                 });
 
+            modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Inventory", b =>
+                {
+                    b.HasOne("Shiva_Enterprise_APIs.Entities.Products.Product", "Product")
+                        .WithMany("Inventory")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_Inventory_product");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Inwards", b =>
                 {
                     b.HasOne("Shiva_Enterprise_APIs.Entities.Products.Product", "Product")
@@ -1683,6 +1827,17 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.Navigation("PurchaseOrder");
                 });
 
+            modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Purchase.PurchaseReturn", b =>
+                {
+                    b.HasOne("Shiva_Enterprise_APIs.Entities.Purchase.PurchaseOrder", "PurchaseOrder")
+                        .WithMany("PurchaseReturns")
+                        .HasForeignKey("PurchaseOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PurchaseOrder");
+                });
+
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.SalesOrder", b =>
                 {
                     b.HasOne("Shiva_Enterprise_APIs.Entities.Customer", "Customer")
@@ -1716,7 +1871,7 @@ namespace Shiva_Enterprise_APIs.Migrations
                         .HasForeignKey("SalesOrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("FK_salesorderdetail_purchaseorder");
+                        .HasConstraintName("FK_salesorderdetail_salesOrder");
 
                     b.Navigation("Brand");
 
@@ -1801,6 +1956,8 @@ namespace Shiva_Enterprise_APIs.Migrations
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.Products.Product", b =>
                 {
+                    b.Navigation("Inventory");
+
                     b.Navigation("Inwards");
 
                     b.Navigation("Outwards");
@@ -1817,6 +1974,8 @@ namespace Shiva_Enterprise_APIs.Migrations
                     b.Navigation("Inwards");
 
                     b.Navigation("PurchaseOrderDetail");
+
+                    b.Navigation("PurchaseReturns");
                 });
 
             modelBuilder.Entity("Shiva_Enterprise_APIs.Entities.SalesOrder", b =>
