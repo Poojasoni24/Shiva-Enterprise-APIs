@@ -7,7 +7,7 @@ namespace Shiva_Enterprise_APIs.Model
 {
     public class SalesOrderModel
     {
-        
+        public Guid SalesOrderId { get; set; }
         public Guid CustomerId { get; set; }
         public DateTime OrderDate { get; set; }
         public DateTime DeliveryDate { get; set; }
