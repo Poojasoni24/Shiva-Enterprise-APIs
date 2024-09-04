@@ -48,7 +48,10 @@ namespace Shiva_Enterprise_APIs.Controllers
                         Detail.ClosingQty += inventoryModelDetail.ClosingQty;
                         Detail.InQuantity += inventoryModelDetail.InQuantity;
                         Detail.OutQuantity += inventoryModelDetail.OutQuantity;
-                        Detail.InventoryCost = inventoryModelDetail.InventoryCost;
+                        if(inventoryModelDetail.InventoryCost != 0)
+                        {
+                            Detail.InventoryCost = inventoryModelDetail.InventoryCost;
+                        }
                         Detail.TransactionDate = inventoryModelDetail.TransactionDate;
                         Detail.ModifiedBy = inventoryModelDetail.ModifiedBy;
 
