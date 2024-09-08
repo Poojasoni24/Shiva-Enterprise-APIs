@@ -149,6 +149,25 @@ namespace Shiva_Enterprise_APIs.Controllers
             return Ok(products);
         }
 
+        [HttpGet]
+        [Route("GetProductFromPurchaseOrderId")]
+        public async Task<ActionResult> GetProductFromPurchaseOrderId(Guid purchaseOrderID)
+        {
+            if (purchaseOrderID == Guid.Empty)
+            {
+                throw new ArgumentNullException(nameof(purchaseOrderID));
+            }
+
+            var productIds = await _shivaEnterpriseContext.PurchaseOrderDetails.Where(p => p.PurchaseOrderId == purchaseOrderID).Select(p => p.ProductId).ToListAsync();
+            var products = await _shivaEnterpriseContext.products.Where(p => productIds.Contains(p.ProductId)).ToListAsync();
+
+            if (products == null)
+            {
+                return BadRequest("No Product Find");
+            }
+            return Ok(products);
+        }
+
     }
 }
 

@@ -162,5 +162,26 @@ namespace Shiva_Enterprise_APIs.Controllers
             }
 
         }
+
+        [HttpGet]
+        [Route("GetPurchaseOrderDetailByPurchaseOrderId")]
+        public async Task<ActionResult> GetPurchaseOrderDetailByPurchaseOrderId(Guid purchaseOrderId)
+        {
+            if (purchaseOrderId == Guid.Empty)
+            {
+                throw new ArgumentNullException(nameof(purchaseOrderId));
+            }
+
+            var purchaseOrderDetails = await _shivaEnterpriseContext.PurchaseOrderDetails
+    .Where(s => s.PurchaseOrderId == purchaseOrderId)
+    .FirstOrDefaultAsync();
+
+            if (purchaseOrderDetails == null)
+            {
+                return BadRequest("No PurchaseOrderDetails Find");
+            }
+            return Ok(purchaseOrderDetails);
+        }
+
     }
 }

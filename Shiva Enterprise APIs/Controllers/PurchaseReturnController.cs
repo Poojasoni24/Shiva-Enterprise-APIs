@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Shiva_Enterprise_APIs.Entities;
 using Shiva_Enterprise_APIs.Entities.Purchase;
+using Shiva_Enterprise_APIs.Model;
 using Shiva_Enterprise_APIs.Model.Purchase;
 
 namespace Shiva_Enterprise_APIs.Controllers
@@ -24,7 +25,7 @@ namespace Shiva_Enterprise_APIs.Controllers
         [Route("GetPurchaseReturns")]
         public async Task<ActionResult> GetPurchaseReturns()
         {
-            var purchaseReturns = await _shivaEnterpriseContext.PurchaseReturns.ToListAsync();
+            var purchaseReturns = await _shivaEnterpriseContext.PurchaseReturn.ToListAsync();
             if (purchaseReturns == null)
                 return NotFound();
             return Ok(purchaseReturns);
@@ -32,14 +33,15 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpGet]
         [Route("GetPurchaseReturnById")]
-        public async Task<ActionResult> GetPurchaseReturnById(int PurchasereturnId)
+        public async Task<ActionResult> GetPurchaseReturnById(Guid purchaseReturnId)
         {
-            if (PurchasereturnId == null)
+            if (purchaseReturnId == null)
             {
-                throw new ArgumentNullException(nameof(PurchasereturnId));
+                throw new ArgumentNullException(nameof(purchaseReturnId));
             }
 
-            var purchaseReturn = await _shivaEnterpriseContext.PurchaseReturns.FindAsync(PurchasereturnId);
+            var purchaseReturn = await _shivaEnterpriseContext.PurchaseReturn.FindAsync(purchaseReturnId);
+            //purchaseReturn.PurchaseOrder = await _shivaEnterpriseContext.PurchaseOrders.FindAsync(purchaseReturn.PurchaseOrderId);
             if (purchaseReturn == null)
             {
                 return BadRequest("No Purchase Return Find");
@@ -49,45 +51,103 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpPost]
         [Route("AddPurchaseReturn")]
-        public async Task<ActionResult<PurchaseReturn>> AddPurchaseReturn(PurchaseReturn purchaseReturn)
+        public async Task<ActionResult<PurchaseReturnModel>> AddPurchaseReturn(PurchaseReturnModel purchaseReturnModel)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var purchaseOrderDetail = await _shivaEnterpriseContext.PurchaseOrderDetails
+                .FirstOrDefaultAsync(s => s.PurchaseOrderId == purchaseReturnModel.PurchaseOrderId && s.ProductId == purchaseReturnModel.ProductId);
+
+                purchaseOrderDetail.Quantity -= purchaseReturnModel.ReturnQuantity;
+
+                if (purchaseOrderDetail.Quantity < 0)
+                {
+                    return BadRequest("Returned quantity exceeds available quantity.");
+                }
+
+                _shivaEnterpriseContext.PurchaseOrderDetails.Update(purchaseOrderDetail);
+                await _shivaEnterpriseContext.SaveChangesAsync();
+
+                var purchaseReturn = new PurchaseReturn()
+                {
+                    PurchaseReturnId = purchaseReturnModel.PurchaseReturnId,
+                    PurchaseOrderId = purchaseReturnModel.PurchaseOrderId,
+                    TotalAmount = purchaseReturnModel.TotalAmount,
+                    ReturnDate = purchaseReturnModel.ReturnDate,
+                    ReturnReason = purchaseReturnModel.ReturnReason,
+                    ReturnQuantity = purchaseReturnModel.ReturnQuantity,
+                    CreatedBy = purchaseReturnModel.CreatedBy,
+                    CreatedDateTime = purchaseReturnModel.CreatedDateTime,
+                    ModifiedBy = purchaseReturnModel.ModifiedBy,
+                    ModifiedDateTime = purchaseReturnModel.ModifiedDateTime,
+                    //RestockingFee = purchaseReturnModel.R,
+                };
+
+                _shivaEnterpriseContext.PurchaseReturn.Add(purchaseReturn);
+                await _shivaEnterpriseContext.SaveChangesAsync();
+
+                Guid recentlyInsertedId = purchaseReturn.PurchaseReturnId;
+                return Ok(recentlyInsertedId);
             }
-
-            _shivaEnterpriseContext.PurchaseReturns.Add(purchaseReturn);
-            await _shivaEnterpriseContext.SaveChangesAsync();
-
-            return Ok(purchaseReturn.PurchaseReturnId);
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Something Went Wrong");
+            }
         }
 
         [HttpPost]
         [Route("DeletePurchaseReturn")]
-        public async Task<ActionResult> DeletePurchaseReturn(int id)
+        public async Task<ActionResult> DeletePurchaseReturn(Guid purchaseReturnId)
         {
-            var purchaseReturn = await _shivaEnterpriseContext.PurchaseReturns.FindAsync(id);
-            if (purchaseReturn == null)
+            var deletepurchaseReturn = _shivaEnterpriseContext.PurchaseReturn.Find(purchaseReturnId);
+            if (deletepurchaseReturn != null)
             {
-                return NotFound();
+                _shivaEnterpriseContext.Entry(deletepurchaseReturn).State = EntityState.Deleted;
+                _shivaEnterpriseContext.SaveChanges();
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, "Something Went Wrong");
             }
 
-            _shivaEnterpriseContext.Entry(purchaseReturn).State = EntityState.Deleted;
-            await _shivaEnterpriseContext.SaveChangesAsync();
+            return StatusCode(StatusCodes.Status200OK, "Successfully deleted");
 
-            return Ok();
         }
 
         [HttpPut]
         [Route("EditPurchaseReturn")]
-        public async Task<IActionResult> EditPurchaseReturn(Guid id, PurchaseReturn purchaseReturn)
+        public async Task<IActionResult> EditPurchaseReturn(Guid id, PurchaseReturnModel purchaseReturn)
         {
             if (id != purchaseReturn.PurchaseReturnId)
             {
                 return BadRequest();
             }
 
-            _shivaEnterpriseContext.Entry(purchaseReturn).State = EntityState.Modified;
+            var existingPurchaseReturn = await _shivaEnterpriseContext.PurchaseReturn.FindAsync(id);
+            if (existingPurchaseReturn == null)
+            {
+                return NotFound();
+            }
+
+            existingPurchaseReturn.PurchaseOrderId = purchaseReturn.PurchaseOrderId;
+            existingPurchaseReturn.ReturnDate = purchaseReturn.ReturnDate;
+            existingPurchaseReturn.TotalAmount = purchaseReturn.TotalAmount;
+            existingPurchaseReturn.ReturnQuantity = purchaseReturn.ReturnQuantity;
+            existingPurchaseReturn.ReturnReason = purchaseReturn.ReturnReason;
+            existingPurchaseReturn.Status = purchaseReturn.Status;
+            existingPurchaseReturn.CreatedBy = purchaseReturn.CreatedBy;
+            existingPurchaseReturn.CreatedDateTime = purchaseReturn.CreatedDateTime;
+            existingPurchaseReturn.ModifiedBy = purchaseReturn.ModifiedBy;
+            existingPurchaseReturn.ModifiedDateTime = purchaseReturn.ModifiedDateTime;
+            //existingPurchaseReturn.PurchaseOrder = purchaseReturn.PurchaseOrder;
+
+
+            _shivaEnterpriseContext.Entry(existingPurchaseReturn).State = EntityState.Modified;
 
             try
             {
@@ -95,7 +155,7 @@ namespace Shiva_Enterprise_APIs.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_shivaEnterpriseContext.PurchaseReturns.Any(e => e.PurchaseReturnId == id))
+                if (!_shivaEnterpriseContext.PurchaseReturn.Any(e => e.PurchaseReturnId == id))
                 {
                     return NotFound();
                 }
