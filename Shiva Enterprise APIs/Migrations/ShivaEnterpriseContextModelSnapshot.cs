@@ -1209,17 +1209,17 @@ namespace Shiva_Enterprise_APIs.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)")
-                        .HasColumnName("UpdatedBy");
+                        .HasColumnName("ModifiedBy");
 
                     b.Property<DateTime>("ModifiedDateTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasColumnName("UpdatedDate")
+                        .HasColumnName("ModifiedDateTime")
                         .HasDefaultValueSql("GETDATE()");
 
                     b.Property<Guid>("PurchaseOrderId")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("PurchaseId");
+                        .HasColumnName("PurchaseOrderId");
 
                     b.Property<DateTime>("ReturnDate")
                         .HasColumnType("datetime2")
@@ -1230,6 +1230,10 @@ namespace Shiva_Enterprise_APIs.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)")
                         .HasColumnName("ReturnReason");
+
+                    b.Property<int>("ReturnedQuantity")
+                        .HasColumnType("int")
+                        .HasColumnName("ReturnedQuantity");
 
                     b.Property<string>("Status")
                         .IsRequired()
