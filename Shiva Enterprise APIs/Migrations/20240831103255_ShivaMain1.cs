@@ -772,32 +772,6 @@ namespace Shiva_Enterprise_APIs.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "PurchaseReturns",
-                columns: table => new
-                {
-                    PurchaseReturnId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PurchaseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ReturnDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ReturnReason = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, defaultValue: "Pending"),
-                    CreatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PurchaseReturns", x => x.PurchaseReturnId);
-                    table.ForeignKey(
-                        name: "FK_PurchaseReturns_PurchaseOrder_PurchaseId",
-                        column: x => x.PurchaseId,
-                        principalTable: "PurchaseOrder",
-                        principalColumn: "PurchaseOrderId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -908,11 +882,6 @@ namespace Shiva_Enterprise_APIs.Migrations
                 column: "PurchaseOrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PurchaseReturns_PurchaseId",
-                table: "PurchaseReturns",
-                column: "PurchaseId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_SalesOrder_CustomerId",
                 table: "SalesOrder",
                 column: "CustomerId");
@@ -994,9 +963,6 @@ namespace Shiva_Enterprise_APIs.Migrations
 
             migrationBuilder.DropTable(
                 name: "PurchaseOrderDetail");
-
-            migrationBuilder.DropTable(
-                name: "PurchaseReturns");
 
             migrationBuilder.DropTable(
                 name: "SalesOrderDetail");

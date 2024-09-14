@@ -107,6 +107,19 @@ namespace Shiva_Enterprise_APIs.Controllers
             var deletepurchaseReturn = _shivaEnterpriseContext.PurchaseReturn.Find(purchaseReturnId);
             if (deletepurchaseReturn != null)
             {
+                var purchaseOrderDetail = await _shivaEnterpriseContext.PurchaseOrderDetails
+.FirstOrDefaultAsync(s => s.PurchaseOrderId == deletepurchaseReturn.PurchaseOrderId);
+
+                purchaseOrderDetail.Quantity += deletepurchaseReturn.ReturnQuantity;
+
+                if (purchaseOrderDetail.Quantity < 0)
+                {
+                    return BadRequest("Returned quantity exceeds available quantity.");
+                }
+
+                _shivaEnterpriseContext.PurchaseOrderDetails.Update(purchaseOrderDetail);
+                await _shivaEnterpriseContext.SaveChangesAsync();
+
                 _shivaEnterpriseContext.Entry(deletepurchaseReturn).State = EntityState.Deleted;
                 _shivaEnterpriseContext.SaveChanges();
             }
@@ -133,6 +146,19 @@ namespace Shiva_Enterprise_APIs.Controllers
             {
                 return NotFound();
             }
+
+            var purchaseOrderDetail = await _shivaEnterpriseContext.PurchaseOrderDetails
+.FirstOrDefaultAsync(s => s.PurchaseOrderId == existingPurchaseReturn.PurchaseOrderId);
+
+            purchaseOrderDetail.Quantity += (existingPurchaseReturn.ReturnQuantity - purchaseReturn.ReturnQuantity);
+
+            if (purchaseOrderDetail.Quantity < 0)
+            {
+                return BadRequest("Returned quantity exceeds available quantity.");
+            }
+
+            _shivaEnterpriseContext.PurchaseOrderDetails.Update(purchaseOrderDetail);
+            await _shivaEnterpriseContext.SaveChangesAsync();
 
             existingPurchaseReturn.PurchaseOrderId = purchaseReturn.PurchaseOrderId;
             existingPurchaseReturn.ReturnDate = purchaseReturn.ReturnDate;

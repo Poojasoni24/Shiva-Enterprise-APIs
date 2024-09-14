@@ -26,9 +26,9 @@ namespace Shiva_Enterprise_APIs.Model
         public DateTime CreatedDate { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime ModifiedDate { get; set; }
-        public virtual Shiva_Enterprise_APIs.Entities.Vendor Vendor { get; set; }
-        public virtual PurchaseOrder PurchaseOrder { get; set; }
-        public virtual Shiva_Enterprise_APIs.Entities.Products.Product Product { get; set; }
+        //public virtual Shiva_Enterprise_APIs.Entities.Vendor Vendor { get; set; }
+        //public virtual PurchaseOrder PurchaseOrder { get; set; }
+        //public virtual Shiva_Enterprise_APIs.Entities.Products.Product Product { get; set; }
 
     }
 }

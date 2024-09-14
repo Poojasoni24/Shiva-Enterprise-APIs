@@ -60,13 +60,13 @@ namespace Shiva_Enterprise_APIs.Controllers
 
                 var inwardDetailsObj = new Inwards()
                 {
-                    PurchaseOrderId = inwardDetails.PurchaseOrder.PurchaseOrderId,
-                    VendorId = inwardDetails.Vendor.VendorId,
-                    VendorName = inwardDetails.Vendor.VendorName,
+                    PurchaseOrderId = inwardDetails.PurchaseOrderId,
+                    VendorId = inwardDetails.VendorId,
+                    VendorName = inwardDetails.VendorName,
                     ReceiptDate = inwardDetails.ReceiptDate,
                     ReceivedBy = inwardDetails.ReceivedBy,
-                    ProductId = inwardDetails.Product.ProductId,
-                    ProductName = inwardDetails.Product.ProductName,
+                    ProductId = inwardDetails.ProductId,
+                    ProductName = inwardDetails.ProductName,
                     QuantityReceived = inwardDetails.QuantityReceived,
                     UnitOfMeasure = inwardDetails.UnitOfMeasure,
                     BatchNumber = inwardDetails.BatchNumber,
@@ -113,18 +113,48 @@ namespace Shiva_Enterprise_APIs.Controllers
 
         [HttpPut]
         [Route("EditInwards")]
-        public async Task<IActionResult> EditInwards(Guid id, Inwards inwards)
+        public async Task<IActionResult> EditInwards(Guid id, Shiva_Enterprise_APIs.Model.InwardModel inwards)
         {
             if (id != inwards.InwardId)
             {
                 return BadRequest();
             }
 
-            _shivaEnterpriseContext.Entry(inwards).State = EntityState.Modified;
-
             try
             {
+                var existingItem = _shivaEnterpriseContext.Inwards.FirstOrDefault(i => i.InwardId == id);
+                if (existingItem == null)
+                {
+                    return NotFound();
+                }
+
+                existingItem.PurchaseOrderId = inwards.PurchaseOrderId;
+                existingItem.VendorId = inwards.VendorId;
+                existingItem.VendorName = inwards.VendorName;
+                existingItem.ReceiptDate = inwards.ReceiptDate;
+                    existingItem.ReceivedBy = inwards.ReceivedBy;
+                    existingItem.ProductId = inwards.ProductId;
+                    existingItem.ProductName = inwards.ProductName;
+                    existingItem.QuantityReceived = inwards.QuantityReceived;
+                    existingItem.UnitOfMeasure = inwards.UnitOfMeasure;
+                    existingItem.BatchNumber = inwards.BatchNumber;
+                    existingItem.QualityCheckStatus = inwards.QualityCheckStatus;
+                    existingItem.QualityCheckRemarks = inwards.QualityCheckRemarks;
+                    existingItem.InvoiceNumber = inwards.InvoiceNumber;
+                    existingItem.InvoiceDate = inwards.InvoiceDate;
+                    existingItem.CostPerUnit = inwards.CostPerUnit;
+                    existingItem.TotalCost = inwards.TotalCost;
+                    existingItem.Remarks = inwards.Remarks;
+                    existingItem.CreatedBy = inwards.CreatedBy;
+                    existingItem.CreatedDate = inwards.CreatedDate;
+                    existingItem.ModifiedBy = inwards.ModifiedBy;
+
+
+                _shivaEnterpriseContext.Entry(existingItem).State = EntityState.Modified;
                 await _shivaEnterpriseContext.SaveChangesAsync();
+                return Ok(existingItem);
+
+
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -136,6 +166,10 @@ namespace Shiva_Enterprise_APIs.Controllers
                 {
                     throw;
                 }
+            }
+            catch(Exception ex)
+            {
+
             }
 
             return Ok();

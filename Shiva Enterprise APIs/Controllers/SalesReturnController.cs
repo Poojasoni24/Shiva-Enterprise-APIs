@@ -59,9 +59,12 @@ namespace Shiva_Enterprise_APIs.Controllers
                 {
                     throw new ArgumentNullException(nameof(salesReturnModel));
                 }
+                //var salesOrderDetail = await _shivaEnterpriseContext.SalesOrderDetails
+            //.FirstOrDefaultAsync(s => s.SalesOrderId == salesReturnModel.SalesOrderID && s.ProductId == salesReturnModel.ProductId);
+
                 var salesOrderDetail = await _shivaEnterpriseContext.SalesOrderDetails
-            .FirstOrDefaultAsync(s => s.SalesOrderId == salesReturnModel.SalesOrderID && s.ProductId == salesReturnModel.ProductId);
-                
+.FirstOrDefaultAsync(s => s.SalesOrderId == salesReturnModel.SalesOrderID);
+
                 if (salesOrderDetail == null)
                 {
                     return NotFound("Sales Order Detail not found.");
@@ -107,8 +110,28 @@ namespace Shiva_Enterprise_APIs.Controllers
         public async Task<ActionResult<ApiResponseFormat>> DeleteSalesReturn(Guid SalesReturnId)
         {
             var deleteSalesReturn = _shivaEnterpriseContext.SalesReturns.Find(SalesReturnId);
+
             if (deleteSalesReturn != null)
             {
+                var salesOrderDetail = await _shivaEnterpriseContext.SalesOrderDetails
+.FirstOrDefaultAsync(s => s.SalesOrderId == deleteSalesReturn.SalesOrderID);
+
+                if (salesOrderDetail == null)
+                {
+                    return NotFound("Sales Order Detail not found.");
+                }
+
+                salesOrderDetail.Quantity += deleteSalesReturn.ReturnedQuantity;
+
+                if (salesOrderDetail.Quantity < 0)
+                {
+                    return BadRequest("Returned quantity exceeds available quantity.");
+                }
+
+                // Save the updated SalesOrderDetail record
+                _shivaEnterpriseContext.SalesOrderDetails.Update(salesOrderDetail);
+                await _shivaEnterpriseContext.SaveChangesAsync();
+
                 _shivaEnterpriseContext.Entry(deleteSalesReturn).State = EntityState.Deleted;
                 _shivaEnterpriseContext.SaveChanges();
             }
@@ -136,12 +159,33 @@ namespace Shiva_Enterprise_APIs.Controllers
                 return NotFound();
             }
 
+            // Edit sale quantity in sale
+            var salesOrderDetail = await _shivaEnterpriseContext.SalesOrderDetails
+.FirstOrDefaultAsync(s => s.SalesOrderId == SalesReturn.SalesOrderID);
+
+            if (salesOrderDetail == null)
+            {
+                return NotFound("Sales Order Detail not found.");
+            }
+
+            salesOrderDetail.Quantity += (existingSalesReturn.ReturnedQuantity - SalesReturn.ReturnedQuantity);
+
             existingSalesReturn.SalesOrderID = SalesReturn.SalesOrderID;
             existingSalesReturn.ReturnDate = SalesReturn.ReturnDate;
             existingSalesReturn.ReasonForReturn = SalesReturn.ReasonForReturn;
             existingSalesReturn.ReturnedQuantity = SalesReturn.ReturnedQuantity;
             existingSalesReturn.RestockingFee = SalesReturn.RestockingFee;
             existingSalesReturn.Comments = SalesReturn.Comments;
+
+            if (salesOrderDetail.Quantity < 0)
+            {
+                return BadRequest("Returned quantity exceeds available quantity.");
+            }
+
+            // Save the updated SalesOrderDetail record
+            _shivaEnterpriseContext.SalesOrderDetails.Update(salesOrderDetail);
+            await _shivaEnterpriseContext.SaveChangesAsync();
+            // Edit sale quantity in sale
 
             // Mark the entity as modified
             _shivaEnterpriseContext.Entry(existingSalesReturn).State = EntityState.Modified;
