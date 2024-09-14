@@ -61,6 +61,7 @@ public partial class ShivaEnterpriseContext : IdentityDbContext<ApplicationUser,
 //=> optionsBuilder.UseSqlServer("Data Source=YASH-PC\\SQLEXPRESS;Initial Catalog=ShivaEnterprise;User Id=Yash;Password=Yash04;Integrated Security=true;TrustServerCertificate=True");     //=> optionsBuilder.UseSqlServer("Data Source=p3nwplsk12sql-v18.shr.prod.phx3.secureserver.net;Initial Catalog=ShivaERP;User Id=ShivaEnterprise;Password=Shiva@2023;Integrated Security=false;TrustServerCertificate=True");
 //=> optionsBuilder.UseSqlServer("Data Source=YASH-PC\\SQLEXPRESS;Initial Catalog=ShivaEnterprise; User Id=sa; Password=Yash@1234;Integrated Security=true;TrustServerCertificate=True");
 //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-MQBBGG8\\MSSQLSERVER19;Initial Catalog=ShivaEnterprise;User Id=sa;Password=yash6006;Integrated Security=true;TrustServerCertificate=True");
+=> optionsBuilder.UseSqlServer("Data Source=SMIT;Initial Catalog=ShivaEnterprise;User Id=sa;Password=sa@1;Integrated Security=true;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
